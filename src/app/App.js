@@ -26,10 +26,10 @@ class App extends React.Component{
     .then(res =>res.json())
     .then(data => {
       if(data.error){
-        console.log(data)
+        // console.log(data)
         alert('Incorrect username or password')
       }else{
-        console.log(data)
+        // console.log(data)
         this.setState({currentUser: data.user })
       }
     })
@@ -56,7 +56,7 @@ class App extends React.Component{
 
           <Route exact path='/' render={()=> <Redirect to='/profile' />  }/>
 
-          <Route exact path='/' render={()=>{
+          <Route exact path='/profile' render={()=>{
             return this.state.currentUser ?
               <Profile user={this.state.currentUser} />
             : <Redirect to='/login' />
