@@ -8,7 +8,28 @@ import './App.css';
 class App extends React.Component{
 
   state = {
-    currentUser: null
+    currentUser: null,
+    loading: true
+  }
+
+  componentDidMount(){
+    let token = localStorage.getItem('token');
+
+    if(token){
+      fetch(`http://localhost:4000/api/v1/profile`, {
+        method: "GET",
+        headers: {"Authentication" : `Bearer ${token}`}
+      })
+      .then(response => response.json())
+      .then(user =>{
+          this.setState({
+            currentUser: user,
+            loading: false
+          })
+      })
+    } else {
+      this.setState({ loading: false })
+    }
   }
 
   handleLoginSubmit = (username, password) => {
@@ -30,16 +51,17 @@ class App extends React.Component{
         alert('Incorrect username or password')
       }else{
         // console.log(data)
-        this.setState({currentUser: data.user })
+        this.setState({currentUser: data.user });
+        localStorage.setItem("token", data.token);
       }
     })
   };
 
   handleLogOut = () => {
-    // console.log("attempting logout")
     this.setState({
       currentUser: null
     })
+    localStorage.clear();
   }
 
 
@@ -51,6 +73,8 @@ class App extends React.Component{
           logged_in={this.state.currentUser}
           onLogOut={this.handleLogOut}
         />
+
+      { !this.state.loading ?
 
         <Switch>
 
@@ -69,6 +93,9 @@ class App extends React.Component{
           }} />
 
         </Switch>
+
+      : null }
+
       </Fragment>
     )
   }
