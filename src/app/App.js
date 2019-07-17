@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import Nav from '../navbar/Nav'
-import Profile from '../user/Profile'
+import UserProfile from '../user/UserProfile'
 import LoginForm from '../login/LoginForm'
 import './App.css';
 
@@ -82,7 +82,7 @@ class App extends React.Component{
 
           <Route exact path='/profile' render={()=>{
             return this.state.currentUser ?
-              <Profile user={this.state.currentUser} />
+              <UserProfile user={this.state.currentUser} />
             : <Redirect to='/login' />
           }} />
 

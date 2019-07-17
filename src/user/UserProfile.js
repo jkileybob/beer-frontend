@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, Image } from "semantic-ui-react";
 
-const Profile = ({ user }) => (
+const UserProfile = ({ user }) => (
   <Card>
     <Image src={user.avatar} />
     <Card.Content>
@@ -13,4 +13,4 @@ const Profile = ({ user }) => (
   </Card>
 );
 
-export default Profile;
+export default UserProfile;
