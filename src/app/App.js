@@ -3,6 +3,7 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import Nav from '../navbar/Nav'
 import UserProfile from '../user/UserProfile'
 import LoginForm from '../login/LoginForm'
+import BeerIndex from '../beer/BeerIndex'
 import './App.css';
 
 class App extends React.Component{
@@ -91,6 +92,14 @@ class App extends React.Component{
               <Redirect to='/profile' />
             : <LoginForm onLogIn={this.handleLoginSubmit} />
           }} />
+
+          <Route exact path='/beers' render={()=>{
+            return <BeerIndex />
+          }} />
+
+          <Route exact path=`/beers/${beer.id}` render={()=>{
+            return  <BeerProfile />
+            }}/>
 
         </Switch>
 
