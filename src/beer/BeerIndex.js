@@ -1,6 +1,6 @@
 import React from 'react'
 // import { Link } from 'react-router-dom'
-import { List, Card, Button, Header, Image, Modal } from 'semantic-ui-react'
+import { List, Button, Modal } from 'semantic-ui-react'
 import BeerProfile from '../beer/BeerProfile'
 
 
@@ -27,19 +27,29 @@ class BeerIndex extends React.Component{
     })
   }
 
-  backToBeers = () => {
-    console.log("going back")
+  // backToBeers = () => {
+  //   this.setState({
+  //     currentBeer: null
+  //   })
+  // }
+
+  onClickReturn = (e) => {
+    // console.log("attempting")
+    this.setState({
+      currentBeer: null
+    })
   }
 
   render(){
     return(
       <React.Fragment>
       {!this.state.currentBeer ?
+
         <List animated verticalAlign='middle'>
+          <List.Header as='h1'>Index of Beers</List.Header>
             {this.state.beers.map((beer) => {
-              return  <List.Item>
+              return  <List.Item key={`beer-list-item-${beer.name}`}>
               <Modal
-                key={beer.id}
                 trigger={<List.Header>{beer.name}</List.Header>}
                 centered={false}
                 >
@@ -51,8 +61,8 @@ class BeerIndex extends React.Component{
                         <Modal.Content>
                           <Modal.Description>
                               <h3>{beer.style}</h3>
-                              <p>{beer.abv}</p>
-                              <p>{beer.brewery.name}</p>
+                              <p>{beer.abv} ABV</p>
+                              <p>Made by {beer.brewery.name}</p>
                           </Modal.Description>
                           <Button
                             compact
@@ -70,9 +80,12 @@ class BeerIndex extends React.Component{
             )}
         </List>
 
-
-
-          : <BeerProfile beer={this.state.currentBeer} />
+          : <List>
+              <BeerProfile beer={this.state.currentBeer} />
+              <Button compact color="teal" onClick={this.onClickReturn}>
+                back to beers.
+              </Button>
+            </List>
         }
 
       </React.Fragment>

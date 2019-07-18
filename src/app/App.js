@@ -97,10 +97,6 @@ class App extends React.Component{
             return <BeerIndex />
           }} />
 
-          <Route exact path=`/beers/${beer.id}` render={()=>{
-            return  <BeerProfile />
-            }}/>
-
         </Switch>
 
       : null }
@@ -111,3 +107,8 @@ class App extends React.Component{
 }
 
 export default withRouter(App)
+
+
+// <Route exact path=`/beers/${beer.id}` render={()=>{
+//   return  <BeerProfile />
+//   }}/>
