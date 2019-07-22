@@ -4,6 +4,7 @@ import Nav from '../navbar/Nav'
 import UserProfile from '../user/UserProfile'
 import LoginForm from '../login/LoginForm'
 import BeerIndex from '../beer/BeerIndex'
+import BreweryIndex from '../brewery/BreweryIndex'
 import './App.css';
 
 class App extends React.Component{
@@ -95,6 +96,10 @@ class App extends React.Component{
 
           <Route exact path='/beers' render={()=>{
             return <BeerIndex />
+          }} />
+
+        <Route exact path='/breweries' render={()=>{
+            return <BreweryIndex />
           }} />
 
         </Switch>
