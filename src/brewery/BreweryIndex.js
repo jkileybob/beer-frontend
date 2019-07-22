@@ -5,46 +5,80 @@ class BreweryIndex extends React.Component{
   state = {
     breweries: [],
     currentBrewery: null,
-    searchTerm: ""
+    searchTermName: "",
+    searchTermState: ""
   };
 
 
-handleSearch = (e) => {
-  let input = e.target.value
+handleNameSearch = (e) => {
+  let inputName = e.target.value
   // console.log(input)
   this.setState({
-    searchTerm: input
+    searchTermName: inputName
+  })
+}
+
+handleStateSearch = (e) => {
+  let inputState = e.target.value
+  // console.log(input)
+  this.setState({
+    searchTermState: inputState
   })
 }
 
 handleClickSubmit = () => {
-  let input = this.state.searchTerm
-  console.log(input)
-  // using input, make fetch call to open brew DB
-  // set state of list of breweries to
-  // whatever the search returns
-
-  fetch(`https://api.openbrewerydb.org/breweries?by_name=${input}`)
-  .then(res => res.json())
-  .then(breweries => {
-    console.log(breweries);
-    this.setState({
-      breweries: breweries
+ if (this.state.searchTermName && !this.state.searchTermState){
+    let inputName = this.state.searchTermName
+    fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}`)
+    .then(res => res.json())
+    .then(breweries => {
+      console.log(breweries);
+      this.setState({
+        breweries: breweries
+      })
     })
-  })
-
-
+  } else if (!this.state.searchTermName && this.state.searchTermState) {
+    let inputState = this.state.searchTermState
+    fetch(`https://api.openbrewerydb.org/breweries?by_state=${inputState}`)
+    .then(res => res.json())
+    .then(breweries => {
+      console.log(breweries);
+      this.setState({
+        breweries: breweries
+      })
+    })
+  } else {
+    let inputName = this.state.searchTermName
+    let inputState = this.state.searchTermState
+    fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}&by_state=${inputState}`)
+    .then(res => res.json())
+    .then(breweries => {
+      console.log(breweries);
+      this.setState({
+        breweries: breweries
+      })
+    })
+  }
 }
 
   render(){
     return(
       <React.Fragment>
+      <h1>Search the Brewery Database... </h1>
         <Input
         fluid
         size='big'
         icon='search'
-        onChange={this.handleSearch}
-        placeholder='Search Brewery Database...'
+        onChange={this.handleNameSearch}
+        placeholder='...by name...'
+        />
+
+        <Input
+        fluid
+        size='big'
+        icon='search'
+        onChange={this.handleStateSearch}
+        placeholder='...by state...'
         />
 
         <button className="ui button" onClick={this.handleClickSubmit}>Submit</button>
