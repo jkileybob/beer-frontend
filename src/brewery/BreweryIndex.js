@@ -38,7 +38,7 @@ handleClickSubmit = () => {
     fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}`)
     .then(res => res.json())
     .then(breweries => {
-      console.log(breweries);
+      // console.log(breweries);
       this.setState({
         breweries: breweries
       })
@@ -48,7 +48,7 @@ handleClickSubmit = () => {
     fetch(`https://api.openbrewerydb.org/breweries?by_state=${inputState}`)
     .then(res => res.json())
     .then(breweries => {
-      console.log(breweries);
+      // console.log(breweries);
       this.setState({
         breweries: breweries
       })
@@ -59,7 +59,7 @@ handleClickSubmit = () => {
     fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}&by_state=${inputState}`)
     .then(res => res.json())
     .then(breweries => {
-      console.log(breweries);
+      // console.log(breweries);
       this.setState({
         breweries: breweries
       })
@@ -69,7 +69,7 @@ handleClickSubmit = () => {
     fetch(`https://api.openbrewerydb.org/breweries?by_city=${inputCity}`)
     .then(res => res.json())
     .then(breweries => {
-      console.log(breweries);
+      // console.log(breweries);
       this.setState({
         breweries: breweries
       })
@@ -79,12 +79,16 @@ handleClickSubmit = () => {
   }
 }
 
-onBreweryClick = (e, props) => {
-  console.log(e.target)
-  // console.log(props.brew)
-  // this.setState({
-  //   currentBrewery: props.brewery
-  // })
+onBreweryClick = (e) => {
+  // console.log(e.currentTarget.id)
+  this.state.breweries.filter(brew=>{
+    let brewId = e.currentTarget.id;
+    return brew.id.toString() === brewId ?
+      this.setState({
+        currentBrewery: brew
+      })
+    : null
+  })
 }
 
   render(){
@@ -125,8 +129,9 @@ onBreweryClick = (e, props) => {
 
           <List animated verticalAlign='middle'>
             {this.state.breweries.map((brew) =>{
-              return <React.Fragment>
+              return <React.Fragment key={`brewery-list-item-${brew.id}`}>
                 <List.Item
+                  id={`${brew.id}`}
                   key={`brewery-list-item-${brew.id}`}
                   onClick={this.onBreweryClick}
                   > {brew.name}</List.Item>

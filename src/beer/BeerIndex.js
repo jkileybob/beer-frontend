@@ -28,7 +28,6 @@ class BeerIndex extends React.Component{
   }
 
   onClickReturn = (e) => {
-    // console.log("attempting")
     this.setState({
       currentBeer: null
     })
