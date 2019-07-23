@@ -1,5 +1,5 @@
 import React from 'react';
-import { Map, GoogleApiWrapper } from 'google-maps-react';
+import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 class BreweryMap extends React.Component{
 
@@ -13,7 +13,7 @@ class BreweryMap extends React.Component{
   componentDidMount(){
     let latitude = this.props.brewery.latitude
     let longitude = this.props.brewery.longitude
-    
+
     this.setState({
       center: {
         lat: parseFloat(latitude),
@@ -26,11 +26,16 @@ class BreweryMap extends React.Component{
     // console.log(this.props);
     return(
       <React.Fragment>
-          <Map
-            google={this.props.google}
-            zoom={18}
-            center={this.state.center}
-          />
+        <Map
+          google={this.props.google}
+          zoom={18}
+          center={this.state.center}
+        />
+        <Marker
+          position={this.state.center}
+          name={this.props.brewery.name}
+
+        />
       </React.Fragment>
     )
   }
@@ -40,3 +45,6 @@ export default GoogleApiWrapper(
   (props)=>({
     apiKey: (process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
 }))(BreweryMap)
+
+
+// for Marker: icon='http://maps.google.com/mapfiles/kml/paddle/grn-blank.png'
