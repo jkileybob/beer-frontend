@@ -143,7 +143,11 @@ onClickClose = (e) => {
                   id={`${brew.id}`}
                   key={`brewery-list-item-${brew.id}`}
                   onClick={this.onBreweryClick}
-                  > {brew.name}</List.Item>
+                  >
+                    <List.Header>
+                      {brew.name}
+                    </List.Header>
+                  </List.Item>
               </React.Fragment>
             })}
 

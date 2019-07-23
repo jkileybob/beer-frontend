@@ -6,20 +6,31 @@ class BreweryMap extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      center: {
-        lat: 38.914530,
-        lng: -77.045600
-      }
+      center: {}
     };
   }
 
+  componentDidMount(){
+    let latitude = this.props.brewery.latitude
+    let longitude = this.props.brewery.longitude
+    
+    this.setState({
+      center: {
+        lat: parseFloat(latitude),
+        lng: parseFloat(longitude)
+      }
+    })
+  }
+
   render(){
+    // console.log(this.props);
     return(
       <React.Fragment>
-        <Map
-          google={this.props.google}
-          zoom={18}
-        />
+          <Map
+            google={this.props.google}
+            zoom={18}
+            center={this.state.center}
+          />
       </React.Fragment>
     )
   }

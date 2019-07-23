@@ -2,49 +2,50 @@ import React from 'react'
 import { Button, Header, Container, Modal } from "semantic-ui-react";
 import BreweryMap from './BreweryMap'
 
-const BreweryProfile = (props) => {
-  // console.log(props)
+class BreweryProfile extends React.Component{
 
-  return (
-    <React.Fragment>
-      { props.open ?
-        <Modal
-          open={props.open}
-          size='fullscreen'
-        >
-          <Modal.Content>
-            <Header size='huge'>{props.brewery.name}</Header>
-            <Modal.Description>
-              <Header size='tiny'> Brewery type: {props.brewery.brewery_type}</Header>
-              <Header size='tiny'>telephone: {props.brewery.phone}</Header>
-              <Header size='tiny'>
-                website: <a href={`${props.brewery.website_url}`}>{props.brewery.website_url}</a>
-              </Header>
-              <Container style={{width: '10%', height: '40px'}}>
-                <BreweryMap />
-              </Container>
-              <p>
-                {props.brewery.street} <br/>
-                {props.brewery.city}, {props.brewery.state} <br/>
-                {props.brewery.postal_code}
-              </p>
-            </Modal.Description>
-            <Button
-              textAlign='center'
-              onClick={props.onClickClose}
-              color='teal'
-              size='small' >
-              close
-            </Button>
-          </Modal.Content>
-        </Modal>
-     : null }
+    render(){
+      return (
+      <React.Fragment>
+        { this.props.open ?
+          <Modal
+            open={this.props.open}
+            size='fullscreen'
+          >
+            <Container style={{width:'10%', height:'10%'}}>
+              <BreweryMap
+                brewery={this.props.brewery}
+              />
+            </Container>
+            <Modal.Content>
+              <Header size='huge'>{this.props.brewery.name}</Header>
+                <Header size='tiny'>
+                  brewery type: {this.props.brewery.brewery_type} <br/>
+                  telephone: {this.props.brewery.phone} <br/>
+                  website: <a href={`${this.props.brewery.website_url}`}>{this.props.brewery.website_url}</a>
+                </Header>
+              </Modal.Content>
+              <Modal.Content>
+                <Modal.Description >
+                  {this.props.brewery.street} <br/>
+                  {this.props.brewery.city}, {this.props.brewery.state} <br/>
+                  {this.props.brewery.postal_code}
+                </Modal.Description>
+              </Modal.Content>
+              <Modal.Content>
+                <Button
+                  onClick={this.props.onClickClose}
+                  color='teal'
+                  size='small' >
+                  close
+                </Button>
+            </Modal.Content>
+          </Modal>
+       : null }
 
-    </React.Fragment>
-  )
+      </React.Fragment>
+    )
+  }
 }
 
 export default BreweryProfile
-
-
-// <Modal.Content image scrolling>
