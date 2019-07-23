@@ -27,12 +27,6 @@ class BeerIndex extends React.Component{
     })
   }
 
-  // backToBeers = () => {
-  //   this.setState({
-  //     currentBeer: null
-  //   })
-  // }
-
   onClickReturn = (e) => {
     // console.log("attempting")
     this.setState({

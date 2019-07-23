@@ -1,26 +1,32 @@
 import React from 'react';
-import { Input, List } from 'semantic-ui-react';
+import { Input, List, Button, Pagination } from 'semantic-ui-react';
 
 class BreweryIndex extends React.Component{
   state = {
     breweries: [],
     currentBrewery: null,
     searchTermName: "",
+    searchTermCity: "",
     searchTermState: ""
   };
 
 
 handleNameSearch = (e) => {
   let inputName = e.target.value
-  // console.log(input)
   this.setState({
     searchTermName: inputName
   })
 }
 
+handleCitySearch = (e) => {
+  let inputCity = e.target.value
+  this.setState({
+    searchTermCity: inputCity
+  })
+}
+
 handleStateSearch = (e) => {
   let inputState = e.target.value
-  // console.log(input)
   this.setState({
     searchTermState: inputState
   })
@@ -47,7 +53,7 @@ handleClickSubmit = () => {
         breweries: breweries
       })
     })
-  } else {
+  } else if (this.state.searchTermName && this.state.searchTermState) {
     let inputName = this.state.searchTermName
     let inputState = this.state.searchTermState
     fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}&by_state=${inputState}`)
@@ -58,13 +64,34 @@ handleClickSubmit = () => {
         breweries: breweries
       })
     })
+  } else if (!this.state.searchTermName && !this.state.searchTermState && this.state.searchTermCity){
+    let inputCity = this.state.searchTermCity
+    fetch(`https://api.openbrewerydb.org/breweries?by_city=${inputCity}`)
+    .then(res => res.json())
+    .then(breweries => {
+      console.log(breweries);
+      this.setState({
+        breweries: breweries
+      })
+    })
+  } else {
+    alert("Please Enter Something. Anything. Preferrably not nonsense.")
   }
+}
+
+onBreweryClick = (e, props) => {
+  console.log(e.target)
+  // console.log(props.brew)
+  // this.setState({
+  //   currentBrewery: props.brewery
+  // })
 }
 
   render(){
     return(
       <React.Fragment>
-      <h1>Search the Brewery Database... </h1>
+      <h1>Search the Brewery Database</h1>
+      <h2>...by name and/or state...</h2>
         <Input
         fluid
         size='big'
@@ -72,7 +99,6 @@ handleClickSubmit = () => {
         onChange={this.handleNameSearch}
         placeholder='...by name...'
         />
-
         <Input
         fluid
         size='big'
@@ -80,19 +106,52 @@ handleClickSubmit = () => {
         onChange={this.handleStateSearch}
         placeholder='...by state...'
         />
+      <h2>...or search by city...</h2>
+        <Input
+        fluid
+        size='big'
+        icon='search'
+        onChange={this.handleCitySearch}
+        placeholder='...by city...'
+        />
 
-        <button className="ui button" onClick={this.handleClickSubmit}>Submit</button>
+        <Button className="ui button"
+        compact
+        color='teal'
+        size='large'
+        onClick={this.handleClickSubmit}>Submit</Button>
 
         {this.state.breweries ?
+
           <List animated verticalAlign='middle'>
             {this.state.breweries.map((brew) =>{
-              return <List.Item key={`brewery-list-item-${brew.id}`}> {brew.name}</List.Item>
+              return <React.Fragment>
+                <List.Item
+                  key={`brewery-list-item-${brew.id}`}
+                  onClick={this.onBreweryClick}
+                  > {brew.name}</List.Item>
+              </React.Fragment>
             })}
+
           </List> : null
         }
+
+        <Pagination
+          boundaryRange={0}
+          defaultActivePage={1}
+          ellipsisItem={null}
+          firstItem={null}
+          lastItem={null}
+          siblingRange={1}
+          totalPages={5}
+        />
 
       </React.Fragment>
   )}
 }
 
 export default BreweryIndex
+
+
+// eventually add functionailty to pagination...
+// https://api.openbrewerydb.org/breweries?by_name=cooper&page=1&per_page=5
