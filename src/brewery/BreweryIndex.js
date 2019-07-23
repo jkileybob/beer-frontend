@@ -1,6 +1,6 @@
 import React from 'react';
-import { Input, List, Button, Pagination } from 'semantic-ui-react';
-
+import { Modal, Input, List, Button, Pagination } from 'semantic-ui-react';
+import BreweryProfile from "./BreweryProfile"
 class BreweryIndex extends React.Component{
   state = {
     breweries: [],
@@ -94,6 +94,7 @@ onBreweryClick = (e) => {
   render(){
     return(
       <React.Fragment>
+
       <h1>Search the Brewery Database</h1>
       <h2>...by name and/or state...</h2>
         <Input
@@ -139,6 +140,17 @@ onBreweryClick = (e) => {
             })}
 
           </List> : null
+        }
+
+        {this.state.currentBrewery ?
+          <React.Fragment>
+          <BreweryProfile
+            brewery={this.state.currentBrewery}
+           />
+           <Modal trigger={<Button>Scrolling Content Modal</Button>} />
+           </React.Fragment>
+
+        : null
         }
 
         <Pagination
