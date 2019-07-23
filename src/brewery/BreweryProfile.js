@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Header, Image, Modal } from "semantic-ui-react";
+import { Button, Header, Container, Modal } from "semantic-ui-react";
+import BreweryMap from './BreweryMap'
 
 const BreweryProfile = (props) => {
   // console.log(props)
@@ -9,7 +10,7 @@ const BreweryProfile = (props) => {
       { props.open ?
         <Modal
           open={props.open}
-          size='large'
+          size='fullscreen'
         >
           <Modal.Content>
             <Header size='huge'>{props.brewery.name}</Header>
@@ -19,7 +20,9 @@ const BreweryProfile = (props) => {
               <Header size='tiny'>
                 website: <a href={`${props.brewery.website_url}`}>{props.brewery.website_url}</a>
               </Header>
-              <Image size='large' src='https://www.harvard.edu/sites/default/files/content/harvard-map-google.jpg' wrapped />
+              <Container style={{width: '10%', height: '40px'}}>
+                <BreweryMap />
+              </Container>
               <p>
                 {props.brewery.street} <br/>
                 {props.brewery.city}, {props.brewery.state} <br/>
