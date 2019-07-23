@@ -1,31 +1,47 @@
 import React from 'react'
-import { Button, Header, Icon, Image, Modal } from "semantic-ui-react";
+import { Button, Header, Image, Modal } from "semantic-ui-react";
 
 const BreweryProfile = (props) => {
-  console.log(props)
+  // console.log(props)
 
   return (
     <React.Fragment>
-    <h1>{props.brewery.name}</h1>
-
-    <Modal.Header>Profile Picture</Modal.Header>
-    <Modal.Content image scrolling>
-      <Image size='medium' src='https://www.harvard.edu/sites/default/files/content/harvard-map-google.jpg' wrapped />
-
-      <Modal.Description>
-        <Header>Modal Header</Header>
-        <p>This is an example of expanded content that will cause the modal's dimmer to scroll</p>
-
-      </Modal.Description>
-    </Modal.Content>
-    <Modal.Actions>
-      <Button primary>
-        Proceed <Icon name='chevron right' />
-      </Button>
-    </Modal.Actions>
+      { props.open ?
+        <Modal
+          open={props.open}
+          size='large'
+        >
+          <Modal.Content>
+            <Header size='huge'>{props.brewery.name}</Header>
+            <Modal.Description>
+              <Header size='tiny'> Brewery type: {props.brewery.brewery_type}</Header>
+              <Header size='tiny'>telephone: {props.brewery.phone}</Header>
+              <Header size='tiny'>
+                website: <a href={`${props.brewery.website_url}`}>{props.brewery.website_url}</a>
+              </Header>
+              <Image size='large' src='https://www.harvard.edu/sites/default/files/content/harvard-map-google.jpg' wrapped />
+              <p>
+                {props.brewery.street} <br/>
+                {props.brewery.city}, {props.brewery.state} <br/>
+                {props.brewery.postal_code}
+              </p>
+            </Modal.Description>
+            <Button
+              textAlign='center'
+              onClick={props.onClickClose}
+              color='teal'
+              size='small' >
+              close
+            </Button>
+          </Modal.Content>
+        </Modal>
+     : null }
 
     </React.Fragment>
   )
 }
 
 export default BreweryProfile
+
+
+// <Modal.Content image scrolling>

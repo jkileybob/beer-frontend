@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Input, List, Button, Pagination } from 'semantic-ui-react';
+import { Input, List, Button, Pagination } from 'semantic-ui-react';
 import BreweryProfile from "./BreweryProfile"
 class BreweryIndex extends React.Component{
   state = {
@@ -7,7 +7,8 @@ class BreweryIndex extends React.Component{
     currentBrewery: null,
     searchTermName: "",
     searchTermCity: "",
-    searchTermState: ""
+    searchTermState: "",
+    modalOpen: false
   };
 
 
@@ -85,9 +86,16 @@ onBreweryClick = (e) => {
     let brewId = e.currentTarget.id;
     return brew.id.toString() === brewId ?
       this.setState({
-        currentBrewery: brew
+        currentBrewery: brew,
+        modalOpen: true
       })
     : null
+  })
+}
+
+onClickClose = (e) => {
+  this.setState({
+    modalOpen: false
   })
 }
 
@@ -144,10 +152,11 @@ onBreweryClick = (e) => {
 
         {this.state.currentBrewery ?
           <React.Fragment>
-          <BreweryProfile
-            brewery={this.state.currentBrewery}
-           />
-           <Modal trigger={<Button>Scrolling Content Modal</Button>} />
+             <BreweryProfile
+               brewery={this.state.currentBrewery}
+               open={this.state.modalOpen}
+               onClickClose={this.onClickClose}
+             />
            </React.Fragment>
 
         : null
