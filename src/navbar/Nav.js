@@ -8,12 +8,23 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut }) => {
     <Menu pointing secondary>
       {logged_in ? (
         <Fragment>
+
           <Menu.Item
             as={NavLink}
             to="/profile"
-            name="Profile"
+            name="My Profile"
             active={pathname === "/profile"}
           />
+
+          <Menu.Item
+            as={NavLink}
+            to="/breweries"
+            name="Search Breweries"
+            active={pathname === "/breweries"}
+            />
+
+          <Menu.Item name="My Favorites"  />
+
           <Menu.Menu position="right">
             <Menu.Item to="/logout" name="Logout" onClick={logout} />
           </Menu.Menu>
