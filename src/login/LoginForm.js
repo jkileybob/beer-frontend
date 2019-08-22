@@ -44,7 +44,7 @@ class LoginForm extends React.Component {
               value={this.state.password}
             />
           </Form.Group>
-          <Button type="submit">Login</Button>
+          <Button type="submit" color='teal'>Login</Button>
         </Form>
       </Segment>
     );

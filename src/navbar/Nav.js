@@ -23,6 +23,13 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut }) => {
             active={pathname === "/breweries"}
             />
 
+          <Menu.Item
+            as={NavLink}
+            to="/beers"
+            name="Beers"
+            active={pathname === "/beers"}
+          />
+
           <Menu.Item name="My Favorites"  />
 
           <Menu.Menu position="right">

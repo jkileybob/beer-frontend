@@ -65,6 +65,7 @@ class App extends React.Component{
       currentUser: null
     })
     localStorage.clear();
+    this.props.history.push("/login");
   }
 
   createNewUser = (newUser) => {
