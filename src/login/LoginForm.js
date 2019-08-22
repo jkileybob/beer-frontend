@@ -3,7 +3,7 @@ import { withRouter } from "react-router";
 import { Button, Form, Segment, Message } from "semantic-ui-react";
 
 class LoginForm extends React.Component {
-  
+
   state = {
     username: "",
     password: ""

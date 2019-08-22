@@ -3,6 +3,7 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import Nav from '../navbar/Nav'
 import UserProfile from '../user/UserProfile'
 import LoginForm from '../login/LoginForm'
+import SignUp from '../signup/SignUp'
 import BeerIndex from '../beer/BeerIndex'
 import BreweryIndex from '../brewery/BreweryIndex'
 import './App.css';
@@ -66,6 +67,35 @@ class App extends React.Component{
     localStorage.clear();
   }
 
+  createNewUser = (newUser) => {
+    console.log(newUser)
+    // make a fetch post request to create new user on backend
+    fetch(`http://localhost:4000/api/v1/users`, {
+      method: "POST",
+        headers: {
+          "Content-Type":"application/json",
+          "Accept":"application/json"
+        },
+        body: JSON.stringify({
+          username:newUser.username,
+          password:newUser.password,
+          avatar:newUser.avatar,
+          bio:newUser.bio,
+          location:newUser.location
+        })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      // console.log(data)
+      localStorage.setItem("token", data.token);
+
+      // set state to new user
+      this.setState({
+        currentUser: data.user
+      })
+    })
+
+  }
 
   render(){
     return(
@@ -93,6 +123,12 @@ class App extends React.Component{
               <Redirect to='/profile' />
             : <LoginForm onLogIn={this.handleLoginSubmit} />
           }} />
+
+        <Route exact path='/signup' render={()=>{
+            return this.state.currentUser ?
+            <Redirect to='/profile' />
+            : <SignUp createNewUser={this.createNewUser} />
+          } } />
 
           <Route exact path='/beers' render={()=>{
             return <BeerIndex />
