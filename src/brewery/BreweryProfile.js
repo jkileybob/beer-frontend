@@ -39,6 +39,13 @@ class BreweryProfile extends React.Component{
                   size='small' >
                   close
                 </Button>
+                <Button
+                  color='teal'
+                  size='small'
+                  onClick={this.props.favs}
+                >
+                  Add to my Favorites
+                </Button>
             </Modal.Content>
           </Modal>
        : null }

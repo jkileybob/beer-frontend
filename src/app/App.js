@@ -6,13 +6,15 @@ import LoginForm from '../login/LoginForm'
 import SignUp from '../signup/SignUp'
 import BeerIndex from '../beer/BeerIndex'
 import BreweryIndex from '../brewery/BreweryIndex'
+import Favorites from '../favorites/Favorites'
 import './App.css';
 
 class App extends React.Component{
 
   state = {
     currentUser: null,
-    loading: true
+    loading: true,
+    userFavs: []
   }
 
   componentDidMount(){
@@ -65,10 +67,11 @@ class App extends React.Component{
       currentUser: null
     })
     localStorage.clear();
+    this.props.history.push("/login");
   }
 
   createNewUser = (newUser) => {
-    console.log(newUser)
+    // console.log(newUser)
     // make a fetch post request to create new user on backend
     fetch(`http://localhost:4000/api/v1/users`, {
       method: "POST",
@@ -95,6 +98,14 @@ class App extends React.Component{
       })
     })
 
+  }
+
+  setUserFavs = () =>{
+    console.log("attempting to add a favorite brewery")
+    
+    // this.setState({
+    //   userFavs: []
+    // })
   }
 
   render(){
@@ -130,12 +141,16 @@ class App extends React.Component{
             : <SignUp createNewUser={this.createNewUser} />
           } } />
 
-          <Route exact path='/beers' render={()=>{
-            return <BeerIndex />
+        <Route exact path='/breweries' render={()=>{
+            return <BreweryIndex favs={this.setUserFavs} />
           }} />
 
-        <Route exact path='/breweries' render={()=>{
-            return <BreweryIndex />
+        <Route exact path='/favorites' render={()=>{
+            return <Favorites />
+          }} />
+
+        <Route exact path='/beers' render={()=>{
+            return <BeerIndex />
           }} />
 
         </Switch>

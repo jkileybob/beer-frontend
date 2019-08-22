@@ -21,13 +21,30 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut }) => {
             to="/breweries"
             name="Search Breweries"
             active={pathname === "/breweries"}
-            />
+          />
 
-          <Menu.Item name="My Favorites"  />
+          <Menu.Item
+            as={NavLink}
+            to="/favorites"
+            name="My Breweries"
+            active={pathname === "/favorites"}
+          />
+
+          <Menu.Item
+            as={NavLink}
+            to="/beers"
+            name="My Beers"
+            active={pathname === "/beers"}
+          />
 
           <Menu.Menu position="right">
-            <Menu.Item to="/logout" name="Logout" onClick={logout} />
+            <Menu.Item
+              to="/logout"
+              name="Logout"
+              onClick={logout}
+            />
           </Menu.Menu>
+
         </Fragment>
       ) : (
         <Fragment>
@@ -43,7 +60,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut }) => {
             name="Sign Up"
             active={pathname === "/signup"}
           />
-    </Fragment>
+        </Fragment>
       )}
     </Menu>
   );

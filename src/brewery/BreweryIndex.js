@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input, List, Button, Pagination } from 'semantic-ui-react';
 import BreweryProfile from "./BreweryProfile"
+
 class BreweryIndex extends React.Component{
   state = {
     breweries: [],

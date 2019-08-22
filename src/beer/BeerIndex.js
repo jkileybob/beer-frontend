@@ -39,7 +39,7 @@ class BeerIndex extends React.Component{
       {!this.state.currentBeer ?
 
         <List animated verticalAlign='middle'>
-          <List.Header as='h1'>Index of Beers</List.Header>
+          <List.Header as='h1'>Will eventually be a fav beers list</List.Header>
             {this.state.beers.map((beer) => {
               return  <List.Item key={`beer-list-item-${beer.name}`}>
               <Modal
