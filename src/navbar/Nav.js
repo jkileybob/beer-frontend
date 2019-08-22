@@ -30,12 +30,20 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut }) => {
           </Menu.Menu>
         </Fragment>
       ) : (
-        <Menu.Item
-          as={NavLink}
-          to="/login"
-          name="Login"
-          active={pathname === "/login"}
-        />
+        <Fragment>
+          <Menu.Item
+            as={NavLink}
+            to="/login"
+            name="Login"
+            active={pathname === "/login"}
+          />
+          <Menu.Item
+            as={NavLink}
+            to="/signup"
+            name="Sign Up"
+            active={pathname === "/signup"}
+          />
+    </Fragment>
       )}
     </Menu>
   );
