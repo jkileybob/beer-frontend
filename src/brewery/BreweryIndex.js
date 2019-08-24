@@ -13,92 +13,106 @@ class BreweryIndex extends React.Component{
   };
 
 
-handleNameSearch = (e) => {
-  let inputName = e.target.value
-  this.setState({
-    searchTermName: inputName
-  })
-}
-
-handleCitySearch = (e) => {
-  let inputCity = e.target.value
-  this.setState({
-    searchTermCity: inputCity
-  })
-}
-
-handleStateSearch = (e) => {
-  let inputState = e.target.value
-  this.setState({
-    searchTermState: inputState
-  })
-}
-
-handleClickSubmit = () => {
- if (this.state.searchTermName && !this.state.searchTermState){
-    let inputName = this.state.searchTermName
-    fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}`)
-    .then(res => res.json())
-    .then(breweries => {
-      // console.log(breweries);
-      this.setState({
-        breweries: breweries
-      })
+  handleNameSearch = (e) => {
+    let inputName = e.target.value
+    this.setState({
+      searchTermName: inputName
     })
-  } else if (!this.state.searchTermName && this.state.searchTermState) {
-    let inputState = this.state.searchTermState
-    fetch(`https://api.openbrewerydb.org/breweries?by_state=${inputState}`)
-    .then(res => res.json())
-    .then(breweries => {
-      // console.log(breweries);
-      this.setState({
-        breweries: breweries
-      })
-    })
-  } else if (this.state.searchTermName && this.state.searchTermState) {
-    let inputName = this.state.searchTermName
-    let inputState = this.state.searchTermState
-    fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}&by_state=${inputState}`)
-    .then(res => res.json())
-    .then(breweries => {
-      // console.log(breweries);
-      this.setState({
-        breweries: breweries
-      })
-    })
-  } else if (!this.state.searchTermName && !this.state.searchTermState && this.state.searchTermCity){
-    let inputCity = this.state.searchTermCity
-    fetch(`https://api.openbrewerydb.org/breweries?by_city=${inputCity}`)
-    .then(res => res.json())
-    .then(breweries => {
-      // console.log(breweries);
-      this.setState({
-        breweries: breweries
-      })
-    })
-  } else {
-    alert("Please Enter Something. Anything. Preferrably not nonsense.")
   }
-}
 
-onBreweryClick = (e) => {
-  // console.log(e.currentTarget.id)
-  this.state.breweries.filter(brew=>{
-    let brewId = e.currentTarget.id;
-    return brew.id.toString() === brewId ?
-      this.setState({
-        currentBrewery: brew,
-        modalOpen: true
+  handleCitySearch = (e) => {
+    let inputCity = e.target.value
+    this.setState({
+      searchTermCity: inputCity
+    })
+  }
+
+  handleStateSearch = (e) => {
+    let inputState = e.target.value
+    this.setState({
+      searchTermState: inputState
+    })
+  }
+
+  handleClickSubmit = () => {
+   if (this.state.searchTermName && !this.state.searchTermState){
+      let inputName = this.state.searchTermName
+      fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}`)
+      .then(res => res.json())
+      .then(breweries => {
+        // console.log(breweries);
+        this.setState({
+          breweries: breweries
+        })
       })
-    : null
-  })
-}
+    } else if (!this.state.searchTermName && this.state.searchTermState) {
+      let inputState = this.state.searchTermState
+      fetch(`https://api.openbrewerydb.org/breweries?by_state=${inputState}`)
+      .then(res => res.json())
+      .then(breweries => {
+        // console.log(breweries);
+        this.setState({
+          breweries: breweries
+        })
+      })
+    } else if (this.state.searchTermName && this.state.searchTermState) {
+      let inputName = this.state.searchTermName
+      let inputState = this.state.searchTermState
+      fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}&by_state=${inputState}`)
+      .then(res => res.json())
+      .then(breweries => {
+        // console.log(breweries);
+        this.setState({
+          breweries: breweries
+        })
+      })
+    } else if (!this.state.searchTermName && !this.state.searchTermState && this.state.searchTermCity){
+      let inputCity = this.state.searchTermCity
+      fetch(`https://api.openbrewerydb.org/breweries?by_city=${inputCity}`)
+      .then(res => res.json())
+      .then(breweries => {
+        // console.log(breweries);
+        this.setState({
+          breweries: breweries
+        })
+      })
+    } else {
+      alert("Please Enter Something. Anything. Preferrably not nonsense.")
+    }
+  }
 
-onClickClose = (e) => {
-  this.setState({
-    modalOpen: false
-  })
-}
+  onBreweryClick = (e) => {
+    // console.log(e.currentTarget.id)
+    this.state.breweries.filter(brew=>{
+      let brewId = e.currentTarget.id;
+      return brew.id.toString() === brewId ?
+        this.setState({
+          currentBrewery: brew,
+          modalOpen: true
+        })
+      : null
+    })
+  }
+
+  onClickClose = (e) => {
+    this.setState({
+      modalOpen: false
+    })
+  }
+
+  handleFavs = (e) => {
+    // console.log(typeof parseInt(e.currentTarget.id))
+    console.log(this.state.breweries.find(brewery =>{
+        let brewObj = brewery.id === parseInt(e.currentTarget.id)
+        return brewObj
+    }))
+
+    // this.state.breweries.find(brewery => {
+    //
+    //   let breweryObj = brewery.id == e.currentTarget.id
+    //   return console.log(breweryObj)
+    // })
+  }
 
   render(){
     return(
@@ -159,6 +173,7 @@ onClickClose = (e) => {
           <React.Fragment>
              <BreweryProfile
                brewery={this.state.currentBrewery}
+               favs={this.handleFavs}
                open={this.state.modalOpen}
                onClickClose={this.onClickClose}
              />

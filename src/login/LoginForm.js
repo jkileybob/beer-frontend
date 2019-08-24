@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
-import { Button, Form, Segment, Message } from "semantic-ui-react";
+import { Button, Form, Segment, Message, Image, Header } from "semantic-ui-react";
 
 class LoginForm extends React.Component {
 
@@ -27,7 +27,12 @@ class LoginForm extends React.Component {
             error
             header={this.props.failedLogin ? this.props.error : null}
           />
+          <Header as='h2' color='teal' textAlign='center'>
+            <Image src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBrQMPMFvLBeZHaTp8BbzFQ9TPHPOkNV5G-lzQcOeedYoQsqNs' />
+            Login
+          </Header>
           <Form.Group widths="equal">
+
             <Form.Input
               label="username"
               placeholder="username"
@@ -44,7 +49,7 @@ class LoginForm extends React.Component {
               value={this.state.password}
             />
           </Form.Group>
-          <Button type="submit">Login</Button>
+          <Button type="submit" color='teal'>Login</Button>
         </Form>
       </Segment>
     );

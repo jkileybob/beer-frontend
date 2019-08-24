@@ -40,6 +40,8 @@ class BreweryProfile extends React.Component{
                   close
                 </Button>
                 <Button
+                  id={this.props.brewery.id}
+                  brewery={this.props.brewery}
                   color='teal'
                   size='small'
                   onClick={this.props.favs}

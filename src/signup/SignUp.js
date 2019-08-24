@@ -21,7 +21,8 @@ class SignUp extends React.Component{
   <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
     <Grid.Column style={{ maxWidth: 450 }}>
       <Header as='h2' color='teal' textAlign='center'>
-        <Image src='/logo.png' /> Sign-up for your account
+        <Image src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBrQMPMFvLBeZHaTp8BbzFQ9TPHPOkNV5G-lzQcOeedYoQsqNs' />
+        Create an Account
       </Header>
       <Form size='large' onSubmit={()=>{this.props.createNewUser(this.state)}} >
         <Segment stacked>
@@ -65,7 +66,7 @@ class SignUp extends React.Component{
           />
 
           <Button color='teal' fluid size='large'>
-            Sign-Up
+            Sign Up
           </Button>
         </Segment>
       </Form>
