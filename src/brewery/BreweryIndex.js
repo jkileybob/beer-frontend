@@ -9,7 +9,8 @@ class BreweryIndex extends React.Component{
     searchTermName: "",
     searchTermCity: "",
     searchTermState: "",
-    modalOpen: false
+    modalOpen: false,
+    favs: []
   };
 
 
@@ -101,16 +102,20 @@ class BreweryIndex extends React.Component{
   }
 
   handleFavs = (e) => {
-    // console.log(typeof parseInt(e.currentTarget.id))
-    console.log(this.state.breweries.find(brewery =>{
-        let brewObj = brewery.id === parseInt(e.currentTarget.id)
-        return brewObj
-    }))
+    this.setState({
+      favs: [...this.state.favs, this.state.currentBrewery]
+    })
 
-    // this.state.breweries.find(brewery => {
-    //
-    //   let breweryObj = brewery.id == e.currentTarget.id
-    //   return console.log(breweryObj)
+    // console.log(this.state.breweries.find(brewery =>{
+    //     let brewObj = brewery.id === parseInt(e.currentTarget.id)
+    //     return brewObj
+    // }))
+
+    // this.state.breweries.find(brewery =>{
+    //     let brewObj = brewery.id === parseInt(e.currentTarget.id)
+    //     return this.setState({
+    //       favs: [...this.state.favs, brewObj]
+    //     })
     // })
   }
 
