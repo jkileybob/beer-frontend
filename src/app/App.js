@@ -229,8 +229,10 @@ class App extends React.Component{
       // })
     }
 
+
+
   onFavBreweryClick = (e) => {
-    this.state.breweries.filter(brew=>{
+    this.state.favs.filter(brew=>{
       let brewId = e.currentTarget.id;
       return brew.id.toString() === brewId ?
         this.setState({
