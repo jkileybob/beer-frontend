@@ -44,10 +44,11 @@ class BreweryProfile extends React.Component{
                   brewery={this.props.brewery}
                   color='teal'
                   size='small'
-                  onClick={this.props.favs}
+                  onClick={this.props.handleFavs}
                 >
                   Add to my Favorites
                 </Button>
+
             </Modal.Content>
           </Modal>
        : null }
@@ -58,3 +59,12 @@ class BreweryProfile extends React.Component{
 }
 
 export default BreweryProfile
+
+
+// if brewery is included in favs list
+// create a button element to remove from favs
+
+// { this.props.favs.includes(fav =>{fav === this.props.currentBrewery) ?
+//   <Button>Delete from Favs</Button>
+//  : null
+// }

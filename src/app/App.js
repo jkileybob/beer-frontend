@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import Nav from '../navbar/Nav'
 import UserProfile from '../user/UserProfile'
@@ -187,7 +187,17 @@ class App extends React.Component{
       }
     }
 
-    //brewery profile modal logic:
+  resetSearch = () => {
+    this.setState({
+      breweries: [],
+      currentBrewery: null,
+      searchTermName: "",
+      searchTermCity: "",
+      searchTermState: ""
+    })
+  }
+
+//brewery profile modal logic:
     onBreweryClick = (e) => {
       this.state.breweries.filter(brew=>{
         let brewId = e.currentTarget.id;
@@ -207,12 +217,86 @@ class App extends React.Component{
     }
 
 
-    //Combined user and brewery logic for favorites:
+    //FAVORITES COMPONENT LOGIC:
+
+    onFavListBreweryClick = (e) => {
+      this.state.favs.filter(brew=>{
+        let brewId = e.currentTarget.id;
+        return brew.id.toString() === brewId ?
+        this.setState({
+          currentBrewery: brew,
+          modalOpen: true
+        })
+        : null
+      })
+    }
+
+    getFavs = () => {
+      // right now this is mapping through ALL favs
+      // will need to adjust endpoint for specific user_id of currentUser
+
+      fetch(`http://localhost:4000/api/v1/favorites`)
+      .then(res => res.json())
+      .then(favData => {
+
+        console.log(favData);
+
+        // from the backend, favData has id, user_id, and brewery_id
+        // could do something conditional to test equality
+        // between user_id of favData and user_id of currentUser in state
+
+        // if (favData.user_id === ){
+        //
+        // }
+
+      })
+    //map through favData for each brewery_id,
+    // then create a list of each brewery_id to update favs state
+    // which should automatically update my breweries page list
+    }
+
+    saveFavs = () => {
+      // fetch(`http://localhost:4000/api/v1/favorites`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type":"application/json",
+      //     "Accept":"application/json"
+      //   },
+      //   body: JSON.stringify({
+      //     user_id:user_id,
+      //     brewery_id:brewery_id
+      //   })
+      //   }
+      // )
+    }
+
+
     handleFavs = (e) => {
+      // if currentBrewery is not already in favs,
+      // make a fetch POST to add to db
       if (!this.state.favs.includes(this.state.currentBrewery)){
+      //this currently only fetches to ALL favs
+      // will need user_id adjustment on backend
+
+        // fetch(`http://localhost:4000/api/v1/favorites/create`, {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type":"application/json",
+        //     "Accept":"application/json"
+        //   },
+        //   body: JSON.stringify({
+        //     user_id: 4,
+        //     brewery_id: 661
+        //   })
+        //   }
+        // )
+        // .then(res => res.json())
+        // .then(data => console.log(data))
+
+      // then add to favs state
         this.setState({
           favs: [...this.state.favs, this.state.currentBrewery]
-        })
+        });
       } else {
         alert(`${this.state.currentBrewery.name} is already saved to your favorites.`)
       }
@@ -230,26 +314,14 @@ class App extends React.Component{
     }
 
 
-
-  onFavBreweryClick = (e) => {
-    this.state.favs.filter(brew=>{
-      let brewId = e.currentTarget.id;
-      return brew.id.toString() === brewId ?
-        this.setState({
-          currentBrewery: brew,
-          modalOpen: true
-        })
-      : null
-    })
-  }
-
   render(){
     return(
-      <Fragment>
+      <>
 
         <Nav
           logged_in={this.state.currentUser}
           onLogOut={this.handleLogOut}
+          resetSearch={this.resetSearch}
         />
 
       { !this.state.loading ?
@@ -280,7 +352,6 @@ class App extends React.Component{
             return <BreweryIndex
               breweries={this.state.breweries}
               currentBrewery={this.state.currentBrewery}
-              favs={this.setUserFavs}
               handleNameSearch={this.handleNameSearch}
               handleStateSearch={this.handleStateSearch}
               handleCitySearch={this.handleCitySearch}
@@ -297,7 +368,7 @@ class App extends React.Component{
               breweries={this.state.breweries}
               currentBrewery={this.state.currentBrewery}
               favs={this.state.favs}
-              onFavBreweryClick={this.onFavBreweryClick}
+              onFavListBreweryClick={this.onFavListBreweryClick}
               handleFavs={this.handleFavs}
               modalOpen={this.state.modalOpen}
               onClickClose={this.onClickClose}
@@ -312,7 +383,7 @@ class App extends React.Component{
 
       : null }
 
-      </Fragment>
+      </>
     )
   }
 }

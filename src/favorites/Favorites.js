@@ -13,7 +13,7 @@ class Favorites extends React.Component{
               <List.Item
                 id={`${brewery.id}`}
                 key={`fav-brewery-list-item-${brewery.id}`}
-                onClick={this.props.onFavBreweryClick}
+                onClick={this.props.onFavListBreweryClick}
                 >
                   <List.Header>
                     {brewery.name}
@@ -27,7 +27,8 @@ class Favorites extends React.Component{
           <>
              <BreweryProfile
                brewery={this.props.currentBrewery}
-               favs={this.props.handleFavs}
+               handleFavs={this.props.handleFavs}
+               favs={this.props.favs}
                open={this.props.modalOpen}
                onClickClose={this.props.onClickClose}
              />
