@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Input, List, Button, Pagination } from 'semantic-ui-react';
+import React from 'react';
+import { Input, List, Button } from 'semantic-ui-react';
 import BreweryProfile from "./BreweryProfile"
 
 class BreweryIndex extends React.Component{

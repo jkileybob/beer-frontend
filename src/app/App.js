@@ -115,13 +115,6 @@ class App extends React.Component{
 
   }
 
-  setUserFavs = () =>{
-    console.log("attempting to add a favorite brewery")
-
-    // this.setState({
-    //   userFavs: []
-    // })
-  }
 
   // BREWERY COMPONENT LOGIC:
     // search form logic:
@@ -213,6 +206,8 @@ class App extends React.Component{
       })
     }
 
+
+    //Combined user and brewery logic for favorites:
     handleFavs = (e) => {
       if (!this.state.favs.includes(this.state.currentBrewery)){
         this.setState({
@@ -234,6 +229,17 @@ class App extends React.Component{
       // })
     }
 
+  onFavBreweryClick = (e) => {
+    this.state.breweries.filter(brew=>{
+      let brewId = e.currentTarget.id;
+      return brew.id.toString() === brewId ?
+        this.setState({
+          currentBrewery: brew,
+          modalOpen: true
+        })
+      : null
+    })
+  }
 
   render(){
     return(
@@ -285,7 +291,15 @@ class App extends React.Component{
           }} />
 
         <Route exact path='/favorites' render={()=>{
-            return <Favorites />
+            return <Favorites
+              breweries={this.state.breweries}
+              currentBrewery={this.state.currentBrewery}
+              favs={this.state.favs}
+              onFavBreweryClick={this.onFavBreweryClick}
+              handleFavs={this.handleFavs}
+              modalOpen={this.state.modalOpen}
+              onClickClose={this.onClickClose}
+              />
           }} />
 
         <Route exact path='/beers' render={()=>{

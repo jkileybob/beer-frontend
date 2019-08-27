@@ -1,25 +1,41 @@
-import React from 'react'
+import React from 'react';
+import { List } from 'semantic-ui-react';
+import BreweryProfile from "../brewery/BreweryProfile"
 
 class Favorites extends React.Component{
   render(){
     return(
-      // <React.Fragment>
+      <>
         <div>My Favorite Breweries...eventually</div>
-        // <List animated verticalAlign='middle'>
-        //   {this.props.favs.map(brewery =>{
-        //     return <React.Fragment key={`fav-brewery-list-item-${brewery.id}`}>
-        //       <List.Item
-        //         id={`${brewery.id}`}
-        //         key={`fav-brewery-list-item-${brewery.id}`}
-        //         >
-        //           <List.Header>
-        //             {brewery.name}
-        //           </List.Header>
-        //         </List.Item>
-        //     </React.Fragment>
-        //   })}
-        // </List>
-      // </React.Fragment>
+        <List animated verticalAlign='middle'>
+          {this.props.favs.map(brewery =>{
+            return <React.Fragment key={`fav-brewery-list-item-${brewery.id}`}>
+              <List.Item
+                id={`${brewery.id}`}
+                key={`fav-brewery-list-item-${brewery.id}`}
+                onClick={this.props.onFavBreweryClick}
+                >
+                  <List.Header>
+                    {brewery.name}
+                  </List.Header>
+                </List.Item>
+            </React.Fragment>
+          })}
+        </List>
+
+        {this.props.currentBrewery ?
+          <>
+             <BreweryProfile
+               brewery={this.props.currentBrewery}
+               favs={this.props.handleFavs}
+               open={this.props.modalOpen}
+               onClickClose={this.props.onClickClose}
+             />
+           </>
+        : null
+        }
+
+      </>
   )}
 }
 
