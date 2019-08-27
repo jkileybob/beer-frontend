@@ -3,7 +3,7 @@ import React from 'react'
 class Favorites extends React.Component{
   render(){
     return(
-      <React.Fragment>
+      // <React.Fragment>
         <div>My Favorite Breweries...eventually</div>
         // <List animated verticalAlign='middle'>
         //   {this.props.favs.map(brewery =>{
@@ -19,7 +19,7 @@ class Favorites extends React.Component{
         //     </React.Fragment>
         //   })}
         // </List>
-      </React.Fragment>
+      // </React.Fragment>
   )}
 }
 

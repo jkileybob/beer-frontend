@@ -11,12 +11,27 @@ import './App.css';
 
 class App extends React.Component{
 
+// STATE
   state = {
+    // USER STATES:
     currentUser: null,
     loading: true,
-    userFavs: []
+
+    // BREWERY STATES:
+    breweries: [],
+
+    currentBrewery: null,
+    modalOpen: false,
+
+    searchTermName: "",
+    searchTermCity: "",
+    searchTermState: "",
+
+    // user/brewery states:
+    favs: []
   }
 
+// USER COMPONENT LOGIC:
   componentDidMount(){
     let token = localStorage.getItem('token');
 
@@ -102,11 +117,123 @@ class App extends React.Component{
 
   setUserFavs = () =>{
     console.log("attempting to add a favorite brewery")
-    
+
     // this.setState({
     //   userFavs: []
     // })
   }
+
+  // BREWERY COMPONENT LOGIC:
+    // search form logic:
+
+    handleNameSearch = (e) => {
+      let inputName = e.target.value
+      this.setState({
+        searchTermName: inputName
+      })
+    }
+
+    handleCitySearch = (e) => {
+      let inputCity = e.target.value
+      this.setState({
+        searchTermCity: inputCity
+      })
+    }
+
+    handleStateSearch = (e) => {
+      let inputState = e.target.value
+      this.setState({
+        searchTermState: inputState
+      })
+    }
+
+    handleClickSubmit = () => {
+     if (this.state.searchTermName && !this.state.searchTermState){
+        let inputName = this.state.searchTermName
+        fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}`)
+        .then(res => res.json())
+        .then(breweries => {
+          // console.log(breweries);
+          this.setState({
+            breweries: breweries
+          })
+        })
+      } else if (!this.state.searchTermName && this.state.searchTermState) {
+        let inputState = this.state.searchTermState
+        fetch(`https://api.openbrewerydb.org/breweries?by_state=${inputState}`)
+        .then(res => res.json())
+        .then(breweries => {
+          // console.log(breweries);
+          this.setState({
+            breweries: breweries
+          })
+        })
+      } else if (this.state.searchTermName && this.state.searchTermState) {
+        let inputName = this.state.searchTermName
+        let inputState = this.state.searchTermState
+        fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}&by_state=${inputState}`)
+        .then(res => res.json())
+        .then(breweries => {
+          // console.log(breweries);
+          this.setState({
+            breweries: breweries
+          })
+        })
+      } else if (!this.state.searchTermName && !this.state.searchTermState && this.state.searchTermCity){
+        let inputCity = this.state.searchTermCity
+        fetch(`https://api.openbrewerydb.org/breweries?by_city=${inputCity}`)
+        .then(res => res.json())
+        .then(breweries => {
+          // console.log(breweries);
+          this.setState({
+            breweries: breweries
+          })
+        })
+      } else {
+        alert("Please Enter Something. Anything. Preferrably not nonsense.")
+      }
+    }
+
+    //brewery profile modal logic:
+    onBreweryClick = (e) => {
+      this.state.breweries.filter(brew=>{
+        let brewId = e.currentTarget.id;
+        return brew.id.toString() === brewId ?
+          this.setState({
+            currentBrewery: brew,
+            modalOpen: true
+          })
+        : null
+      })
+    }
+
+    onClickClose = (e) => {
+      this.setState({
+        modalOpen: false
+      })
+    }
+
+    handleFavs = (e) => {
+      if (!this.state.favs.includes(this.state.currentBrewery)){
+        this.setState({
+          favs: [...this.state.favs, this.state.currentBrewery]
+        })
+      } else {
+        alert(`${this.state.currentBrewery.name} is already saved to your favorites.`)
+      }
+      // console.log(this.state.breweries.find(brewery =>{
+      //     let brewObj = brewery.id === parseInt(e.currentTarget.id)
+      //     return brewObj
+      // }))
+
+      // this.state.breweries.find(brewery =>{
+      //     let brewObj = brewery.id === parseInt(e.currentTarget.id)
+      //     return this.setState({
+      //       favs: [...this.state.favs, brewObj]
+      //     })
+      // })
+    }
+
 
   render(){
     return(
@@ -142,7 +269,19 @@ class App extends React.Component{
           } } />
 
         <Route exact path='/breweries' render={()=>{
-            return <BreweryIndex favs={this.setUserFavs} />
+            return <BreweryIndex
+              breweries={this.state.breweries}
+              currentBrewery={this.state.currentBrewery}
+              favs={this.setUserFavs}
+              handleNameSearch={this.handleNameSearch}
+              handleStateSearch={this.handleStateSearch}
+              handleCitySearch={this.handleCitySearch}
+              handleClickSubmit={this.handleClickSubmit}
+              onBreweryClick={this.onBreweryClick}
+              handleFavs={this.handleFavs}
+              modalOpen={this.state.modalOpen}
+              onClickClose={this.onClickClose}
+              />
           }} />
 
         <Route exact path='/favorites' render={()=>{
