@@ -217,7 +217,7 @@ class App extends React.Component{
     }
 
 
-    //FAVORITES COMPONENT LOGIC:
+//FAVORITES COMPONENT LOGIC:
 
     onFavListBreweryClick = (e) => {
       this.state.favs.filter(brew=>{
@@ -232,6 +232,13 @@ class App extends React.Component{
     }
 
     getFavs = () => {
+
+      // need to adjust #index in favs_controller to authenticate user
+      // then user data can get specific favs list @user.favorites
+      // and response to json that specific list
+      // to be manioulated by front end
+
+
       // right now this is mapping through ALL favs
       // will need to adjust endpoint for specific user_id of currentUser
 
@@ -272,13 +279,46 @@ class App extends React.Component{
 
 
     handleFavs = (e) => {
+      // console.log(this.state.currentBrewery.id.toString())
+      // if there's no token in localStorage
+      // alert, "you must be logged-in to save favs"
+      // else get fetch to `/profile` with `Bearer ${token}` in Headers
+      // (or just create a new fav route that mimics `/profile` method)
+      // which calls the user_controller profile method in backend
+      // which decodes token, returns user data in payload
+      // console.log(this.state.currentBrewery.id)
+      let token = localStorage.getItem('token');
+
+      if(token){
+        let brewery_id = this.state.currentBrewery.id.toString();
+        fetch(`http://localhost:4000/api/v1/add-favorites`, {
+          method: "POST",
+          headers: {
+            "Content-Type":"application/json",
+            "Accept":"application/json",
+            "Authentication" : `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            brewery_id: brewery_id
+          })
+          }
+        )
+        .then(response => response.json())
+        .then(data =>{ console.log(data) })
+        } else {console.log("aw shucks")}
+
+
+      // console.log(e.currentTarget)
       // if currentBrewery is not already in favs,
       // make a fetch POST to add to db
-      if (!this.state.favs.includes(this.state.currentBrewery)){
-      //this currently only fetches to ALL favs
-      // will need user_id adjustment on backend
 
-        // fetch(`http://localhost:4000/api/v1/favorites/create`, {
+        // if (!this.state.favs.includes(this.state.currentBrewery)){
+        // let userId =
+        // console.log(this.state.currentUser)
+        // let breweryId =
+        // console.log(this.state.currentBrewery.id)
+
+        // fetch(`http://localhost:4000/api/v1/favorites`, {
         //   method: "POST",
         //   headers: {
         //     "Content-Type":"application/json",
@@ -286,20 +326,21 @@ class App extends React.Component{
         //   },
         //   body: JSON.stringify({
         //     user_id: 4,
-        //     brewery_id: 661
+        //     brewery_id: 1781
         //   })
         //   }
-        // )
-        // .then(res => res.json())
-        // .then(data => console.log(data))
+      //   )
+      //   .then(res => res.json())
+      //   .then(data => console.log(data);
+      //   // then add to favs state
+      //     this.setState({
+      //       favs: [...this.state.favs, this.state.currentBrewery]
+      //     })
+      //   )
+      // } else {
+      //   alert(`${this.state.currentBrewery.name} is already saved to your favorites.`)
+      // }
 
-      // then add to favs state
-        this.setState({
-          favs: [...this.state.favs, this.state.currentBrewery]
-        });
-      } else {
-        alert(`${this.state.currentBrewery.name} is already saved to your favorites.`)
-      }
       // console.log(this.state.breweries.find(brewery =>{
       //     let brewObj = brewery.id === parseInt(e.currentTarget.id)
       //     return brewObj
