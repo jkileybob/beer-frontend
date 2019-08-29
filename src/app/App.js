@@ -31,8 +31,10 @@ class App extends React.Component{
     favs: []
   }
 
-// USER COMPONENT LOGIC:
+
   componentDidMount(){
+
+    // USER COMPONENT LOGIC:
     let token = localStorage.getItem('token');
 
     if(token){
@@ -46,10 +48,14 @@ class App extends React.Component{
             currentUser: user,
             loading: false
           })
-      })
+      });
+
+    this.getFavs();
+
     } else {
       this.setState({ loading: false })
     }
+
   }
 
   handleLoginSubmit = (username, password) => {
@@ -79,7 +85,9 @@ class App extends React.Component{
 
   handleLogOut = () => {
     this.setState({
-      currentUser: null
+      breweries: [],
+      currentUser: null,
+      favs: []
     })
     localStorage.clear();
     this.props.history.push("/login");
@@ -219,6 +227,43 @@ class App extends React.Component{
 
 //FAVORITES COMPONENT LOGIC:
 
+    // need to adjust #index in favs_controller to authenticate user
+    // then user data can get specific favs list @user.favorites
+    // and response to json that specific list
+    // to be manioulated by front end
+
+    // right now this is mapping through ALL favs
+    // will need to adjust endpoint for specific user_id of currentUser
+    getFavs = () => {
+      let token = localStorage.getItem('token');
+      if (token){
+        fetch(`http://localhost:4000/api/v1/favorites`, {
+          method: "GET",
+          headers: {
+            "Content-Type" : "application/json",
+            "Accept" : "application/json",
+            "Authentication" : `Bearer ${token}`
+            }
+          }
+        )
+        .then(res => res.json())
+        .then(favData => {
+          console.log(favData);
+        })
+        // this.setState({
+          //   favs: favData
+          // })
+      }
+    }
+    // from the backend, favData has id, user_id, and brewery_id
+    // could do something conditional to test equality
+    // between user_id of favData and user_id of currentUser in state
+
+
+    //map through favData for each brewery_id,
+    // then create a list of each brewery_id to update favs state
+    // which should automatically update my breweries page list
+
     onFavListBreweryClick = (e) => {
       this.state.favs.filter(brew=>{
         let brewId = e.currentTarget.id;
@@ -231,36 +276,6 @@ class App extends React.Component{
       })
     }
 
-    getFavs = () => {
-
-      // need to adjust #index in favs_controller to authenticate user
-      // then user data can get specific favs list @user.favorites
-      // and response to json that specific list
-      // to be manioulated by front end
-
-
-      // right now this is mapping through ALL favs
-      // will need to adjust endpoint for specific user_id of currentUser
-
-      fetch(`http://localhost:4000/api/v1/favorites`)
-      .then(res => res.json())
-      .then(favData => {
-
-        console.log(favData);
-
-        // from the backend, favData has id, user_id, and brewery_id
-        // could do something conditional to test equality
-        // between user_id of favData and user_id of currentUser in state
-
-        // if (favData.user_id === ){
-        //
-        // }
-
-      })
-    //map through favData for each brewery_id,
-    // then create a list of each brewery_id to update favs state
-    // which should automatically update my breweries page list
-    }
 
     saveFavs = () => {
       // fetch(`http://localhost:4000/api/v1/favorites`, {
@@ -277,16 +292,41 @@ class App extends React.Component{
       // )
     }
 
+    logBrewery =()=>{
+      if (!this.state.currentUser === null){
+      let brewery = this.state.currentBrewery;
+        fetch(`http://localhost:4000/api/v1/breweries`,{
+          method: "POST",
+          headers: {
+            "Content-Type":"application/json",
+            "Accept":"application/json"
+          },
+          body: JSON.stringify({
+            id: brewery.id,
+            name: brewery.name,
+            brewery_type: brewery.brewery_type,
+            street: brewery.street,
+            city: brewery.city,
+            state: brewery.state,
+            postal_code: brewery.postal_code,
+            country: brewery.country,
+            longitude: brewery.longitude,
+            latitude: brewery.latitude,
+            phone: brewery.phone,
+            website_url: brewery.website_url
+          })
+        })
+        .then(response => console.log(response))
+      // .then(response =>{ console.log(response) })
 
-    handleFavs = (e) => {
-      // console.log(this.state.currentBrewery.id.toString())
-      // if there's no token in localStorage
-      // alert, "you must be logged-in to save favs"
-      // else get fetch to `/profile` with `Bearer ${token}` in Headers
-      // (or just create a new fav route that mimics `/profile` method)
-      // which calls the user_controller profile method in backend
-      // which decodes token, returns user data in payload
-      // console.log(this.state.currentBrewery.id)
+        // response returns an error with a 204 status of no Content
+        // unable to parse response to json()
+        // content is being saved in local API, however
+      }
+
+    }
+
+    logFavorites = () =>{
       let token = localStorage.getItem('token');
 
       if(token){
@@ -305,7 +345,70 @@ class App extends React.Component{
         )
         .then(response => response.json())
         .then(data =>{ console.log(data) })
-        } else {console.log("aw shucks")}
+
+        } else {
+          alert("You must be logged-in to add to your favorites.")
+        }
+    }
+
+    handleFavs = (e) => {
+      // console.log(this.state.currentBrewery.id.toString())
+
+      // else get fetch to `/profile` with `Bearer ${token}` in Headers
+      // (or just create a new fav route that mimics `/profile` method)
+      // which calls the user_controller profile method in backend
+      // which decodes token, returns user data in payload
+
+  // 1. create + save breweryObj to local api for use in favs list
+        // set route and create method in brewery controller
+        // call these methods from either backend favs_controller or frontend post
+      // add brewery to local api
+
+      let token = localStorage.getItem('token');
+
+      if (token){
+        if (!this.state.favs.includes(this.state.currentBrewery)){
+          this.logBrewery();
+          this.setState({
+                favs: [...this.state.favs, this.state.currentBrewery]
+              });
+          this.logFavorites();
+        } else {
+          alert("This brewery already exists in your favorites.")
+        }
+      } else { alert("You must be logged in to add to your favorites.") }
+
+
+  // 2. use brewery ids to fetch list of favs
+    // add favorite, using the recently added brewery
+
+
+
+
+        // fetch(`http://localhost:4000/api/v1/breweries`,{
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type":"application/json",
+        //     "Accept":"application/json"
+        //   },
+        //   body: JSON.stringify({
+        //     id: 1780,
+        //     name: "Right Proper Brewing Company",
+        //     brewery_type: "micro",
+        //     street: "920 Girard St NE",
+        //     city: "Washington",
+        //     state: "District of Columbia",
+        //     postal_code: "20017-3424",
+        //     country: "United States",
+        //     longitude: "-76.9930707764239",
+        //     latitude: "38.9267988",
+        //     phone: "2026072337",
+        //     website_url: "http://www.rightproperbrewing.com"
+        //   })
+        // })
+
+
+
 
 
       // console.log(e.currentTarget)
@@ -363,6 +466,7 @@ class App extends React.Component{
           logged_in={this.state.currentUser}
           onLogOut={this.handleLogOut}
           resetSearch={this.resetSearch}
+          getFavs={this.getFavs}
         />
 
       { !this.state.loading ?
