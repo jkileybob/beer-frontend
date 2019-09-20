@@ -235,40 +235,53 @@ class App extends React.Component{
       // right now this is mapping through ALL favs
       // will need to adjust endpoint for specific user_id of currentUser
 
-      fetch(`http://localhost:4000/api/v1/favorites`)
-      .then(res => res.json())
-      .then(favData => {
-
-        console.log(favData);
+      // let token = localStorage.getItem('token');
+      // fetch(`http://localhost:4000/api/v1/favorites`, {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type":"application/json",
+      //     "Accept":"application/json",
+      //     "Authentication" : `Bearer ${token}`
+      //   },
+      //   body: JSON.stringify({
+      //     user_id:user_id
+      //   })
+      // })
+      // .then(res => res.json())
+      // .then(favData => {
+      //   console.log(favData);
+      // })
 
         // from the backend, favData has id, user_id, and brewery_id
         // could do something conditional to test equality
         // between user_id of favData and user_id of currentUser in state
 
         // if (favData.user_id === ){
-        //
+        //   console.log("anything")
         // }
 
-      })
-    //map through favData for each brewery_id,
+    // map through favData for each brewery_id,
     // then create a list of each brewery_id to update favs state
     // which should automatically update my breweries page list
+
     }
 
-    saveFavs = () => {
-      // fetch(`http://localhost:4000/api/v1/favorites`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type":"application/json",
-      //     "Accept":"application/json"
-      //   },
-      //   body: JSON.stringify({
-      //     user_id:user_id,
-      //     brewery_id:brewery_id
-      //   })
-      //   }
-      // )
-    }
+    // saveFavs = () => {
+    //   let token = localStorage.getItem('token');
+    //   fetch(`http://localhost:4000/api/v1/add-favorites/`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type":"application/json",
+    //       "Accept":"application/json",
+    //       "Authentication" : `Bearer ${token}`
+    //     },
+    //     body: JSON.stringify({
+    //       user_id:user_id,
+    //       brewery_id:brewery_id
+    //     })
+    //     }
+    //   )
+    // }
 
 
     handleFavs = (e) => {
@@ -278,20 +291,19 @@ class App extends React.Component{
       //this currently only fetches to ALL favs
       // will need user_id adjustment on backend
 
-        // fetch(`http://localhost:4000/api/v1/favorites/create`, {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type":"application/json",
-        //     "Accept":"application/json"
-        //   },
-        //   body: JSON.stringify({
-        //     user_id: 4,
-        //     brewery_id: 661
-        //   })
-        //   }
-        // )
-        // .then(res => res.json())
-        // .then(data => console.log(data))
+      let token = localStorage.getItem('token');
+      fetch(`http://localhost:4000/api/v1/add-favorites/`, {
+        method: "POST",
+        headers: {
+          "Content-Type":"application/json",
+          "Accept":"application/json",
+          "Authentication" : `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          brewery_id: this.state.currentBrewery.id
+        })
+        }
+      )
 
       // then add to favs state
         this.setState({
