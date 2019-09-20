@@ -45,7 +45,8 @@ class App extends React.Component{
           this.setState({
             currentUser: user,
             loading: false
-          })
+          });
+          this.getFavs();
       })
     } else {
       this.setState({ loading: false })
@@ -232,25 +233,24 @@ class App extends React.Component{
     }
 
     getFavs = () => {
-      // right now this is mapping through ALL favs
-      // will need to adjust endpoint for specific user_id of currentUser
 
-      // let token = localStorage.getItem('token');
-      // fetch(`http://localhost:4000/api/v1/favorites`, {
-      //   method: "GET",
-      //   headers: {
-      //     "Content-Type":"application/json",
-      //     "Accept":"application/json",
-      //     "Authentication" : `Bearer ${token}`
-      //   },
-      //   body: JSON.stringify({
-      //     user_id:user_id
-      //   })
-      // })
-      // .then(res => res.json())
-      // .then(favData => {
-      //   console.log(favData);
-      // })
+      let token = localStorage.getItem('token');
+      fetch(`http://localhost:4000/api/v1/favorites`, {
+        method: "GET",
+        headers: {
+          "Content-Type":"application/json",
+          "Accept":"application/json",
+          "Authentication" : `Bearer ${token}`
+        }
+      })
+      .then(res => res.json())
+      .then(favData => {
+        console.log(favData);
+        // this.setState
+        // data includes fav_id and brewery_id,
+        // still needs to be shown in my breweries on click/load of page
+        // could maybe be set as favState, whatever.
+      })
 
         // from the backend, favData has id, user_id, and brewery_id
         // could do something conditional to test equality
