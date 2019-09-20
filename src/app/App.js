@@ -266,30 +266,41 @@ class App extends React.Component{
 
     }
 
-    // saveFavs = () => {
-    //   let token = localStorage.getItem('token');
-    //   fetch(`http://localhost:4000/api/v1/add-favorites/`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type":"application/json",
-    //       "Accept":"application/json",
-    //       "Authentication" : `Bearer ${token}`
-    //     },
-    //     body: JSON.stringify({
-    //       user_id:user_id,
-    //       brewery_id:brewery_id
-    //     })
-    //     }
-    //   )
-    // }
 
+    addBrewerytoLocalDB = () => {
+      // create a POST request to add currentBrewery to local DB
+      let brewery = this.state.currentBrewery
+      fetch(`http://localhost:4000/api/v1/breweries`, {
+        method: "POST",
+        headers: {
+          "Content-Type":"application/json",
+          "Accept":"application/json"
+        },
+        body: JSON.stringify({
+          id: brewery.id,
+          name: brewery.name,
+          brewery_type: brewery.brewery_type,
+          street: brewery.street,
+          city: brewery.city,
+          state: brewery.state,
+          postal_code: brewery.postal_code,
+          country: brewery.country,
+          longitude: brewery.longitude,
+          latitude: brewery.latitude,
+          phone: brewery.phone,
+          website_url: brewery.website_url
+        })
+      })
+      // .then(res => res.json())
+      // .then(brewery => {
+      //   console.log(brewery)
+      // })
+      // could set a boolean state to confirm promise acceptance before
+      // next step in handleFavs occurs...
+    }
 
-    handleFavs = (e) => {
-      // if currentBrewery is not already in favs,
-      // make a fetch POST to add to db
-      if (!this.state.favs.includes(this.state.currentBrewery)){
-      //this currently only fetches to ALL favs
-      // will need user_id adjustment on backend
+    saveFavs = () => {
+      // creates a new favorites item on backend
 
       let token = localStorage.getItem('token');
       fetch(`http://localhost:4000/api/v1/add-favorites/`, {
@@ -304,6 +315,26 @@ class App extends React.Component{
         })
         }
       )
+    }
+
+// onClick of "Add to My Favorties" in brewery modal
+    handleFavs = (e) => {
+      if (!this.state.favs.includes(this.state.currentBrewery)){
+        // problem:
+        // onclick add to favs shows brewery in my breweries on frontend
+        // and creates a new fav item in backend DB,
+        // but will only create if the brewery already exists in local DB
+
+        // possible solutions:
+          // before saveFavs POST method (below this note),
+          // call a helper method that fetches that breweryObj
+          // from the 3rd Party API then posts it to local DB
+          // could be called addBrewerytoLocalDB()
+
+          this.addBrewerytoLocalDB();
+          // right now this does not avoid cerating duplicates
+          // of the same brewery to local db, maybe need a conditional?
+          this.saveFavs();
 
       // then add to favs state
         this.setState({
