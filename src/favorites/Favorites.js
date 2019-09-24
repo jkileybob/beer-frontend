@@ -6,7 +6,7 @@ class Favorites extends React.Component{
   render(){
     return(
       <>
-        <div>My Favorite Breweries...eventually</div>
+        <div>My Favorite Breweries:</div>
         <List animated verticalAlign='middle'>
           {this.props.favs.map(brewery =>{
             return <React.Fragment key={`fav-brewery-list-item-${brewery.id}`}>
