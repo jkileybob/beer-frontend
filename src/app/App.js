@@ -49,35 +49,13 @@ class App extends React.Component{
             loading: false,
             favs: [...user.favorites]
           });
-          this.getOpenDbFavs();
+          this.fetchFavs();
       });
     } else {
       this.setState({ loading: false })
     }
   }
 
-  getOpenDbFavs = () => {
-    // creates copy of favs state containing duplicates
-    let duplicateUserFavs = [];
-    this.state.favs.map(fav => {
-      return duplicateUserFavs.push(fav.brewery_id);
-    })
-    // creates new array of fav brewery_ids sans duplicates
-    let userFavs = Array.from(new Set(duplicateUserFavs));
-    // fetches breweryObj for each brewery_id and inserts into favs array
-    // sets that fav array to equal favs State
-    let favs = []
-    userFavs.forEach(brewery_id => {
-      return fetch(`https://api.openbrewerydb.org/breweries/${brewery_id}`)
-      .then(res => res.json())
-      .then(breweryObj => {
-        favs.push(breweryObj);
-        this.setState({
-          favs: favs
-        })
-      });
-    })
-  }
 
   handleLoginSubmit = (username, password) => {
     fetch(`http://localhost:4000/api/v1/login`, {
@@ -216,11 +194,11 @@ class App extends React.Component{
 
 //brewery profile modal logic:
     onBreweryClick = (e) => {
-      this.state.breweries.filter(brew=>{
-        let brewId = e.currentTarget.id;
-        return brew.id.toString() === brewId ?
+      this.state.breweries.filter(brewery=>{
+        let breweryId = e.currentTarget.id;
+        return brewery.id.toString() === breweryId ?
           this.setState({
-            currentBrewery: brew,
+            currentBrewery: brewery,
             modalOpen: true
           })
         : null
@@ -236,27 +214,68 @@ class App extends React.Component{
 
 //FAVORITES COMPONENT LOGIC:
 
-    getFavs = () => {
-      let token = localStorage.getItem('token');
-      if (token){
-        fetch(`http://localhost:4000/api/v1/favorites`, {
-          method: "GET",
-          headers: {
-            "Content-Type" : "application/json",
-            "Accept" : "application/json",
-            "Authentication" : `Bearer ${token}`
-            }
-          }
-        )
-        .then(res => res.json())
-        .then(favData => {
-          console.log(favData);
-          this.setState({
-            favs: [...favData]
-          })
-        })
-      }
-    }
+// opens the modal in favorites page
+// sets clicked brewery to currentBrewery state
+    // setState is delayed in updating at this point,
+    // so maybe don't rely on it for using curentBrewery immediately
+onFavListBreweryClick = (e) => {
+  let breweryId = parseInt(e.currentTarget.id);
+  this.state.favs.filter(breweryObj =>
+    breweryObj.id === breweryId ?
+      this.setState({
+        currentBrewery: breweryObj,
+        modalOpen: true
+      })
+    : null
+  )
+  // console.log(this.state.currentBrewery)
+}
+
+// called on component Did mount, at this point needs a refresh to function
+fetchFavs = () => {
+  // creates copy of favs state containing duplicates
+  let duplicateUserFavs = [];
+  this.state.favs.map(fav => {
+    return duplicateUserFavs.push(fav.brewery_id);
+  })
+  // creates new array of fav brewery_ids sans duplicates
+  let userFavs = Array.from(new Set(duplicateUserFavs));
+  // fetches breweryObj for each brewery_id and inserts into favs array
+  // sets that fav array to equal favs state
+  let favs = []
+  userFavs.forEach(brewery_id => {
+    return fetch(`https://api.openbrewerydb.org/breweries/${brewery_id}`)
+    .then(res => res.json())
+    .then(breweryObj => {
+      favs.push(breweryObj);
+      this.setState({
+        favs: favs
+      });
+    });
+  })
+}
+
+    // getFavs = () => {
+    //   let token = localStorage.getItem('token');
+    //   if (token){
+    //     fetch(`http://localhost:4000/api/v1/favorites`, {
+    //       method: "GET",
+    //       headers: {
+    //         "Content-Type" : "application/json",
+    //         "Accept" : "application/json",
+    //         "Authentication" : `Bearer ${token}`
+    //         }
+    //       }
+    //     )
+    //     .then(res => res.json())
+    //     .then(favData => {
+    //       console.log(favData);
+    //       this.setState({
+    //         favs: [...favData]
+    //       })
+    //     })
+    //   }
+    // }
     // from the backend, favData has id, user_id, and brewery_id
     // could do something conditional to test equality
     // between user_id of favData and user_id of currentUser in state
@@ -266,17 +285,6 @@ class App extends React.Component{
     // then create a list of each brewery_id to update favs state
     // which should automatically update my breweries page list
 
-    onFavListBreweryClick = (e) => {
-      this.state.favs.filter(brew=>{
-        let brewId = e.currentTarget.id;
-        return brew.id.toString() === brewId ?
-        this.setState({
-          currentBrewery: brew,
-          modalOpen: true
-        })
-        : null
-      })
-    }
 
 
     saveFavs = () => {
@@ -373,6 +381,8 @@ class App extends React.Component{
 
 
           // this.logBrewery();
+// state shouldn't be mutated durectly
+// make a copy then change state into that copy
           // this.setState({
           //       favs: [...this.state.favs, this.state.currentBrewery]
           //     });
