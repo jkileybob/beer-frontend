@@ -46,16 +46,37 @@ class App extends React.Component{
       .then(user =>{
           this.setState({
             currentUser: user,
-            loading: false
-          })
+            loading: false,
+            favs: [...user.favorites]
+          });
+          this.getOpenDbFavs();
       });
-
-    this.getFavs();
-
     } else {
       this.setState({ loading: false })
     }
+  }
 
+  getOpenDbFavs = () => {
+    // creates copy of favs state containing duplicates
+    let duplicateUserFavs = [];
+    this.state.favs.map(fav => {
+      return duplicateUserFavs.push(fav.brewery_id);
+    })
+    // creates new array of fav brewery_ids sans duplicates
+    let userFavs = Array.from(new Set(duplicateUserFavs));
+    // fetches breweryObj for each brewery_id and inserts into favs array
+    // sets that fav array to equal favs State
+    let favs = []
+    userFavs.forEach(brewery_id => {
+      return fetch(`https://api.openbrewerydb.org/breweries/${brewery_id}`)
+      .then(res => res.json())
+      .then(breweryObj => {
+        favs.push(breweryObj);
+        this.setState({
+          favs: favs
+        })
+      });
+    })
   }
 
   handleLoginSubmit = (username, password) => {
@@ -73,10 +94,8 @@ class App extends React.Component{
     .then(res =>res.json())
     .then(data => {
       if(data.error){
-        // console.log(data)
         alert('Incorrect username or password')
       }else{
-        // console.log(data)
         this.setState({currentUser: data.user });
         localStorage.setItem("token", data.token);
       }
@@ -94,8 +113,6 @@ class App extends React.Component{
   }
 
   createNewUser = (newUser) => {
-    // console.log(newUser)
-    // make a fetch post request to create new user on backend
     fetch(`http://localhost:4000/api/v1/users`, {
       method: "POST",
         headers: {
@@ -112,15 +129,11 @@ class App extends React.Component{
     })
     .then(res=>res.json())
     .then(data=>{
-      // console.log(data)
       localStorage.setItem("token", data.token);
-
-      // set state to new user
       this.setState({
         currentUser: data.user
       })
     })
-
   }
 
 
@@ -154,7 +167,6 @@ class App extends React.Component{
         fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}`)
         .then(res => res.json())
         .then(breweries => {
-          // console.log(breweries);
           this.setState({
             breweries: breweries
           })
@@ -164,7 +176,6 @@ class App extends React.Component{
         fetch(`https://api.openbrewerydb.org/breweries?by_state=${inputState}`)
         .then(res => res.json())
         .then(breweries => {
-          // console.log(breweries);
           this.setState({
             breweries: breweries
           })
@@ -175,7 +186,6 @@ class App extends React.Component{
         fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}&by_state=${inputState}`)
         .then(res => res.json())
         .then(breweries => {
-          // console.log(breweries);
           this.setState({
             breweries: breweries
           })
@@ -185,7 +195,6 @@ class App extends React.Component{
         fetch(`https://api.openbrewerydb.org/breweries?by_city=${inputCity}`)
         .then(res => res.json())
         .then(breweries => {
-          // console.log(breweries);
           this.setState({
             breweries: breweries
           })
@@ -227,13 +236,6 @@ class App extends React.Component{
 
 //FAVORITES COMPONENT LOGIC:
 
-    // need to adjust #index in favs_controller to authenticate user
-    // then user data can get specific favs list @user.favorites
-    // and response to json that specific list
-    // to be manioulated by front end
-
-    // right now this is mapping through ALL favs
-    // will need to adjust endpoint for specific user_id of currentUser
     getFavs = () => {
       let token = localStorage.getItem('token');
       if (token){
@@ -249,10 +251,10 @@ class App extends React.Component{
         .then(res => res.json())
         .then(favData => {
           console.log(favData);
+          this.setState({
+            favs: [...favData]
+          })
         })
-        // this.setState({
-          //   favs: favData
-          // })
       }
     }
     // from the backend, favData has id, user_id, and brewery_id
@@ -292,7 +294,7 @@ class App extends React.Component{
       // )
     }
 
-    logBrewery =()=>{
+    logBrewery = () => {
       if (!this.state.currentUser === null){
       let brewery = this.state.currentBrewery;
         fetch(`http://localhost:4000/api/v1/breweries`,{
@@ -368,11 +370,13 @@ class App extends React.Component{
 
       if (token){
         if (!this.state.favs.includes(this.state.currentBrewery)){
-          this.logBrewery();
-          this.setState({
-                favs: [...this.state.favs, this.state.currentBrewery]
-              });
-          this.logFavorites();
+
+
+          // this.logBrewery();
+          // this.setState({
+          //       favs: [...this.state.favs, this.state.currentBrewery]
+          //     });
+          // this.logFavorites();
         } else {
           alert("This brewery already exists in your favorites.")
         }

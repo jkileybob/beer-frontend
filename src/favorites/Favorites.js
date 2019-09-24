@@ -4,19 +4,20 @@ import BreweryProfile from "../brewery/BreweryProfile"
 
 class Favorites extends React.Component{
   render(){
+    // this.props.favs.map((fav) => {console.log(fav)});
     return(
       <>
-        <div>My Favorite Breweries...eventually</div>
+        <div>My Favorite Breweries:</div>
         <List animated verticalAlign='middle'>
-          {this.props.favs.map(brewery =>{
-            return <React.Fragment key={`fav-brewery-list-item-${brewery.id}`}>
+          {this.props.favs.map(fav =>{
+            return <React.Fragment key={`fav-brewery-list-item-${fav.id}`}>
               <List.Item
-                id={`${brewery.id}`}
-                key={`fav-brewery-list-item-${brewery.id}`}
+                id={`${fav.id}`}
+                key={`fav-brewery-list-item-${fav.id}`}
                 onClick={this.props.onFavListBreweryClick}
                 >
                   <List.Header>
-                    {brewery.name}
+                    {fav.brewery_id}
                   </List.Header>
                 </List.Item>
             </React.Fragment>
