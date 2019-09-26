@@ -5,8 +5,7 @@ import BreweryProfile from "../brewery/BreweryProfile"
 class Favorites extends React.Component{
 
   render(){
-    console.log(this.props.favs);
-
+    // console.log(this.props.favs.map(b => {return b.id}));
     return(
       <>
         <div>My Favorite Breweries:</div>

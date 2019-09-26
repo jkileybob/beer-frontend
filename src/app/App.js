@@ -43,10 +43,13 @@ class App extends React.Component{
       })
       .then(response => response.json())
       .then(user =>{
-          this.setState({
-            currentUser: user,
-            loadingUser: false,
-            favs: [...user.favorites]
+        // console.log(user);
+        // console.log(user.breweries.map(b => {return b.id}));
+        let userFavs = user.breweries.map(brewery => { return brewery.id})
+        this.setState({
+          currentUser: user,
+          loadingUser: false,
+          favs: [...userFavs]
           }, ()=>{this.fetchFavs()});
       });
     } else {
@@ -55,15 +58,17 @@ class App extends React.Component{
   }
 
   fetchFavs = () => {
-    // creates copy of favs states with only brewery_ids, contains duplicates
-    let duplicateUserFavs = [];
+    // current data is an array of brewery ids (ex: [1781, 6780])
+    // console.log(this.state.favs);
+
+    // empty array will hold response data from fetch to openBreweryDB
+    // that will eventually be set to current favs state
     let updatedFavs = [];
-    this.state.favs.map(fav => {
-      return duplicateUserFavs.push(fav.brewery_id);
-    })
-    // creates new array of fav brewery_ids sans duplicates
-    let userFavs = Array.from(new Set(duplicateUserFavs));
-    // fetches breweryObj for each brewery_id and inserts into updated favs array
+
+    // creates new array of fav brewery ids sans duplicates
+    let userFavs = Array.from(new Set(this.state.favs));
+
+    // fetches breweryObj for each brewery_id and inserts into updated favs array (above)
     userFavs.forEach(brewery_id => {
       return fetch(`https://api.openbrewerydb.org/breweries/${brewery_id}`)
       .then(res => res.json())
@@ -71,8 +76,8 @@ class App extends React.Component{
         updatedFavs.push(breweryObj);
       });
     })
-    // sets that updated favs array to equal favs state
-    // still needs render to show changes of this state within the DOM... :(
+    // sets updated favs array to equal favs state
+    // still needs re-render/reload to show changes of this state within the DOM... :(
     this.setState({
       favs: updatedFavs,
       loadingFavs: false
@@ -260,7 +265,7 @@ onFavListBreweryClick = (e) => {
 }
 
 // called on componentDidMount, still needs a refresh to show changes
-
+// fetchFavs() will return to this spot below:
 
 
     // getFavs = () => {
@@ -310,6 +315,7 @@ onFavListBreweryClick = (e) => {
       // )
     }
 
+// POST request to save brewery to local backend database
     logBrewery = () => {
       if (!this.state.currentUser === null){
       let brewery = this.state.currentBrewery;
@@ -344,6 +350,7 @@ onFavListBreweryClick = (e) => {
 
     }
 
+// POST request to save fav instance (user/brewery) to local DB
     logFavorites = () =>{
       let token = localStorage.getItem('token');
 
@@ -369,7 +376,22 @@ onFavListBreweryClick = (e) => {
         }
     }
 
+
     handleFavs = (e) => {
+      console.log(e.target.id);
+      // check if brewery already exists in user's favs
+        // if yes, alert user they can't add twice
+        // else:
+      // make a post request of brewery id to make a new brewery, unless
+      // you can manipulate the backend to create that brewery
+      // which doesn't already exist in the db somehow, then...
+      // make a post request of brewery id to create a new favs instance
+      // get a response of that new favs instance
+      // create a copy of favs state array and push new instance
+      // setState of favs array to match new
+
+
+    }
       // console.log(this.state.currentBrewery.id.toString())
 
       // else get fetch to `/profile` with `Bearer ${token}` in Headers
@@ -382,10 +404,10 @@ onFavListBreweryClick = (e) => {
         // call these methods from either backend favs_controller or frontend post
       // add brewery to local api
 
-      let token = localStorage.getItem('token');
-
-      if (token){
-        if (!this.state.favs.includes(this.state.currentBrewery)){
+      // let token = localStorage.getItem('token');
+      //
+      // if (token){
+      //   if (!this.state.favs.includes(this.state.currentBrewery)){
 
 
           // this.logBrewery();
@@ -395,44 +417,14 @@ onFavListBreweryClick = (e) => {
           //       favs: [...this.state.favs, this.state.currentBrewery]
           //     });
           // this.logFavorites();
-        } else {
-          alert("This brewery already exists in your favorites.")
-        }
-      } else { alert("You must be logged in to add to your favorites.") }
+      //   } else {
+      //     alert("This brewery already exists in your favorites.")
+      //   }
+      // } else { alert("You must be logged in to add to your favorites.") }
 
 
   // 2. use brewery ids to fetch list of favs
     // add favorite, using the recently added brewery
-
-
-
-
-        // fetch(`http://localhost:4000/api/v1/breweries`,{
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type":"application/json",
-        //     "Accept":"application/json"
-        //   },
-        //   body: JSON.stringify({
-        //     id: 1780,
-        //     name: "Right Proper Brewing Company",
-        //     brewery_type: "micro",
-        //     street: "920 Girard St NE",
-        //     city: "Washington",
-        //     state: "District of Columbia",
-        //     postal_code: "20017-3424",
-        //     country: "United States",
-        //     longitude: "-76.9930707764239",
-        //     latitude: "38.9267988",
-        //     phone: "2026072337",
-        //     website_url: "http://www.rightproperbrewing.com"
-        //   })
-        // })
-
-
-
-
-
       // console.log(e.currentTarget)
       // if currentBrewery is not already in favs,
       // make a fetch POST to add to db
@@ -477,7 +469,7 @@ onFavListBreweryClick = (e) => {
       //       favs: [...this.state.favs, brewObj]
       //     })
       // })
-    }
+    // }
 
 
   render(){
