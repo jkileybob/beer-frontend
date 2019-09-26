@@ -15,7 +15,7 @@ class App extends React.Component{
   state = {
     // USER STATES:
     currentUser: null,
-    loading: true,
+    loadingUser: true,
 
     // BREWERY STATES:
     breweries: [],
@@ -28,13 +28,12 @@ class App extends React.Component{
     searchTermState: "",
 
     // user/brewery states:
-    favs: []
+    favs: [],
+    loadingFavs: true
   }
 
 
   componentDidMount(){
-
-    // USER COMPONENT LOGIC:
     let token = localStorage.getItem('token');
 
     if(token){
@@ -46,14 +45,38 @@ class App extends React.Component{
       .then(user =>{
           this.setState({
             currentUser: user,
-            loading: false,
+            loadingUser: false,
             favs: [...user.favorites]
-          });
-          this.fetchFavs();
+          }, ()=>{this.fetchFavs()});
       });
     } else {
-      this.setState({ loading: false })
+      this.setState({ loadingUser: false, loadingFavs: false })
     }
+  }
+
+  fetchFavs = () => {
+    // creates copy of favs states with only brewery_ids, contains duplicates
+    let duplicateUserFavs = [];
+    let updatedFavs = [];
+    this.state.favs.map(fav => {
+      return duplicateUserFavs.push(fav.brewery_id);
+    })
+    // creates new array of fav brewery_ids sans duplicates
+    let userFavs = Array.from(new Set(duplicateUserFavs));
+    // fetches breweryObj for each brewery_id and inserts into updated favs array
+    userFavs.forEach(brewery_id => {
+      return fetch(`https://api.openbrewerydb.org/breweries/${brewery_id}`)
+      .then(res => res.json())
+      .then(breweryObj => {
+        updatedFavs.push(breweryObj);
+      });
+    })
+    // sets that updated favs array to equal favs state
+    // still needs render to show changes of this state within the DOM... :(
+    this.setState({
+      favs: updatedFavs,
+      loadingFavs: false
+    });
   }
 
 
@@ -214,6 +237,11 @@ class App extends React.Component{
 
 //FAVORITES COMPONENT LOGIC:
 
+// meant to reload page to load favs list of breweries on refresh
+  // setFavsList = () => {
+  //   document.location.reload();
+  // }
+
 // opens the modal in favorites page
 // sets clicked brewery to currentBrewery state
     // setState is delayed in updating at this point,
@@ -231,30 +259,9 @@ onFavListBreweryClick = (e) => {
   // console.log(this.state.currentBrewery)
 }
 
-// called on component Did mount, at this point needs a refresh to function
-fetchFavs = () => {
-  // creates copy of favs state containing duplicates
-  let duplicateUserFavs = [];
-  this.state.favs.map(fav => {
-    return duplicateUserFavs.push(fav.brewery_id);
-  })
-  // creates new array of fav brewery_ids sans duplicates
-  let userFavs = Array.from(new Set(duplicateUserFavs));
-  // fetches breweryObj for each brewery_id and inserts into favs array
-  // sets that fav array to equal favs state
-  // needs render to show changes in state... :(
-  let favs = []
-  userFavs.forEach(brewery_id => {
-    return fetch(`https://api.openbrewerydb.org/breweries/${brewery_id}`)
-    .then(res => res.json())
-    .then(breweryObj => {
-      favs.push(breweryObj);
-      this.setState({
-        favs: favs
-      })
-    });
-  })
-}
+// called on componentDidMount, still needs a refresh to show changes
+
+
 
     // getFavs = () => {
     //   let token = localStorage.getItem('token');
@@ -481,10 +488,9 @@ fetchFavs = () => {
           logged_in={this.state.currentUser}
           onLogOut={this.handleLogOut}
           resetSearch={this.resetSearch}
-          getFavs={this.getFavs}
         />
 
-      { !this.state.loading ?
+      { !this.state.loadingUser ?
 
         <Switch>
 

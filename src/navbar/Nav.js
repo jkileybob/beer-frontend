@@ -5,6 +5,7 @@ import { Menu } from "semantic-ui-react";
 const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch }) => {
   let logout = () => {onLogOut()}
   let clearStates = () => {resetSearch()}
+
   return (
     <Menu pointing secondary>
       {logged_in ? (

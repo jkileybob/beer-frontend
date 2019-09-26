@@ -3,7 +3,10 @@ import { List } from 'semantic-ui-react';
 import BreweryProfile from "../brewery/BreweryProfile"
 
 class Favorites extends React.Component{
+
   render(){
+    console.log(this.props.favs);
+
     return(
       <>
         <div>My Favorite Breweries:</div>
