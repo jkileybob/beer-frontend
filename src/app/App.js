@@ -1,5 +1,4 @@
 import React from 'react';
-import Async from 'react-async'
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import Nav from '../navbar/Nav'
 import UserProfile from '../user/UserProfile'
@@ -29,6 +28,7 @@ class App extends React.Component{
     searchTermState: "",
 
     // user/brewery states:
+    favsById: [],
     favs: [],
     loadingFavs: true
   }
@@ -44,18 +44,13 @@ class App extends React.Component{
       })
       .then(response => response.json())
       .then(user =>{
-        let userFavs = user.breweries.map(brewery => { return brewery.id})
+        let favsById = user.breweries.map(brewery => { return brewery.id})
         this.setState({
           currentUser: user,
           loadingUser: false,
-          favs: [...userFavs]
-          }, ()=>{this.fetchFavs()});
+          favsById: [...favsById]
+          }, ()=>{ this.fetchFavs() });
       });
-      // set state of favs loading to boolean:
-      // if loading is false, reload the page (may cause inficnite loop)
-      // else is true that favs are still loading execute null
-
-
     } else {
       this.setState({ loadingUser: false, loadingFavs: true })
     }
@@ -63,54 +58,12 @@ class App extends React.Component{
 
   componentWillUpdate(){
     if (this.state.loadingFavs){
-      return console.log("true")
-      // return window.location.reload()
+      // return console.log("true")
     } else {
-        return console.log("finally false")
+      // return window.location.reload()
+        // return console.log("finally false")
     }
   }
-
-  fetchFavs = () => {
-    // current data is an array of brewery ids (ex: [1781, 6780])
-
-    // empty array will hold response data from fetch to openBreweryDB
-    // that will eventually be set to current favs state
-    let updatedFavs = [];
-
-    // creates new array of fav brewery ids sans duplicates
-    let userFavsById = Array.from(new Set(this.state.favs));
-
-    // fetches breweryObj for each brewery_id and inserts into updated favs array (above)
-    userFavsById.forEach(brewery_id => {
-      return fetch(`https://api.openbrewerydb.org/breweries/${brewery_id}`)
-      .then(res => (res.ok ? res : Promise.reject(res)))
-      .then(res => res.json())
-      // setStates of favs to equal updatedFavs array
-      .then(breweryObj => {
-        updatedFavs.push(breweryObj);
-      });
-    }, this.setState({
-        favs: updatedFavs,
-        loadingFavs: false
-      })
-    )
-
-    // console.log(this.state.loadingFavs);
-    // if (this.state.loadingFavs === false){
-    //   return console.log("hit false")
-    //   // return window.location.reload()
-    // } else {
-    //   return this.setState({
-    //     loadingFavs: true
-    //   }, console.log("true"))
-    // }
-    // PROBLEM:
-    // even as a callback function when all forEach processes
-    // seem to be completed and pushed
-    // setState is asynch and requires refresh and click of MyBreweries
-    // to render changes within the DOM...   :(
-  }
-
 
   handleLoginSubmit = (username, password) => {
     fetch(`http://localhost:4000/api/v1/login`, {
@@ -259,7 +212,7 @@ class App extends React.Component{
           this.setState({
             currentBrewery: brewery,
             modalOpen: true
-          }, console.log(this.state.currentBrewery))
+          })
         : null
       })
     }
@@ -267,22 +220,24 @@ class App extends React.Component{
 // method for closing modal for breweryIndex and favorites list
     onClickClose = (e) => {
       this.setState({
-        modalOpen: false
+        modalOpen: false,
+        currentBrewery: null
       })
     }
 
 
 //FAVORITES COMPONENT LOGIC:
 
-// meant to reload page to load favs list of breweries on refresh
-  // setFavsList = () => {
-  //   document.location.reload();
-  // }
+// sets breweries state === favs, for iterating
+myBreweriesClick = () => {
+  let favs = this.state.favs;
+  this.setState({
+    breweries: favs
+  })
+}
+
 
 // opens the modal in favorites page
-// sets clicked brewery to currentBrewery state
-    // setState is asynch delayed in updating until second click,
-    // so maybe don't rely on it for using currentBrewery immediately
 onFavListBreweryClick = (e) => {
   let breweryId = parseInt(e.currentTarget.id);
   this.state.favs.filter(breweryObj =>
@@ -290,7 +245,7 @@ onFavListBreweryClick = (e) => {
       this.setState({
         currentBrewery: breweryObj,
         modalOpen: true
-      }, console.log(this.state.currentBrewery))
+      })
     : null
   )
 }
@@ -298,122 +253,104 @@ onFavListBreweryClick = (e) => {
 // called on componentDidMount, still needs a refresh to show changes
       // fetchFavs() will return to this spot below:
 
+    fetchFavs = () => {
+      // the state favsById is an array of brewery ids (ex: [1781, 6780])
 
-    // getFavs = () => {
-    //   let token = localStorage.getItem('token');
-    //   if (token){
-    //     fetch(`http://localhost:4000/api/v1/favorites`, {
-    //       method: "GET",
-    //       headers: {
-    //         "Content-Type" : "application/json",
-    //         "Accept" : "application/json",
-    //         "Authentication" : `Bearer ${token}`
-    //         }
-    //       }
-    //     )
-    //     .then(res => res.json())
-    //     .then(favData => {
-    //       console.log(favData);
-    //       this.setState({
-    //         favs: [...favData]
-    //       })
-    //     })
-    //   }
-    // }
-    // from the backend, favData has id, user_id, and brewery_id
-    // could do something conditional to test equality
-    // between user_id of favData and user_id of currentUser in state
+      // empty array will hold response data from fetch to openBreweryDB
+      // that will eventually be set to favs state
+      let updatedFavs = [];
 
+      // creates new array of favsById without duplicates
+      let userFavsById = Array.from(new Set(this.state.favsById));
 
-    //map through favData for each brewery_id,
-    // then create a list of each brewery_id to update favs state
-    // which should automatically update my breweries page list
+      // fetches breweryObj for each brewery_id and inserts into updated favs array (above)
+      userFavsById.forEach(brewery_id => {
+        return fetch(`https://api.openbrewerydb.org/breweries/${brewery_id}`)
+        .then(res => res.json())
+        // setState of favs to equal updatedFavs array
+        .then(breweryObj => {
+          updatedFavs.push(breweryObj);
+        });
+      }, this.setState({
+          favs: updatedFavs,
+          loadingFavs: false
+        })
+      )
+      // PROBLEM:
+      // even as a callback function when all forEach processes
+      // seem to be completed and pushed
+      // setState is asynch and requires refresh and click of MyBreweries
+      // to render changes within the DOM...   :(
 
+      // set state of favs loading to boolean:
+      // if loading is false, reload the page (may cause inficnite loop)
+      // else is true that favs are still loading execute null:
 
+      // console.log(this.state.loadingFavs);
+      // if (this.state.loadingFavs === false){
+      //   return console.log("hit false")
+      //   // return window.location.reload()
+      // } else {
+      //   return this.setState({
+      //     loadingFavs: true
+      //   }, console.log("true"))
+      // }
 
-    // saveFavs = () => {
-      // fetch(`http://localhost:4000/api/v1/favorites`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type":"application/json",
-      //     "Accept":"application/json"
-      //   },
-      //   body: JSON.stringify({
-      //     user_id:user_id,
-      //     brewery_id:brewery_id
-      //   })
-      //   }
-      // )
-    // }
+    }
 
-// POST request to save brewery to local backend database
-    // logBrewery = () => {
-    //   if (!this.state.currentUser === null){
-    //   let brewery = this.state.currentBrewery;
-    //     fetch(`http://localhost:4000/api/v1/breweries`,{
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type":"application/json",
-    //         "Accept":"application/json"
-    //       },
-    //       body: JSON.stringify({
-    //         id: brewery.id,
-    //         name: brewery.name,
-    //         brewery_type: brewery.brewery_type,
-    //         street: brewery.street,
-    //         city: brewery.city,
-    //         state: brewery.state,
-    //         postal_code: brewery.postal_code,
-    //         country: brewery.country,
-    //         longitude: brewery.longitude,
-    //         latitude: brewery.latitude,
-    //         phone: brewery.phone,
-    //         website_url: brewery.website_url
-    //       })
-    //     })
-    //     .then(response => console.log(response))
-    //   // .then(response =>{ console.log(response) })
-    //
-    //     // response returns an error with a 204 status of no Content
-    //     // unable to parse response to json()
-    //     // content is being saved in local API, however
-    //   }
-    //
-    // }
+// POST request to save BREWERY/FAV to local backend database
+    logBrewery = (brewery_id) => {
+      // if (!this.state.currentUser === null){
+      let favsById = Array.from(this.state.favsById)
+      let token = localStorage.getItem('token');
+        fetch(`http://localhost:4000/api/v1/breweries`, {
+          method: "POST",
+          headers: {
+            "Content-Type":"application/json",
+            "Accept":"application/json"
+          },
+          body: JSON.stringify({
+            id: brewery_id,
+          })
+        })
+        .then(  fetch(`http://localhost:4000/api/v1/add-favorites`, {
+          method: "POST",
+          headers: {
+            "Content-Type":"application/json",
+            "Accept":"application/json",
+            "Authentication" : `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            brewery_id: brewery_id
+          })
+          }
+        )
+        .then(response => response.json())
+        .then(data => {
+          favsById.push(data.brewery.id);
+          this.setState({
+            favsById: favsById
+          }, this.fetchFavs());
+        }) )
+      // }
+    }
 
-// POST request to save fav instance (user/brewery) to local DB
-    // logFavorites = () => {
-    //   let token = localStorage.getItem('token');
-    //
-    //   if(token){
-    //     let brewery_id = this.state.currentBrewery.id.toString();
-    //     fetch(`http://localhost:4000/api/v1/add-favorites`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type":"application/json",
-    //         "Accept":"application/json",
-    //         "Authentication" : `Bearer ${token}`
-    //       },
-    //       body: JSON.stringify({
-    //         brewery_id: brewery_id
-    //       })
-    //       }
-    //     )
-    //     .then(response => response.json())
-    //     .then(data =>{ console.log(data) })
-    //
-    //     } else {
-    //       alert("You must be logged-in to add to your favorites.")
-    //     }
-    // }
+  handleFavs = (e) => {
+    // make sure user is logged in
+    if (this.state.currentUser){
+// check if brewery already exists in user's favs
+      let breweryId = parseInt(e.currentTarget.id);
+      let duplicate = this.state.favs.filter(breweryObj => breweryObj.id === breweryId)
+      if (duplicate.length > 0){
+        //   // if yes, alert user they can't add twice
+          alert("This brewery already exists in your favorites.")
+      } else {
+        //   // make a post request of brewery id to make a new brewery, unless
+          // console.log("attempting to add new fav with id:", breweryId)
+          this.logBrewery(breweryId);
+      }
+    } else { alert("You must be logged in to add to your favorites.") }
 
-
-    handleFavs = (e) => {
-      console.log(e.target.id);
-      // check if brewery already exists in user's favs
-        // if yes, alert user they can't add twice
-        // else:
-      // make a post request of brewery id to make a new brewery, unless
       // you can manipulate the backend to create that brewery
       // which doesn't already exist in the db somehow, then...
       // make a post request of brewery id to create a new favs instance
@@ -421,88 +358,7 @@ onFavListBreweryClick = (e) => {
       // create a copy of favs state array and push new instance
       // setState of favs array to match new
 
-
-    }
-
-      // console.log(this.state.currentBrewery.id.toString())
-
-      // else get fetch to `/profile` with `Bearer ${token}` in Headers
-      // (or just create a new fav route that mimics `/profile` method)
-      // which calls the user_controller profile method in backend
-      // which decodes token, returns user data in payload
-
-  // 1. create + save breweryObj to local api for use in favs list
-        // set route and create method in brewery controller
-        // call these methods from either backend favs_controller or frontend post
-      // add brewery to local api
-
-      // let token = localStorage.getItem('token');
-      //
-      // if (token){
-      //   if (!this.state.favs.includes(this.state.currentBrewery)){
-
-
-          // this.logBrewery();
-// state shouldn't be mutated durectly
-// make a copy then change state into that copy
-          // this.setState({
-          //       favs: [...this.state.favs, this.state.currentBrewery]
-          //     });
-          // this.logFavorites();
-      //   } else {
-      //     alert("This brewery already exists in your favorites.")
-      //   }
-      // } else { alert("You must be logged in to add to your favorites.") }
-
-
-  // 2. use brewery ids to fetch list of favs
-    // add favorite, using the recently added brewery
-      // console.log(e.currentTarget)
-      // if currentBrewery is not already in favs,
-      // make a fetch POST to add to db
-
-        // if (!this.state.favs.includes(this.state.currentBrewery)){
-        // let userId =
-        // console.log(this.state.currentUser)
-        // let breweryId =
-        // console.log(this.state.currentBrewery.id)
-
-        // fetch(`http://localhost:4000/api/v1/favorites`, {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type":"application/json",
-        //     "Accept":"application/json"
-        //   },
-        //   body: JSON.stringify({
-        //     user_id: 4,
-        //     brewery_id: 1781
-        //   })
-        //   }
-      //   )
-      //   .then(res => res.json())
-      //   .then(data => console.log(data);
-      //   // then add to favs state
-      //     this.setState({
-      //       favs: [...this.state.favs, this.state.currentBrewery]
-      //     })
-      //   )
-      // } else {
-      //   alert(`${this.state.currentBrewery.name} is already saved to your favorites.`)
-      // }
-
-      // console.log(this.state.breweries.find(brewery =>{
-      //     let brewObj = brewery.id === parseInt(e.currentTarget.id)
-      //     return brewObj
-      // }))
-
-      // this.state.breweries.find(brewery =>{
-      //     let brewObj = brewery.id === parseInt(e.currentTarget.id)
-      //     return this.setState({
-      //       favs: [...this.state.favs, brewObj]
-      //     })
-      // })
-    // }
-
+  }
 
   render(){
     return(
@@ -512,6 +368,7 @@ onFavListBreweryClick = (e) => {
           logged_in={this.state.currentUser}
           onLogOut={this.handleLogOut}
           resetSearch={this.resetSearch}
+          myBreweriesClick={this.myBreweriesClick}
         />
 
       { !this.state.loadingUser ?
@@ -553,35 +410,17 @@ onFavListBreweryClick = (e) => {
               />
           }} />
 
-
-
-
         <Route exact path='/favorites' render={()=>{
-            return <Async promiseFn={this.fetchFavs}>
-
-              {({ data, err, isLoading }) => {
-                if (isLoading) return "Loading..."
-                if (err) return `Something went wrong: ${err.message}`
-
-                if(data){
-                  return <Favorites
-                    breweries={this.state.breweries}
-                    currentBrewery={this.state.currentBrewery}
-                    favs={this.state.favs}
-                    onFavListBreweryClick={this.onFavListBreweryClick}
-                    handleFavs={this.handleFavs}
-                    modalOpen={this.state.modalOpen}
-                    onClickClose={this.onClickClose}
-                    />
-
-                }
-              }}
-
-          </Async>
+            return <Favorites
+              breweries={this.state.breweries}
+              currentBrewery={this.state.currentBrewery}
+              favs={this.state.favs}
+              onFavListBreweryClick={this.onFavListBreweryClick}
+              handleFavs={this.handleFavs}
+              modalOpen={this.state.modalOpen}
+              onClickClose={this.onClickClose}
+              />
           }} />
-
-
-
 
         <Route exact path='/beers' render={()=>{
             return <BeerIndex />
