@@ -1,3 +1,35 @@
+
+
+
+
+
+
+function incrementFooBy(delta) {
+    return (previousState, currentProps) => {
+        return { ...previousState, foo: previousState.foo + delta };
+    };
+}
+class MyComponent extends React.Component {
+    onClick = () => {
+        this.setState(incrementFooBy(42));
+    }
+    render() {
+        return <button onClick={onClick}>click me</button>;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 //FAVORITES COMPONENT LOGIC:
 
     // need to adjust #index in favs_controller to authenticate user
