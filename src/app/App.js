@@ -1,4 +1,5 @@
 import React from 'react';
+import Async from 'react-async'
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import Nav from '../navbar/Nav'
 import UserProfile from '../user/UserProfile'
@@ -82,6 +83,7 @@ class App extends React.Component{
     // fetches breweryObj for each brewery_id and inserts into updated favs array (above)
     userFavsById.forEach(brewery_id => {
       return fetch(`https://api.openbrewerydb.org/breweries/${brewery_id}`)
+      .then(res => (res.ok ? res : Promise.reject(res)))
       .then(res => res.json())
       // setStates of favs to equal updatedFavs array
       .then(breweryObj => {
@@ -551,17 +553,35 @@ onFavListBreweryClick = (e) => {
               />
           }} />
 
+
+
+
         <Route exact path='/favorites' render={()=>{
-            return <Favorites
-              breweries={this.state.breweries}
-              currentBrewery={this.state.currentBrewery}
-              favs={this.state.favs}
-              onFavListBreweryClick={this.onFavListBreweryClick}
-              handleFavs={this.handleFavs}
-              modalOpen={this.state.modalOpen}
-              onClickClose={this.onClickClose}
-              />
+            return <Async promiseFn={this.fetchFavs}>
+
+              {({ data, err, isLoading }) => {
+                if (isLoading) return "Loading..."
+                if (err) return `Something went wrong: ${err.message}`
+
+                if(data){
+                  return <Favorites
+                    breweries={this.state.breweries}
+                    currentBrewery={this.state.currentBrewery}
+                    favs={this.state.favs}
+                    onFavListBreweryClick={this.onFavListBreweryClick}
+                    handleFavs={this.handleFavs}
+                    modalOpen={this.state.modalOpen}
+                    onClickClose={this.onClickClose}
+                    />
+
+                }
+              }}
+
+          </Async>
           }} />
+
+
+
 
         <Route exact path='/beers' render={()=>{
             return <BeerIndex />
