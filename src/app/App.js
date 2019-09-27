@@ -279,7 +279,7 @@ onFavListBreweryClick = (e) => {
       // PROBLEM:
       // even as a callback function when all forEach processes
       // seem to be completed and pushed
-      // setState is asynch and requires refresh and click of MyBreweries
+      // setState is async and requires refresh and click of MyBreweries
       // to render changes within the DOM...   :(
 
       // set state of favs loading to boolean:
