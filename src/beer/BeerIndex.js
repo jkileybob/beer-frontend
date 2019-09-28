@@ -3,6 +3,7 @@ import React from 'react'
 import { List, Button, Modal } from 'semantic-ui-react'
 import BeerProfile from '../beer/BeerProfile'
 
+// BACKEND: data returned needs to be adjusted so as not to return user information
 
 class BeerIndex extends React.Component{
   state = {
@@ -33,42 +34,61 @@ class BeerIndex extends React.Component{
     })
   }
 
+  // GOAL: attach brewery data onClick to beer data
+  // use breweryId attached to each beer
+  // console.log(this.state.beers.map(beer=>{return beer.breweries.map(brewery => {return brewery.id})}));
+  // could pass props of favs list and grab brewery data using breweryId
+  getBreweries = () => {
+    // provides an array of brewery ids,
+    let breweryId = this.state.beers.map(beer => {
+      return beer.breweries.map(brewery => {
+        return brewery.id
+        })
+      })
+
+    this.state.favs.forEach(brewery => {
+      return console.log(brewery.id === breweryId)
+    })
+  }
+
+
+
+
   render(){
     return(
       <React.Fragment>
       {!this.state.currentBeer ?
 
         <List animated verticalAlign='middle'>
-          <List.Header as='h1'>Will eventually be a fav beers list</List.Header>
+          <List.Header as='h1'>My Beers:</List.Header>
             {this.state.beers.map((beer) => {
               return  <List.Item key={`beer-list-item-${beer.name}`}>
-              <Modal
-                trigger={<List.Header>{beer.name}</List.Header>}
-                centered={false}
-                >
+                <Modal
+                  trigger={<List.Header>{beer.name}</List.Header>}
+                  centered={false}
+                  >
+                    <Modal.Header size='huge'>
+                      {beer.name}
+                    </Modal.Header>
 
-                        <Modal.Header size='huge'>
-                          {beer.name}
-                        </Modal.Header>
+                    <Modal.Content>
+                      <Modal.Description>
+                          <p>Style:<br/>{beer.style}</p>
+                          <p>Alcohol by Volume:<br/>{beer.abv}</p>
+                          <p>Rating:<br/>{beer.rating}/5</p>
+                      </Modal.Description>
+                      <Button
+                        compact
+                        color='teal'
+                        size='mini'
+                        beer={beer}
+                        onClick={this.onBeerClick}>
+                        Show me more.
+                        </Button>
+                    </Modal.Content>
 
-                        <Modal.Content>
-                          <Modal.Description>
-                              <h3>{beer.style}</h3>
-                              <p>{beer.abv} ABV</p>
-                              <p>Made by {beer.brewery.name}</p>
-                          </Modal.Description>
-                          <Button
-                            compact
-                            color='teal'
-                            size='mini'
-                            beer={beer}
-                            onClick={this.onBeerClick}>
-                            Show me more.
-                            </Button>
-                        </Modal.Content>
-
-                      </Modal>
-                      </List.Item>
+                </Modal>
+              </List.Item>
               }
             )}
         </List>
@@ -87,3 +107,7 @@ class BeerIndex extends React.Component{
 }
 
 export default BeerIndex
+
+// Line 80:
+// need to connect brewery data to shaow name
+// <p>Producer: <h3>{beer.breweries.name}</h3></p>
