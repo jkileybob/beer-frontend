@@ -3,21 +3,59 @@
 
 
 
+// conditional rendering for beer profile and beer edit pag in beer index
+{if (this.state.currentBeer === null && this.state.renderEdit === false){
+  <List animated verticalAlign='middle'>
+    <List.Header as='h1'>My Beers:</List.Header>
+      {this.state.beers.map((beer) => {
+        return  <List.Item key={`beer-list-item-${beer.name}`}>
+          <Modal trigger={<List.Header><h3>{beer.name}</h3></List.Header>} >
+            <Modal.Header size='huge'>
+              {beer.name}
+            </Modal.Header>
 
-function incrementFooBy(delta) {
-    return (previousState, currentProps) => {
-        return { ...previousState, foo: previousState.foo + delta };
-    };
-}
-class MyComponent extends React.Component {
-    onClick = () => {
-        this.setState(incrementFooBy(42));
-    }
-    render() {
-        return <button onClick={onClick}>click me</button>;
-    }
-}
 
+            <Modal.Content>
+
+              <Rating
+                disabled
+                defaultRating={beer.rating}
+                maxRating={5}
+                icon='star'
+                size='massive'
+              />
+
+              <Modal.Description>
+              <br/><p>Style:<br/>{beer.style}</p>
+                  <p>Alcohol by Volume:<br/>{beer.abv}</p><br/>
+
+              </Modal.Description>
+              <Button
+                color='teal'
+                size='large'
+                beer={beer}
+                onClick={this.onBeerClick}>
+                Show me more
+                </Button>
+            </Modal.Content>
+          </Modal>
+
+          </List.Item>
+        }
+      )}
+      </List>
+    } else if (this.state.currentBeer && this.state.renderEdit === false) {
+        return  <BeerProfile
+                  beer={this.state.currentBeer}
+                  onClickReturn={this.onClickReturn}
+                  editBeer={this.editBeer}
+                />
+    } else (this.state.currentBeer && this.state.renderEdit === true){
+        return  <EditBeer
+                  beer={this.state.currentBeer}
+                />
+    }
+}
 
 
 

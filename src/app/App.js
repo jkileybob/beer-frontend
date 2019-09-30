@@ -425,7 +425,6 @@ onFavListBreweryClick = (e) => {
         <Route exact path='/beers' render={()=>{
             return <BeerIndex
                 favs={this.state.favs}
-                
               />
           }} />
 
@@ -439,8 +438,3 @@ onFavListBreweryClick = (e) => {
 }
 
 export default withRouter(App)
-
-
-// <Route exact path=`/beers/${beer.id}` render={()=>{
-//   return  <BeerProfile />
-//   }}/>

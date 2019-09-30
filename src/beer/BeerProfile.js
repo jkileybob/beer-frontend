@@ -1,36 +1,30 @@
 import React from "react"
-import { Card, Image, Button, Comment, Form, Header, Grid, Segment } from "semantic-ui-react";
-
-
-// needs addition of tasting notes, rating (add stars maybe?), and comments
-// needs clickable brewery modal popup
+import { Card, Image, Button, Comment, Form, Header, Grid, Segment, Divider, Rating } from "semantic-ui-react";
 
 const BeerProfile = (props) => {
-  console.log(props.beer.name)
-
+  // console.log(props.beer.name)
   return (
     <React.Fragment>
-      <Grid stackable columns={2}>
+      <Grid textAlign='center' columns={2}>
         <Grid.Column>
-            <Card>
+            <Card centered >
               <h1>{props.beer.name}</h1>
               <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY5pWI5uO7RYDHvfNml_lhxw_HCl0GsR1-2g5543nul2b5LbakAg"/>
               <Card.Content>
                 <Card.Header>{props.beer.style}</Card.Header>
                 <Card.Description>
                   {props.beer.abv} ABV <br/>
-                  {props.beer.rating}/5 Rating <br/>
-
+                BREWERY NAME GOES HERE<br/>
+                with a clickable link<br/>
                 </Card.Description>
               </Card.Content>
             </Card>
+
         </Grid.Column>
 
         <Grid.Column>
+          <Divider horizontal> TASTING NOTES </Divider>
             <Comment.Group minimal>
-              <Header>
-                Tasting Notes:
-              </Header>
             </Comment.Group>
               <Comment>
                 <Comment.Content>
@@ -41,19 +35,53 @@ const BeerProfile = (props) => {
                 </Segment>
                 </Comment.Content>
               </Comment>
-                <Form reply>
-                  <Form.TextArea />
-                  <Button compact color="teal" icon='edit'>
-                    Add Tasting Note
-                  </Button>
-                </Form>
+
+          <Divider horizontal> COMMENTS </Divider>
+              <Comment.Group minimal>
+              </Comment.Group>
+                <Comment>
+                  <Comment.Content>
+                    <Segment>
+                    <Comment.Text>
+                        {props.beer.comment}
+                    </Comment.Text>
+                  </Segment>
+                  </Comment.Content>
+                </Comment>
+
+          <Divider horizontal> RATING </Divider>
+            <Segment>
+              <Rating
+                disabled
+                defaultRating={props.beer.rating}
+                maxRating={5}
+                icon='star'
+                size='massive'
+              />
+            </Segment>
+
         </Grid.Column>
+
+        <Button center color="teal" onClick={props.onClickReturn}>
+          Back to My Beers
+        </Button>
+
+        <Button color='teal' size='large' onClick={props.editBeer}>
+          Edit this Beer
+        </Button>
+
       </Grid>
     </React.Fragment>
   )
 }
 
 export default BeerProfile
+
+//////////////////////////////////////////////////////////////////////////
+// GOAL: functionality to edit a rating onClick
+// through patch requests that will persist
+// ratings data for that beer on backend
+
 
 /////////////////////////////////////////////////////////////////////////
 // GOAL: wire up data from breweries
@@ -80,4 +108,19 @@ export default BeerProfile
 //     </Comment.Actions>
 // </Comment.Content>
 
-// each comment will create it's own <Comment> tag, respecitvely, as saved in the data
+// build it so that each comment will create it's own <Comment> tag,
+// respecitvely, as saved in the data
+////////////////////////////////////////////////////////////////////////////////
+
+// GOAL: add functionality to edit each comment/ tasting note within this page
+///////////////OR: create an edit page to that can update
+///////////////////beer name, abv, tasing notes, comments, style, rating
+
+/////////////////////////////////////////////////////////////////////////////////
+// STRETCH FEATURES:
+// eventually give each beer profile page a name slug in broswer url
+  // `http://localhost:3000/beers/${beer.name}`
+// Ability for user to upload a photo of beer that will persist in dB
+  // will require additional column for photos on backend beer and beer-related tables
+
+////////////////////////////////////////////////////////////////////////////////

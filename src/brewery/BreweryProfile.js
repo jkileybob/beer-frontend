@@ -39,6 +39,7 @@ class BreweryProfile extends React.Component{
                   size='small' >
                   close
                 </Button>
+                
                 <Button
                   id={this.props.brewery.id}
                   brewery={this.props.brewery}
@@ -47,6 +48,13 @@ class BreweryProfile extends React.Component{
                   onClick={this.props.handleFavs}
                 >
                   Add to my Favorites
+                </Button>
+
+                <Button
+                  color='teal'
+                  size='small'
+                >
+                  Log a new Beer
                 </Button>
 
             </Modal.Content>

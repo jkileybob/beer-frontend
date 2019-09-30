@@ -8,7 +8,7 @@ class Favorites extends React.Component{
     // console.log(this.props.favs.map(b => {return b.id}));
     return(
       <>
-        <div>My Favorite Breweries:</div>
+        <div><h1>My Breweries:</h1></div>
         <List animated verticalAlign='middle'>
           {this.props.favs.map(brewery =>{
             return <React.Fragment key={`fav-brewery-list-item-${brewery.id}`}>
@@ -18,7 +18,9 @@ class Favorites extends React.Component{
                 onClick={this.props.onFavListBreweryClick}
                 >
                   <List.Header>
-                    {brewery.name}
+                    <h3>
+                      {brewery.name}
+                    </h3>  
                   </List.Header>
                 </List.Item>
             </React.Fragment>
