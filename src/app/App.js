@@ -360,6 +360,18 @@ onFavListBreweryClick = (e) => {
 
   }
 
+  // BEER LOGIC:
+
+    setBrewery = (brewery) => {
+      this.setState({
+        currentBrewery: brewery
+      })
+    }
+
+    showBrewery = () => {
+      console.log(this.state.currentBrewery)
+    }
+
   render(){
     return(
       <>
@@ -425,6 +437,9 @@ onFavListBreweryClick = (e) => {
         <Route exact path='/beers' render={()=>{
             return <BeerIndex
                 favs={this.state.favs}
+                brewery={this.state.currentBrewery}
+                setBrewery={this.setBrewery}
+                showBrewery={this.showBrewery}
               />
           }} />
 

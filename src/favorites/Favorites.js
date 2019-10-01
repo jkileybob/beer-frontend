@@ -5,10 +5,10 @@ import BreweryProfile from "../brewery/BreweryProfile"
 class Favorites extends React.Component{
 
   render(){
-    // console.log(this.props.favs.map(b => {return b.id}));
+    const style={color: '#20B2AA'}
     return(
       <>
-        <div><h1>My Breweries:</h1></div>
+        <div><h1 style={style} >My Breweries:</h1></div>
         <List animated verticalAlign='middle'>
           {this.props.favs.map(brewery =>{
             return <React.Fragment key={`fav-brewery-list-item-${brewery.id}`}>
@@ -20,7 +20,7 @@ class Favorites extends React.Component{
                   <List.Header>
                     <h3>
                       {brewery.name}
-                    </h3>  
+                    </h3>
                   </List.Header>
                 </List.Item>
             </React.Fragment>

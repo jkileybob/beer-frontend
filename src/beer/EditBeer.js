@@ -1,41 +1,52 @@
 import React from 'react';
-import { Form, Button, Divider, Rating, Input, TextArea } from 'semantic-ui-react'
+import { Grid, Header, Segment, Form, Button, Divider, Rating, Input, TextArea, Image } from 'semantic-ui-react'
 const EditBeer = (props) => {
   // console.log(props)
   return(
-    <React.Fragment>
-    <h1>EDIT UR BEER HERE</h1>
-    <Form reply>
+  <React.Fragment>
+    <Grid textAlign='center' centered columns={1}>
+      <Grid.Column>
+        <Image centered size="medium" src='https://cdn.dribbble.com/users/278870/screenshots/1573076/preloader_gif.gif' />
+        <Header textAlign='center'>sometimes mistakes are made when beer is involved <br/>make your edits below</Header>
+      </Grid.Column>
+      <Grid.Column>
+        <Form reply>
+          <Divider horizontal> NAME </Divider>
+            <Form.Input />
+          <Divider horizontal> STYLE </Divider>
+            <Form.Input />
+          <Divider horizontal> ALCOHOL BY VOLUME </Divider>
+            <Form.Input />
+          <Divider horizontal> RATING </Divider>
+            <Segment textAlign='center'>
+              <Rating
+                defaultRating={props.beer.rating}
+                maxRating={5}
+                icon='star'
+                size='massive'
+              />
+            </Segment>
+          <Divider horizontal> TASTING NOTES </Divider>
+            <Form.TextArea />
+          <Divider horizontal> COMMENTS </Divider>
+            <Form.TextArea />
+        </Form>
+      </Grid.Column>
 
-      <Divider horizontal> NAME </Divider>
-          <Form.Input />
-      <Divider horizontal> STYLE </Divider>
-          <Form.Input />
-      <Divider horizontal> ALCOHOL BY VOLUME </Divider>
-          <Form.Input />
-
-    <Divider horizontal> RATING </Divider>
-      <Rating
-        defaultRating={props.beer.rating}
-        maxRating={5}
-        icon='star'
-        size='massive'
-      />
-    <Divider horizontal> TASTING NOTES </Divider>
-
-        <Form.TextArea />
-
-    <Divider horizontal> COMMENTS </Divider>
-
-        <Form.TextArea />
-
-
-      <Button size='large' color="teal" onClick={props.cancelEdit}>
-        Cancel
-      </Button>
-
-    </Form>
-    </React.Fragment>
+      <Grid.Row centered columns={8}>
+        <Grid.Column>
+          <Button size='large' color="teal" >
+            Submit
+          </Button>
+        </Grid.Column>
+        <Grid.Column>
+          <Button size='large' color="teal" onClick={props.cancelEdit}>
+            Cancel
+          </Button>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  </React.Fragment>
   )
 }
 

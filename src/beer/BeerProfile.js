@@ -1,10 +1,10 @@
 import React from "react"
-import { Card, Image, Button, Comment, Grid, Segment, Divider, Rating } from "semantic-ui-react";
+import { Card, Image, Popup, Icon, Button, Comment, Grid, Segment, Divider, Rating } from "semantic-ui-react";
 import EditBeer from '../beer/EditBeer'
 
 
 const BeerProfile = (props) => {
-  // console.log(props)
+  const style={color: '#20B2AA'}
   return (
     <React.Fragment>
       { !props.renderEdit ?
@@ -14,12 +14,29 @@ const BeerProfile = (props) => {
               <h1>{props.beer.name}</h1>
               <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY5pWI5uO7RYDHvfNml_lhxw_HCl0GsR1-2g5543nul2b5LbakAg"/>
               <Card.Content>
-                <Card.Header>{props.beer.style}</Card.Header>
-                <Card.Description>
-                  {props.beer.abv} ABV <br/>
-                BREWERY NAME GOES HERE<br/>
-                with a clickable link<br/>
-                </Card.Description>
+                <Card.Header>
+                  {props.beer.style}
+                  <Card.Meta size='small' style={style} >
+                    {props.beer.abv} ABV
+                  </Card.Meta>
+                </Card.Header>
+                <Popup
+                  trigger={<Card.Header>{props.brewery.name}</Card.Header>}
+                  size='large'
+                  position='right center'
+                  style={style}
+                >
+                  <Popup.Content>
+                    from {props.brewery.city}, {props.brewery.state}
+                  </Popup.Content>
+                </Popup>
+                <Icon
+                  onClick={props.showBrewery}
+                  link
+                  circular
+                  inverted
+                  color='teal'
+                  name='beer' />
               </Card.Content>
             </Card>
 
@@ -65,7 +82,7 @@ const BeerProfile = (props) => {
 
         </Grid.Column>
 
-        <Button center color="teal" onClick={props.onClickReturn}>
+        <Button color="teal" onClick={props.onClickReset}>
           Back to My Beers
         </Button>
 
@@ -129,5 +146,4 @@ export default BeerProfile
   // `http://localhost:3000/beers/${beer.name}`
 // Ability for user to upload a photo of beer that will persist in dB
   // will require additional column for photos on backend beer and beer-related tables
-
 ////////////////////////////////////////////////////////////////////////////////

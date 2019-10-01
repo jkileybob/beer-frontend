@@ -5,6 +5,7 @@ import BreweryMap from './BreweryMap'
 class BreweryProfile extends React.Component{
 
     render(){
+      const style={color: '#FF4500'}
       return (
       <React.Fragment>
         { this.props.open ?
@@ -18,7 +19,7 @@ class BreweryProfile extends React.Component{
               />
             </Container>
             <Modal.Content>
-              <Header size='huge'>{this.props.brewery.name}</Header>
+              <Header style={style} size='huge'>{this.props.brewery.name}</Header>
                 <Header size='tiny'>
                   brewery type: {this.props.brewery.brewery_type} <br/>
                   telephone: {this.props.brewery.phone} <br/>
@@ -39,7 +40,7 @@ class BreweryProfile extends React.Component{
                   size='small' >
                   close
                 </Button>
-                
+
                 <Button
                   id={this.props.brewery.id}
                   brewery={this.props.brewery}
