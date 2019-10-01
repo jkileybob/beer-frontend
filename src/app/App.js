@@ -11,7 +11,6 @@ import './App.css';
 
 class App extends React.Component{
 
-// STATE
   state = {
     // USER STATES:
     currentUser: null,
@@ -53,15 +52,6 @@ class App extends React.Component{
       });
     } else {
       this.setState({ loadingUser: false, loadingFavs: true })
-    }
-  }
-
-  componentWillUpdate(){
-    if (this.state.loadingFavs){
-      // return console.log("true")
-    } else {
-      // return window.location.reload()
-        // return console.log("finally false")
     }
   }
 
@@ -407,7 +397,7 @@ onFavListBreweryClick = (e) => {
             : <SignUp createNewUser={this.createNewUser} />
           } } />
 
-        <Route exact path='/breweries' render={()=>{
+        <Route exact path='/search-breweries' render={()=>{
             return <BreweryIndex
               breweries={this.state.breweries}
               currentBrewery={this.state.currentBrewery}
@@ -422,7 +412,7 @@ onFavListBreweryClick = (e) => {
               />
           }} />
 
-        <Route exact path='/favorites' render={()=>{
+        <Route exact path='/breweries' render={()=>{
             return <Favorites
               breweries={this.state.breweries}
               currentBrewery={this.state.currentBrewery}

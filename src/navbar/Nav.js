@@ -20,7 +20,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, myBrewe
 
           <Menu.Item
             as={NavLink}
-            to="/breweries"
+            to="/search-breweries"
             name="Search Breweries"
             active={pathname === "/breweries"}
             onClick={clearStates}
@@ -28,7 +28,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, myBrewe
 
           <Menu.Item
             as={NavLink}
-            to="/favorites"
+            to="/breweries"
             name="My Breweries"
             active={pathname === "/favorites"}
             onClick={favs}
