@@ -1,11 +1,14 @@
 import React from "react"
-import { Card, Image, Button, Comment, Form, Header, Grid, Segment, Divider, Rating } from "semantic-ui-react";
+import { Card, Image, Button, Comment, Grid, Segment, Divider, Rating } from "semantic-ui-react";
+import EditBeer from '../beer/EditBeer'
+
 
 const BeerProfile = (props) => {
-  // console.log(props.beer.name)
+  // console.log(props)
   return (
     <React.Fragment>
-      <Grid textAlign='center' columns={2}>
+      { !props.renderEdit ?
+        <Grid textAlign='center' columns={2}>
         <Grid.Column>
             <Card centered >
               <h1>{props.beer.name}</h1>
@@ -69,8 +72,12 @@ const BeerProfile = (props) => {
         <Button color='teal' size='large' onClick={props.editBeer}>
           Edit this Beer
         </Button>
-
       </Grid>
+      : <EditBeer
+          beer={props.beer}
+          renderEdit={props.renderEdit}
+          cancelEdit={props.cancelEdit} />
+    }
     </React.Fragment>
   )
 }
