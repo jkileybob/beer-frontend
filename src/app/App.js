@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import Nav from '../navbar/Nav'
+import Footer from '../footer/Footer'
 import UserProfile from '../user/UserProfile'
 import LoginForm from '../login/LoginForm'
 import SignUp from '../signup/SignUp'
@@ -437,6 +438,7 @@ onFavListBreweryClick = (e) => {
 
       : null }
 
+      <Footer />
       </>
     )
   }
