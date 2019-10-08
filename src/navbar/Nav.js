@@ -64,6 +64,13 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, myBrewe
             name="Sign Up"
             active={pathname === "/signup"}
           />
+          <Menu.Item
+            as={NavLink}
+            to="/search-breweries"
+            name="Search Breweries"
+            active={pathname === "/search-breweries"}
+            onClick={clearStates}
+          />
         </Fragment>
       )}
     </Menu>
