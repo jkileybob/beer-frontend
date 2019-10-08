@@ -22,7 +22,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, myBrewe
             as={NavLink}
             to="/search-breweries"
             name="Search Breweries"
-            active={pathname === "/breweries"}
+            active={pathname === "/search-breweries"}
             onClick={clearStates}
           />
 

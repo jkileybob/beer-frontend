@@ -5,7 +5,7 @@ import BreweryMap from './BreweryMap'
 class BreweryProfile extends React.Component{
 
     render(){
-      const style={color: '#FF4500'}
+      const style={color: '#20B2AA'}
       return (
       <React.Fragment>
         { this.props.open ?

@@ -8,7 +8,7 @@ class BreweryIndex extends React.Component{
     const style={color: '#20B2AA'}
     return(
       <>
-        <h1 style={style} >Search the Brewery Database</h1>
+        <h1 style={style} >Search the American Brewery Database</h1>
         <h2>...by name and/or state...</h2>
           <Input
             fluid
