@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import Nav from '../navbar/Nav'
+import Footer from '../footer/Footer'
 import UserProfile from '../user/UserProfile'
 import LoginForm from '../login/LoginForm'
 import SignUp from '../signup/SignUp'
@@ -144,18 +145,26 @@ class App extends React.Component{
         fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}`)
         .then(res => res.json())
         .then(breweries => {
-          this.setState({
+          if(breweries.length >= 1){
+            this.setState({
             breweries: breweries
-          })
+            })
+          } else {
+            alert(`Unfortunately, no such brewery by the name of "${inputName}" matches your search.`)
+          }
         })
       } else if (!this.state.searchTermName && this.state.searchTermState) {
         let inputState = this.state.searchTermState
         fetch(`https://api.openbrewerydb.org/breweries?by_state=${inputState}`)
         .then(res => res.json())
         .then(breweries => {
-          this.setState({
+          if(breweries.length >= 1){
+            this.setState({
             breweries: breweries
-          })
+            })
+          } else {
+            alert(`Wow! No such breweries exist for the American state of "${inputState}". It must be a pretty desolate place to live, especially without beer, or else, perhaps your spelling is just off. Not trying to point fingers, but maybe double check...`)
+          }
         })
       } else if (this.state.searchTermName && this.state.searchTermState) {
         let inputName = this.state.searchTermName
@@ -163,21 +172,29 @@ class App extends React.Component{
         fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}&by_state=${inputState}`)
         .then(res => res.json())
         .then(breweries => {
-          this.setState({
+          if(breweries.length >= 1){
+            this.setState({
             breweries: breweries
-          })
+            })
+          } else {
+            alert(`Unfortunately, no such breweries by the name of "${inputName}" within the American state of "${inputState}" seem to exist in the database.`)
+          }
         })
       } else if (!this.state.searchTermName && !this.state.searchTermState && this.state.searchTermCity){
         let inputCity = this.state.searchTermCity
         fetch(`https://api.openbrewerydb.org/breweries?by_city=${inputCity}`)
         .then(res => res.json())
         .then(breweries => {
-          this.setState({
+          if(breweries.length >= 1){
+            this.setState({
             breweries: breweries
-          })
+            })
+          } else {
+            alert(`Wow! No such breweries exist for the American city of "${inputCity}". It must be a pretty desolate place to live, especially without beer, or else, perhaps your spelling and/or geography is just a little off. Not trying to point fingers, but maybe double check...`)
+          }
         })
       } else {
-        alert("Please Enter Something. Anything. Preferrably not nonsense.")
+        alert("Please enter a search query for an American brewery.")
       }
     }
 
@@ -443,6 +460,7 @@ onFavListBreweryClick = (e) => {
 
       : null }
 
+      <Footer />
       </>
     )
   }
