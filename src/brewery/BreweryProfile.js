@@ -54,6 +54,7 @@ class BreweryProfile extends React.Component{
                 <Button
                   color='teal'
                   size='small'
+                  onClick={this.props.handleBeerLog}
                 >
                   Log a new Beer
                 </Button>

@@ -352,6 +352,11 @@ onFavListBreweryClick = (e) => {
 
   // BEER LOGIC:
 
+
+  handleBeerLog = () => {
+    console.log("wired")
+  }
+
     setBrewery = (brewery) => {
       this.setState({
         currentBrewery: brewery
@@ -409,6 +414,7 @@ onFavListBreweryClick = (e) => {
               handleFavs={this.handleFavs}
               modalOpen={this.state.modalOpen}
               onClickClose={this.onClickClose}
+              handleBeerLog={this.handleBeerLog}
               />
           }} />
 
