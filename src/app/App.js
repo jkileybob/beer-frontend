@@ -8,6 +8,7 @@ import SignUp from '../signup/SignUp'
 import BeerIndex from '../beer/BeerIndex'
 import BreweryIndex from '../brewery/BreweryIndex'
 import Favorites from '../favorites/Favorites'
+import AddBeer from '../beer/AddBeer'
 import './App.css';
 
 class App extends React.Component{
@@ -30,9 +31,12 @@ class App extends React.Component{
     // user/brewery states:
     favsById: [],
     favs: [],
-    loadingFavs: true
-  }
+    loadingFavs: true,
 
+    // beer STATES:
+    beers: [],
+    addingBeer: false
+  }
 
   componentDidMount(){
     let token = localStorage.getItem('token');
@@ -51,6 +55,7 @@ class App extends React.Component{
           favsById: [...favsById]
           }, ()=>{ this.fetchFavs() });
       });
+      this.fetchUserBeers(token);
     } else {
       this.setState({ loadingUser: false, loadingFavs: true })
     }
@@ -236,26 +241,26 @@ class App extends React.Component{
 //FAVORITES COMPONENT LOGIC:
 
 // sets breweries state === favs, for iterating
-myBreweriesClick = () => {
-  let favs = this.state.favs;
-  this.setState({
-    breweries: favs
-  })
-}
+    myBreweriesClick = () => {
+      let favs = this.state.favs;
+      this.setState({
+        breweries: favs
+      })
+    }
 
 
 // opens the modal in favorites page
-onFavListBreweryClick = (e) => {
-  let breweryId = parseInt(e.currentTarget.id);
-  this.state.favs.filter(breweryObj =>
-    breweryObj.id === breweryId ?
-      this.setState({
-        currentBrewery: breweryObj,
-        modalOpen: true
-      })
-    : null
-  )
-}
+    onFavListBreweryClick = (e) => {
+      let breweryId = parseInt(e.currentTarget.id);
+      this.state.favs.filter(breweryObj =>
+        breweryObj.id === breweryId ?
+          this.setState({
+            currentBrewery: breweryObj,
+            modalOpen: true
+          })
+        : null
+      )
+    }
 
 // called on componentDidMount, still needs a refresh to show changes
       // fetchFavs() will return to this spot below:
@@ -357,22 +362,57 @@ onFavListBreweryClick = (e) => {
           this.logBrewery(breweryId);
       }
     } else { alert("You must be logged in to add to your favorites.") }
-
       // you can manipulate the backend to create that brewery
       // which doesn't already exist in the db somehow, then...
       // make a post request of brewery id to create a new favs instance
       // get a response of that new favs instance
       // create a copy of favs state array and push new instance
       // setState of favs array to match new
-
   }
+
+
+
 
   // BEER LOGIC:
+    // fetchUserBeers called in componentDidMount on load of page
+    fetchUserBeers(token){
+      fetch(`http://localhost:4000/api/v1/beers`, {
+        method: "GET",
+        headers: {"Authentication" : `Bearer ${token}`}
+      }).then(res=> res.json())
+      .then(beers =>{
+        // console.log(beers)
+        this.setState({
+          beers: beers
+        })
+      })
+    }
+
+    handleBeerLog = (e) => {
+      console.log(e.target)
+      // need to render <AddBeer /> in BeerIndex from button click
+      // that occurs in Brewery from data passed up to App
+
+      // could trigger state change, like "addingBeer" that
+      // conditionally renders form
+      this.setState({
+        addingBeer: true
+      })
+
+// fail
+      // could use window to redirect page and render form
+      // window.location.replace('/add-beer') - won't work bc state is forfeited
 
 
-  handleBeerLog = () => {
-    console.log("wired")
-  }
+      // could send brewery id through url slug as `/add-beer/${breweryId}`
+      // and use that to preload form with current brewery
+
+      // need breweryId to pass through app into beer index where beer state is stored
+      // then open <AddBeer /> with the brewery data pre-loaded in form
+      // then send a post request with new beer data to backend
+
+
+    }
 
     setBrewery = (brewery) => {
       this.setState({
@@ -444,17 +484,28 @@ onFavListBreweryClick = (e) => {
               handleFavs={this.handleFavs}
               modalOpen={this.state.modalOpen}
               onClickClose={this.onClickClose}
+              handleBeerLog={this.handleBeerLog}
               />
           }} />
 
         <Route exact path='/beers' render={()=>{
             return <BeerIndex
+                beers={this.state.beers}
                 favs={this.state.favs}
                 brewery={this.state.currentBrewery}
                 setBrewery={this.setBrewery}
                 showBrewery={this.showBrewery}
               />
           }} />
+
+        <Route exact path='/add-beer' render={()=>{
+              return <AddBeer
+                  beers={this.state.beers}
+                  favs={this.state.favs}
+                  brewery={this.state.currentBrewery}
+                  addingBeer={this.state.addingBeer}
+                />
+            }} />
 
         </Switch>
 

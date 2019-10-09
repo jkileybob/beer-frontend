@@ -2,35 +2,27 @@ import React from 'react'
 // import { Route, Link } from 'react-router-dom'
 import { Popup, List, Button, Rating } from 'semantic-ui-react'
 import BeerProfile from '../beer/BeerProfile'
-import AddBeer from '../beer/AddBeer'
 // BACKEND: data returned needs to be adjusted so as not to return user information
 
 class BeerIndex extends React.Component{
   state = {
-    beers: [],
     currentBeer: null,
     renderEdit: false
   }
 
-  componentDidMount(){
-    fetch(`http://localhost:4000/api/v1/beers`)
-    .then(res=> res.json())
-    .then(beers =>{
-      this.setState({
-        beers: beers
-      })
-    })
-  }
-
+  // sets currentBrewery state in App
+  // using App's setBrewery() called within getBrewery()
+  // also sets currentBeer state in BeerIndex
   onBeerClick = (e, props) => {
-    this.getBreweries(props);
+    this.getBrewery(props.beer.brewery_id);
     this.setState({
       currentBeer: props.beer
     })
   }
 
-  getBreweries = (props) => {
-    let breweryId = props.beer.brewery_id
+  // in the future getBrewery can be adjusted to filter other brewery lists
+  // so user can add beers outside of their favs list...
+  getBrewery = (breweryId) => {
     this.props.favs.filter(brewery =>
       brewery.id === breweryId ?
         this.props.setBrewery(brewery)
@@ -58,15 +50,13 @@ class BeerIndex extends React.Component{
   }
 
   render(){
-
     const style={color: '#20B2AA'}
-
     return(
       <React.Fragment>
-      {!this.state.currentBeer ?
+        {!this.state.currentBeer ?
         <List animated verticalAlign='middle'>
           <List.Header as='h1' style={style} >My Beers:</List.Header>
-            {this.state.beers.map((beer) => {
+            {this.props.beers.map((beer) => {
               return  <List.Item key={`beer-list-item-${beer.name}`}>
                   <Popup
                     on="click"
@@ -102,6 +92,7 @@ class BeerIndex extends React.Component{
           editBeer={this.editBeer}
           cancelEdit={this.cancelEdit} />
       }
+
       </React.Fragment>
   )}
 }

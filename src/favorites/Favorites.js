@@ -32,6 +32,7 @@ class Favorites extends React.Component{
              <BreweryProfile
                brewery={this.props.currentBrewery}
                handleFavs={this.props.handleFavs}
+               handleBeerLog={this.props.handleBeerLog}
                favs={this.props.favs}
                open={this.props.modalOpen}
                onClickClose={this.props.onClickClose}

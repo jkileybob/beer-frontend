@@ -66,9 +66,9 @@ class BreweryIndex extends React.Component{
              <BreweryProfile
                brewery={this.props.currentBrewery}
                handleFavs={this.props.handleFavs}
+               handleBeerLog={this.props.handleBeerLog}
                open={this.props.modalOpen}
                onClickClose={this.props.onClickClose}
-               handleBeerLog={this.props.handleBeerLog}
              />
            </>
         : null
