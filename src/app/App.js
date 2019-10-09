@@ -39,7 +39,7 @@ class App extends React.Component{
     addName: "",
     addStyle: "",
     addABV: "",
-    addRating: "",
+    addRating: "3",
     addTastingNote: "",
     addComment: ""
   }
@@ -394,26 +394,6 @@ class App extends React.Component{
       })
     }
 
-    handleBeerLog = () => {
-      this.setState({
-        addingBeer: true
-      })
-
-      // could send brewery id through url slug as `/add-beer/${breweryId}`
-      // and use that to preload form with current brewery
-
-      // need breweryId to pass through app into beer index where beer state is stored
-      // then open <AddBeer /> with the brewery data pre-loaded in form
-      // then send a post request with new beer data to backend
-
-    }
-
-    cancelAddBeer = () => {
-      this.setState({
-        addingBeer: false
-      })
-    }
-
     setBrewery = (brewery) => {
       this.setState({
         currentBrewery: brewery
@@ -424,8 +404,16 @@ class App extends React.Component{
       console.log(this.state.currentBrewery)
     }
 
-    handleAddBeer = () => {
-      console.log('attempting to submit');
+    cancelAddBeer = () => {
+      this.setState({
+        addingBeer: false
+      })
+    }
+
+    handleBeerLog = () => {
+      this.setState({
+        addingBeer: true
+      })
     }
 
     handleName = (e) => {
@@ -464,6 +452,27 @@ class App extends React.Component{
       this.setState({
         addComment: input
       })
+    }
+
+    handleSubmitBeer = () => {
+      console.log("attempting to submit new beer to DB")
+      // fetch(``, {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type":"application/json",
+      //       "Accept":"application/json",
+      //       "Authentication" : `Bearer ${token}`
+      //     },
+      //     body: JSON.stringify({
+      //       name: this.state.addName,
+      //       style: this.state.addStyle,
+      //       abv: this.state.addABV,
+      //       rating: this.state.addRating,
+      //       tasing_note: this.state.addTastingNote,
+      //       comment: this.state.addComment
+      //     })
+      //   }
+      // )
     }
 
   render(){
@@ -547,7 +556,7 @@ class App extends React.Component{
                   addingBeer={this.state.addingBeer}
                   cancelAddBeer={this.cancelAddBeer}
 
-                  handleAddBeer={this.handleAddBeer}
+                  handleSubmitBeer={this.handleSubmitBeer}
                   addName={this.state.addName}
                   addStyle={this.state.addStyle}
                   addABV={this.state.addABV}

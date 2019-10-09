@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Header, Segment, Form, Button, Divider, Rating, Input, TextArea, Image } from 'semantic-ui-react'
 const AddBeer = (props) => {
-  console.log(props);
+  // console.log(props);
   const style = {color: '#20B2AA'}
   return(
     <React.Fragment>
@@ -18,16 +18,22 @@ const AddBeer = (props) => {
           <Form reply>
             <Divider horizontal> NAME </Divider>
               <Form.Input
+                type='text'
+                value={props.addName}
                 onChange={props.handleName}
                 placeholder='name of beer goes here'
               />
             <Divider horizontal> STYLE </Divider>
               <Form.Input
+                type='text'
+                value={props.addStyle}
                 onChange={props.handleStyle}
                 placeholder='style of beer goes here'
               />
             <Divider horizontal> ALCOHOL BY VOLUME </Divider>
               <Form.Input
+                type='text'
+                value={props.addABV}
                 onChange={props.handleABV}
                 placeholder='percentage of ABV of beer goes here'
               />
@@ -36,7 +42,7 @@ const AddBeer = (props) => {
                 <Rating
                   clearable
                   onRate={props.handleRating}
-                  defaultRating={3}
+                  defaultRating={props.addRating}
                   maxRating={5}
                   icon='star'
                   size='massive'
@@ -44,11 +50,13 @@ const AddBeer = (props) => {
               </Segment>
             <Divider horizontal> TASTING NOTES </Divider>
               <TextArea
+                value={props.addTastingNote}
                 onChange={props.handleTastingNote}
                 placeholder='add some taste descriptors here'
               />
             <Divider horizontal> COMMENTS </Divider>
               <TextArea
+                value={props.addComment}
                 onChange={props.handleComment}
                 placeholder='did you love it? did you hate it? would you drink it again? who did you drink it with? write whatever you want or nothing at all. seriously, all comments or lack thereof welcome! this is your diary.'
               />
@@ -60,7 +68,7 @@ const AddBeer = (props) => {
             <Button
               size='large'
               color="teal"
-              onClick={props.handleAddBeer}
+              onClick={props.handleSubmitBeer}
             >
               Submit
             </Button>
