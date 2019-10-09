@@ -20,7 +20,6 @@ class App extends React.Component{
 
     // BREWERY STATES:
     breweries: [],
-
     currentBrewery: null,
     modalOpen: false,
 
@@ -28,14 +27,21 @@ class App extends React.Component{
     searchTermCity: "",
     searchTermState: "",
 
-    // user/brewery states:
+    // favs/myBeer STATES:
     favsById: [],
     favs: [],
     loadingFavs: true,
 
     // beer STATES:
     beers: [],
-    addingBeer: false
+    addingBeer: false,
+
+    addName: "",
+    addStyle: "",
+    addABV: "",
+    addRating: "",
+    addTastingNote: "",
+    addComment: ""
   }
 
   componentDidMount(){
@@ -347,28 +353,28 @@ class App extends React.Component{
       // }
     }
 
-  handleFavs = (e) => {
-    // make sure user is logged in
-    if (this.state.currentUser){
-// check if brewery already exists in user's favs
-      let breweryId = parseInt(e.currentTarget.id);
-      let duplicate = this.state.favs.filter(breweryObj => breweryObj.id === breweryId)
-      if (duplicate.length > 0){
-        //   // if yes, alert user they can't add twice
-          alert("This brewery already exists in your favorites.")
-      } else {
-        //   // make a post request of brewery id to make a new brewery, unless
-          // console.log("attempting to add new fav with id:", breweryId)
-          this.logBrewery(breweryId);
-      }
-    } else { alert("You must be logged in to add to your favorites.") }
-      // you can manipulate the backend to create that brewery
-      // which doesn't already exist in the db somehow, then...
-      // make a post request of brewery id to create a new favs instance
-      // get a response of that new favs instance
-      // create a copy of favs state array and push new instance
-      // setState of favs array to match new
-  }
+    handleFavs = (e) => {
+      // make sure user is logged in
+      if (this.state.currentUser){
+        // check if brewery already exists in user's favs
+        let breweryId = parseInt(e.currentTarget.id);
+        let duplicate = this.state.favs.filter(breweryObj => breweryObj.id === breweryId)
+        if (duplicate.length > 0){
+          //   // if yes, alert user they can't add twice
+            alert("This brewery already exists in your favorites.")
+        } else {
+          //   // make a post request of brewery id to make a new brewery, unless
+            // console.log("attempting to add new fav with id:", breweryId)
+            this.logBrewery(breweryId);
+        }
+      } else { alert("You must be logged in to add to your favorites.") }
+        // you can manipulate the backend to create that brewery
+        // which doesn't already exist in the db somehow, then...
+        // make a post request of brewery id to create a new favs instance
+        // get a response of that new favs instance
+        // create a copy of favs state array and push new instance
+        // setState of favs array to match new
+    }
 
 
 
@@ -388,21 +394,10 @@ class App extends React.Component{
       })
     }
 
-    handleBeerLog = (e) => {
-      console.log(e.target)
-      // need to render <AddBeer /> in BeerIndex from button click
-      // that occurs in Brewery from data passed up to App
-
-      // could trigger state change, like "addingBeer" that
-      // conditionally renders form
+    handleBeerLog = () => {
       this.setState({
         addingBeer: true
       })
-
-// fail
-      // could use window to redirect page and render form
-      // window.location.replace('/add-beer') - won't work bc state is forfeited
-
 
       // could send brewery id through url slug as `/add-beer/${breweryId}`
       // and use that to preload form with current brewery
@@ -411,7 +406,12 @@ class App extends React.Component{
       // then open <AddBeer /> with the brewery data pre-loaded in form
       // then send a post request with new beer data to backend
 
+    }
 
+    cancelAddBeer = () => {
+      this.setState({
+        addingBeer: false
+      })
     }
 
     setBrewery = (brewery) => {
@@ -422,6 +422,48 @@ class App extends React.Component{
 
     showBrewery = () => {
       console.log(this.state.currentBrewery)
+    }
+
+    handleAddBeer = () => {
+      console.log('attempting to submit');
+    }
+
+    handleName = (e) => {
+      let input = e.target.value;
+      this.setState({
+        addName: input
+      })
+    }
+    handleStyle = (e) => {
+      let input = e.target.value;
+      this.setState({
+        addStyle: input
+      })
+    }
+    handleABV = (e) => {
+      let input = e.target.value;
+      this.setState({
+        addABV: input + "%"
+      })
+    }
+    handleRating = (e, {rating, maxRating}) => {
+      // console.log(input, typeof input)
+      let input = rating.toString()
+      this.setState({
+        addRating: input
+      })
+    }
+    handleTastingNote = (e) => {
+      let input = e.target.value;
+      this.setState({
+        addTastingNote: input
+      })
+    }
+    handleComment = (e) => {
+      let input = e.target.value;
+      this.setState({
+        addComment: input
+      })
     }
 
   render(){
@@ -435,86 +477,101 @@ class App extends React.Component{
           myBreweriesClick={this.myBreweriesClick}
         />
 
-      { !this.state.loadingUser ?
+        { !this.state.loadingUser ?
+          <Switch>
+            {!this.state.addingBeer ?
+              <>
+                <Route exact path='/' render={()=> <Redirect to='/profile' />  }/>
 
-        <Switch>
+                <Route exact path='/profile' render={()=>{
+                  return this.state.currentUser ?
+                    <UserProfile user={this.state.currentUser} />
+                  : <Redirect to='/login' />
+                }} />
 
-          <Route exact path='/' render={()=> <Redirect to='/profile' />  }/>
+                <Route exact path='/login' render={()=>{
+                  return this.state.currentUser ?
+                    <Redirect to='/profile' />
+                  : <LoginForm onLogIn={this.handleLoginSubmit} />
+                }} />
 
-          <Route exact path='/profile' render={()=>{
-            return this.state.currentUser ?
-              <UserProfile user={this.state.currentUser} />
-            : <Redirect to='/login' />
-          }} />
+                <Route exact path='/signup' render={()=>{
+                  return this.state.currentUser ?
+                  <Redirect to='/profile' />
+                  : <SignUp createNewUser={this.createNewUser} />
+                } } />
 
-          <Route exact path='/login' render={()=>{
-            return this.state.currentUser ?
-              <Redirect to='/profile' />
-            : <LoginForm onLogIn={this.handleLoginSubmit} />
-          }} />
+                <Route exact path='/search-breweries' render={()=>{
+                  return <BreweryIndex
+                    breweries={this.state.breweries}
+                    currentBrewery={this.state.currentBrewery}
+                    handleNameSearch={this.handleNameSearch}
+                    handleStateSearch={this.handleStateSearch}
+                    handleCitySearch={this.handleCitySearch}
+                    handleClickSubmit={this.handleClickSubmit}
+                    onBreweryClick={this.onBreweryClick}
+                    handleFavs={this.handleFavs}
+                    modalOpen={this.state.modalOpen}
+                    onClickClose={this.onClickClose}
+                    handleBeerLog={this.handleBeerLog}
+                    />
+                }} />
 
-        <Route exact path='/signup' render={()=>{
-            return this.state.currentUser ?
-            <Redirect to='/profile' />
-            : <SignUp createNewUser={this.createNewUser} />
-          } } />
+                <Route exact path='/breweries' render={()=>{
+                  return <Favorites
+                    breweries={this.state.breweries}
+                    currentBrewery={this.state.currentBrewery}
+                    favs={this.state.favs}
+                    onFavListBreweryClick={this.onFavListBreweryClick}
+                    handleFavs={this.handleFavs}
+                    modalOpen={this.state.modalOpen}
+                    onClickClose={this.onClickClose}
+                    handleBeerLog={this.handleBeerLog}
+                    />
+                }} />
 
-        <Route exact path='/search-breweries' render={()=>{
-            return <BreweryIndex
-              breweries={this.state.breweries}
-              currentBrewery={this.state.currentBrewery}
-              handleNameSearch={this.handleNameSearch}
-              handleStateSearch={this.handleStateSearch}
-              handleCitySearch={this.handleCitySearch}
-              handleClickSubmit={this.handleClickSubmit}
-              onBreweryClick={this.onBreweryClick}
-              handleFavs={this.handleFavs}
-              modalOpen={this.state.modalOpen}
-              onClickClose={this.onClickClose}
-              handleBeerLog={this.handleBeerLog}
-              />
-          }} />
-
-        <Route exact path='/breweries' render={()=>{
-            return <Favorites
-              breweries={this.state.breweries}
-              currentBrewery={this.state.currentBrewery}
-              favs={this.state.favs}
-              onFavListBreweryClick={this.onFavListBreweryClick}
-              handleFavs={this.handleFavs}
-              modalOpen={this.state.modalOpen}
-              onClickClose={this.onClickClose}
-              handleBeerLog={this.handleBeerLog}
-              />
-          }} />
-
-        <Route exact path='/beers' render={()=>{
-            return <BeerIndex
-                beers={this.state.beers}
-                favs={this.state.favs}
-                brewery={this.state.currentBrewery}
-                setBrewery={this.setBrewery}
-                showBrewery={this.showBrewery}
-              />
-          }} />
-
-        <Route exact path='/add-beer' render={()=>{
-              return <AddBeer
+                <Route exact path='/beers' render={()=>{
+                  return <BeerIndex
+                      beers={this.state.beers}
+                      favs={this.state.favs}
+                      brewery={this.state.currentBrewery}
+                      setBrewery={this.setBrewery}
+                      showBrewery={this.showBrewery}
+                    />
+                }} />
+              </>
+            :   <AddBeer
+                  currentBrewery={this.state.currentBrewery}
                   beers={this.state.beers}
                   favs={this.state.favs}
-                  brewery={this.state.currentBrewery}
                   addingBeer={this.state.addingBeer}
+                  cancelAddBeer={this.cancelAddBeer}
+
+                  handleAddBeer={this.handleAddBeer}
+                  addName={this.state.addName}
+                  addStyle={this.state.addStyle}
+                  addABV={this.state.addABV}
+                  addRating={this.state.addRating}
+                  addTastingNote={this.state.addTastingNote}
+                  addComment={this.state.addComment}
+                  handleName={this.handleName}
+                  handleStyle={this.handleStyle}
+                  handleABV={this.handleABV}
+                  handleRating={this.handleRating}
+                  handleTastingNote={this.handleTastingNote}
+                  handleComment={this.handleComment}
                 />
-            }} />
+            }
 
-        </Switch>
+          </Switch>
 
-      : null }
+        : null }
 
-      <Footer />
       </>
     )
   }
 }
 
 export default withRouter(App)
+
+// <Footer /> line 510

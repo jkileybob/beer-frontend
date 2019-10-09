@@ -14,6 +14,10 @@ https://media.tenor.com/images/c32e4ba8012b4360f16937fff582c7b6/tenor.gif
 https://media3.giphy.com/media/xT1R9XnFJkL1S2BFqo/giphy.gif
 https://myrealdomain.com/images/animated-beer-5.gif
 
+
+// window.location.replace('/add-beer') reloads window via JS
+
+
 // conditional rendering for beer profile and beer edit pag in beer index
 {if (this.state.currentBeer === null && this.state.renderEdit === false){
   <List animated verticalAlign='middle'>

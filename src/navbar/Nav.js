@@ -2,11 +2,11 @@ import React, { Fragment } from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 
-const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, myBreweriesClick, handleBeerLog }) => {
+const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, myBreweriesClick }) => {
   let logout = () => {onLogOut()}
   let clearStates = () => {resetSearch()}
   let favs = () => {myBreweriesClick()}
-  let addingBeer = () => {handleBeerLog()}
+
   return (
     <Menu pointing secondary>
       {logged_in ? (
@@ -40,13 +40,6 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, myBrewe
             to="/beers"
             name="My Beers"
             active={pathname === "/beers"}
-          />
-
-          <Menu.Item
-            as={NavLink}
-            to="/add-beer"
-            name="Add a Beer"
-            active={pathname === "/add-beer"}
           />
 
           <Menu.Menu position="right">
@@ -86,3 +79,10 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, myBrewe
 };
 
 export default withRouter(Nav);
+
+      // <Menu.Item
+      //   as={NavLink}
+      //   to="/add-beer"
+      //   name="Add a Beer"
+      //   active={pathname === "/add-beer"}
+      // />
