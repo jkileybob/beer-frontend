@@ -34,14 +34,16 @@ class App extends React.Component{
 
     // beer STATES:
     beers: [],
+    currentBeer: null,
     addingBeer: false,
+    renderEdit: false,
 
-    addName: "",
-    addStyle: "",
-    addABV: "" + "%",
-    addRating: "3",
-    addTastingNote: "",
-    addComment: ""
+    name: "",
+    style: "",
+    abv: "" + "%",
+    rating: "3",
+    tastingNote: "",
+    comment: ""
   }
 
   componentDidMount(){
@@ -398,22 +400,13 @@ class App extends React.Component{
       })
     }
 
-    setBrewery = (brewery) => {
-      this.setState({
-        currentBrewery: brewery
-      })
-    }
 
+    // will eventually redirect a click from beer profile to brweery profile
     showBrewery = () => {
       console.log(this.state.currentBrewery)
     }
 
-    cancelAddBeer = () => {
-      this.setState({
-        addingBeer: false
-      })
-    }
-
+    // handles click from brewery's add beer button
     handleBeerLog = (e) => {
       let breweryId = parseInt(e.currentTarget.id);
       let duplicate = this.state.favs.filter(breweryObj => breweryObj.id === breweryId)
@@ -425,45 +418,72 @@ class App extends React.Component{
         alert("You must log this brewery before adding one of their beers to your diary!")
       }
     }
+    // handles click form beer's edit button
+    editBeerOnClick = (e, props) => {
+      let beer = props.beer
+      this.setState({
+        renderEdit: true,
+        name: beer.name,
+        style: beer.style,
+        abv: beer.abv + "%",
+        rating: beer.rating,
+        tastingNote: beer.tastingNote,
+        comment: beer.comment
+      })
+    }
+    // cancels/resets state for both button functions above
+    cancelBeer = () => {
+      this.setState({
+        addingBeer: false,
+        renderEdit: false,
+        name: "",
+        style: "",
+        abv: "" + "%",
+        rating: "3",
+        tastingNote: "",
+        comment: ""
+      })
+    }
 
-    handleName = (e) => {
-      let input = e.target.value;
+    // destructures event to isolate parts of the target
+    // id is hard coded as whatever the input's state should be
+    // and e.target.value is each keystroke typed into the input
+    inputValue = (e) => {
+      const { target: { id, value } } = e
       this.setState({
-        addName: input
-      })
-    }
-    handleStyle = (e) => {
-      let input = e.target.value;
-      this.setState({
-        addStyle: input
-      })
-    }
-    handleABV = (e) => {
-      let input = e.target.value;
-      this.setState({
-        addABV: input
+        [id]: value
       })
     }
     handleRating = (e, {rating, maxRating}) => {
       // console.log(input, typeof input)
       let input = rating.toString()
       this.setState({
-        addRating: input
+        rating: input
       })
     }
-    handleTastingNote = (e) => {
-      let input = e.target.value;
-      this.setState({
-        addTastingNote: input
-      })
-    }
-    handleComment = (e) => {
-      let input = e.target.value;
-      this.setState({
-        addComment: input
-      })
-    }
+    // finds curent beer + brewery from name click in beer index
+    // can be adjusted in the future to filter other brewery lists
+    // so user can add beers outside of their saved breweries...
+    onBeerClick = (e, props) => {
+      let beer = props.beer
+      let breweryId = props.beer.brewery_id
 
+      this.state.favs.filter(brewery =>
+        brewery.id === breweryId ?
+        this.setState({
+          currentBeer: beer,
+          currentBrewery: brewery
+        })
+        : null
+      )
+    }
+    onClickReset = (e) => {
+      this.setState({
+        currentBeer: null,
+        currentBrewery: null
+      });
+    }
+    // post fetch submits new beer to local db
     handleSubmitBeer = () => {
       let token = localStorage.getItem('token');
       fetch(`http://localhost:4000/api/v1/add-beer`, {
@@ -475,17 +495,21 @@ class App extends React.Component{
           },
           body: JSON.stringify({
             brewery_id: this.state.currentBrewery.id,
-            name: this.state.addName,
-            style: this.state.addStyle,
-            abv: this.state.addABV,
-            tasting_note: this.state.addTastingNote,
-            rating: this.state.addRating,
-            comment: this.state.addComment
+            name: this.state.name,
+            style: this.state.style,
+            abv: this.state.abv,
+            tasting_note: this.state.tastingNote,
+            rating: this.state.rating,
+            comment: this.state.comment
           })
         }
       ).then(this.setState({
         addingBeer: false
       }))
+    }
+    //patch submits edit to existing beer in db
+    submitBeerEdit = () => {
+      console.log("attempting to submit")
     }
 
   render(){
@@ -555,10 +579,29 @@ class App extends React.Component{
                 <Route exact path='/beers' render={()=>{
                   return <BeerIndex
                       beers={this.state.beers}
+                      currentBeer={this.state.currentBeer}
                       favs={this.state.favs}
                       brewery={this.state.currentBrewery}
-                      setBrewery={this.setBrewery}
+
                       showBrewery={this.showBrewery}
+
+                      onBeerClick={this.onBeerClick}
+                      onClickReset={this.onClickReset}
+
+                      renderEdit={this.state.renderEdit}
+                      cancelBeer={this.cancelBeer}
+                      editBeer={this.editBeerOnClick}
+                      submitBeerEdit={this.submitBeerEdit}
+
+                      name={this.state.name}
+                      style={this.state.style}
+                      abv={this.state.abv}
+                      rating={this.state.rating}
+                      tastingNote={this.state.tastingNote}
+                      comment={this.state.comment}
+
+                      inputValue={this.inputValue}
+                      handleRating={this.handleRating}
                     />
                 }} />
               </>
@@ -567,31 +610,29 @@ class App extends React.Component{
                   beers={this.state.beers}
                   favs={this.state.favs}
                   addingBeer={this.state.addingBeer}
-                  cancelAddBeer={this.cancelAddBeer}
+                  cancelBeer={this.cancelBeer}
 
                   handleSubmitBeer={this.handleSubmitBeer}
-                  addName={this.state.addName}
-                  addStyle={this.state.addStyle}
-                  addABV={this.state.addABV}
-                  addRating={this.state.addRating}
-                  addTastingNote={this.state.addTastingNote}
-                  addComment={this.state.addComment}
-                  handleName={this.handleName}
-                  handleStyle={this.handleStyle}
-                  handleABV={this.handleABV}
+                  name={this.state.name}
+                  style={this.state.style}
+                  abv={this.state.abv}
+                  rating={this.state.rating}
+                  tastingNote={this.state.tastingNote}
+                  comment={this.state.comment}
+
+                  inputValue={this.inputValue}
                   handleRating={this.handleRating}
-                  handleTastingNote={this.handleTastingNote}
-                  handleComment={this.handleComment}
                 />
             }
 
           </Switch>
 
         : null }
-      <Footer />
       </>
     )
   }
 }
 
 export default withRouter(App)
+
+// <Footer />

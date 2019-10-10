@@ -4,6 +4,7 @@ import EditBeer from '../beer/EditBeer'
 
 
 const BeerProfile = (props) => {
+  // console.log(props.beer)
   const style={color: '#20B2AA'}
   return (
     <React.Fragment>
@@ -86,14 +87,27 @@ const BeerProfile = (props) => {
           Back to My Beers
         </Button>
 
-        <Button color='teal' size='large' onClick={props.editBeer}>
+        <Button beer={props.beer} color='teal' size='large' onClick={props.editBeer}>
           Edit this Beer
         </Button>
       </Grid>
       : <EditBeer
           beer={props.beer}
           renderEdit={props.renderEdit}
-          cancelEdit={props.cancelEdit} />
+          cancelBeer={props.cancelBeer}
+
+          name={props.name}
+          style={props.style}
+          abv={props.abv}
+          rating={props.rating}
+          tastingNote={props.tastingNote}
+          comment={props.comment}
+
+          inputValue={props.inputValue}
+          handleRating={props.handleRating}
+
+          submitBeerEdit={props.submitBeerEdit}
+         />
     }
     </React.Fragment>
   )

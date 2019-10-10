@@ -18,31 +18,34 @@ const AddBeer = (props) => {
           <Form reply>
             <Divider horizontal> NAME </Divider>
               <Form.Input
+                id='name'
                 type='text'
-                value={props.addName}
-                onChange={props.handleName}
+                value={props.name}
+                onChange={props.inputValue}
                 placeholder='name of beer goes here'
               />
             <Divider horizontal> STYLE </Divider>
               <Form.Input
+                id='style'
                 type='text'
-                value={props.addStyle}
-                onChange={props.handleStyle}
+                value={props.style}
+                onChange={props.inputValue}
                 placeholder='style of beer goes here'
               />
             <Divider horizontal> ALCOHOL BY VOLUME </Divider>
               <Form.Input
+                id='abv'
                 type='text'
-                value={props.addABV}
-                onChange={props.handleABV}
+                value={props.abv}
+                onChange={props.inputValue}
                 placeholder='percentage of ABV of beer goes here'
               />
             <Divider horizontal> RATING </Divider>
               <Segment textAlign='center'>
                 <Rating
                   clearable
+                  defaultRating={props.rating}
                   onRate={props.handleRating}
-                  defaultRating={props.addRating}
                   maxRating={5}
                   icon='star'
                   size='massive'
@@ -50,14 +53,16 @@ const AddBeer = (props) => {
               </Segment>
             <Divider horizontal> TASTING NOTES </Divider>
               <TextArea
-                value={props.addTastingNote}
-                onChange={props.handleTastingNote}
+                id='tastingNote'
+                value={props.tastingNote}
+                onChange={props.inputValue}
                 placeholder='add some taste descriptors here'
               />
             <Divider horizontal> COMMENTS </Divider>
               <TextArea
-                value={props.addComment}
-                onChange={props.handleComment}
+                id='comment'
+                value={props.comment}
+                onChange={props.inputValue}
                 placeholder='did you love it? did you hate it? would you drink it again? who did you drink it with? write whatever you want or nothing at all. seriously, all comments or lack thereof welcome! this is your diary.'
               />
           </Form>
@@ -77,7 +82,7 @@ const AddBeer = (props) => {
             <Button
               size='large'
               color="teal"
-              onClick={props.cancelAddBeer}
+              onClick={props.cancelBeer}
             >
               Cancel
             </Button>

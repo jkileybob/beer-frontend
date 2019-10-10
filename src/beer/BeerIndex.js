@@ -5,55 +5,12 @@ import BeerProfile from '../beer/BeerProfile'
 // BACKEND: data returned needs to be adjusted so as not to return user information
 
 class BeerIndex extends React.Component{
-  state = {
-    currentBeer: null,
-    renderEdit: false
-  }
-
-  // sets currentBrewery state in App
-  // using App's setBrewery() called within getBrewery()
-  // also sets currentBeer state in BeerIndex
-  onBeerClick = (e, props) => {
-    this.getBrewery(props.beer.brewery_id);
-    this.setState({
-      currentBeer: props.beer
-    })
-  }
-
-  // in the future getBrewery can be adjusted to filter other brewery lists
-  // so user can add beers outside of their favs list...
-  getBrewery = (breweryId) => {
-    this.props.favs.filter(brewery =>
-      brewery.id === breweryId ?
-        this.props.setBrewery(brewery)
-      : null
-    )
-  }
-
-  onClickReset = (e) => {
-    this.setState({
-      currentBeer: null
-    });
-    this.props.setBrewery(null)
-  }
-
-  editBeer = () => {
-    this.setState({
-      renderEdit: true
-    })
-  }
-
-  cancelEdit = () => {
-    this.setState({
-      renderEdit: false
-    })
-  }
 
   render(){
     const style={color: '#20B2AA'}
     return(
       <React.Fragment>
-        {!this.state.currentBeer ?
+        {!this.props.currentBeer ?
         <List animated verticalAlign='middle'>
           <List.Header as='h1' style={style} >My Beers:</List.Header>
             {this.props.beers.map((beer) => {
@@ -74,7 +31,7 @@ class BeerIndex extends React.Component{
                         color='teal'
                         size='large'
                         beer={beer}
-                        onClick={this.onBeerClick}>
+                        onClick={this.props.onBeerClick}>
                         Show me more
                       </Button>
                     </Popup.Content>
@@ -84,13 +41,25 @@ class BeerIndex extends React.Component{
             )}
         </List>
       : <BeerProfile
-          beer={this.state.currentBeer}
+          beer={this.props.currentBeer}
           brewery={this.props.brewery}
           showBrewery={this.props.showBrewery}
-          onClickReset={this.onClickReset}
-          renderEdit={this.state.renderEdit}
-          editBeer={this.editBeer}
-          cancelEdit={this.cancelEdit} />
+          onClickReset={this.props.onClickReset}
+          renderEdit={this.props.renderEdit}
+          editBeer={this.props.editBeer}
+          cancelBeer={this.props.cancelBeer}
+          submitBeerEdit={this.props.submitBeerEdit}
+
+          name={this.props.name}
+          style={this.props.style}
+          abv={this.props.abv}
+          rating={this.props.rating}
+          tastingNote={this.props.tastingNote}
+          comment={this.props.comment}
+
+          inputValue={this.props.inputValue}
+          handleRating={this.props.handleRating}
+          />
       }
 
       </React.Fragment>
@@ -100,9 +69,6 @@ class BeerIndex extends React.Component{
 export default BeerIndex
 
 /////////////////////////////////////////////////////////////////////////////////
-// Line 80:
-// need to connect brewery data to show name
-// <p>Producer: <h3>{beer.breweries.name}</h3></p>
 
 /////////////////////////////////////////////////////////////////////////////////
 // STRETCH FEATURES:
@@ -118,6 +84,4 @@ export default BeerIndex
 // 2:
 // Ability for user to upload a photo of beer that will persist in dB
   // will require additional column for photos on backend beer and beer-related tables
-
-// 3: Change beer modal from onCLick to onHover!
 ////////////////////////////////////////////////////////////////////////////////
