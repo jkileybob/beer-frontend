@@ -18,6 +18,30 @@ https://myrealdomain.com/images/animated-beer-5.gif
 // window.location.replace('/add-beer') reloads window via JS
 
 
+
+fetch(`http://localhost:4000/api/v1/add-beer`, {
+    method: "POST",
+    headers: {
+      "Content-Type":"application/json",
+      "Accept":"application/json",
+      "Authentication" : `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      brewery_id: 1772,
+      name: "On The Wings Of Armageddon",
+      style: "Imperial IPA",
+      abv: "9.2%",
+      tasting_note: "Citrus and grapefruit. Biscuity finish. Smooth.",
+      rating: '4',
+      comment: "Probably the best canned beer that DC Brau makes."
+    })
+  }
+).then(res => res.json())
+.then(beer => console.log(beer))
+
+
+
+
 // conditional rendering for beer profile and beer edit pag in beer index
 {if (this.state.currentBeer === null && this.state.renderEdit === false){
   <List animated verticalAlign='middle'>

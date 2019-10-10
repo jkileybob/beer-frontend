@@ -48,15 +48,17 @@ class BreweryProfile extends React.Component{
                   size='small'
                   onClick={this.props.handleFavs}
                 >
-                  Add to my Favorites
+                  Log this Brewery
                 </Button>
 
                 <Button
+                  id={this.props.brewery.id}
+                  brewery={this.props.brewery}
                   color='teal'
                   size='small'
                   onClick={this.props.handleBeerLog}
                 >
-                  Log a new Beer
+                  Log a Beer
                 </Button>
 
             </Modal.Content>

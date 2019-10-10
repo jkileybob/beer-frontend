@@ -38,7 +38,7 @@ class App extends React.Component{
 
     addName: "",
     addStyle: "",
-    addABV: "",
+    addABV: "" + "%",
     addRating: "3",
     addTastingNote: "",
     addComment: ""
@@ -95,7 +95,8 @@ class App extends React.Component{
       breweries: [],
       currentUser: null,
       favs: [],
-      loadingFavs: true
+      loadingFavs: true,
+      addingBeer: false
     })
     localStorage.clear();
     this.props.history.push("/login");
@@ -269,17 +270,16 @@ class App extends React.Component{
     }
 
 // called on componentDidMount, still needs a refresh to show changes
-      // fetchFavs() will return to this spot below:
-
     fetchFavs = () => {
-      // the state favsById is an array of brewery ids (ex: [1781, 6780])
-
-      // empty array will hold response data from fetch to openBreweryDB
-      // that will eventually be set to favs state
-      let updatedFavs = [];
+      // favsById is an array of brewery ids (ex: [1781, 6780])
+      // that was fetched from the localhost DB on load of page and saved to state
 
       // creates new array of favsById without duplicates
       let userFavsById = Array.from(new Set(this.state.favsById));
+
+      // empty array below will hold response data from fetch to openBreweryDB (also below)
+      // that will eventually be set to favs state
+      let updatedFavs = [];
 
       // fetches breweryObj for each brewery_id and inserts into updated favs array (above)
       userFavsById.forEach(brewery_id => {
@@ -301,7 +301,7 @@ class App extends React.Component{
       // to render changes within the DOM...   :(
 
       // set state of favs loading to boolean:
-      // if loading is false, reload the page (may cause inficnite loop)
+      // if loading is false, reload the page (may cause infinite loop)
       // else is true that favs are still loading execute null:
 
       // console.log(this.state.loadingFavs);
@@ -318,9 +318,9 @@ class App extends React.Component{
 
 // POST request to save BREWERY/FAV to local backend database
     logBrewery = (brewery_id) => {
-      // if (!this.state.currentUser === null){
       let favsById = Array.from(this.state.favsById)
       let token = localStorage.getItem('token');
+      // first post creates brewery
         fetch(`http://localhost:4000/api/v1/breweries`, {
           method: "POST",
           headers: {
@@ -331,6 +331,7 @@ class App extends React.Component{
             id: brewery_id,
           })
         })
+        // second post creates fav
         .then(  fetch(`http://localhost:4000/api/v1/add-favorites`, {
           method: "POST",
           headers: {
@@ -345,12 +346,15 @@ class App extends React.Component{
         )
         .then(response => response.json())
         .then(data => {
+          // console.log(data);
+          // keep getting strange errors here every so often!!!
+          // needs investigating ASAP!!
           favsById.push(data.brewery.id);
+          // console.log(favsById)
           this.setState({
             favsById: favsById
           }, this.fetchFavs());
         }) )
-      // }
     }
 
     handleFavs = (e) => {
@@ -410,10 +414,16 @@ class App extends React.Component{
       })
     }
 
-    handleBeerLog = () => {
-      this.setState({
-        addingBeer: true
-      })
+    handleBeerLog = (e) => {
+      let breweryId = parseInt(e.currentTarget.id);
+      let duplicate = this.state.favs.filter(breweryObj => breweryObj.id === breweryId)
+      if (duplicate.length > 0){
+        this.setState({
+          addingBeer: true
+        })
+      } else {
+        alert("You must log this brewery before adding one of their beers to your diary!")
+      }
     }
 
     handleName = (e) => {
@@ -431,7 +441,7 @@ class App extends React.Component{
     handleABV = (e) => {
       let input = e.target.value;
       this.setState({
-        addABV: input + "%"
+        addABV: input
       })
     }
     handleRating = (e, {rating, maxRating}) => {
@@ -455,24 +465,27 @@ class App extends React.Component{
     }
 
     handleSubmitBeer = () => {
-      console.log("attempting to submit new beer to DB")
-      // fetch(``, {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type":"application/json",
-      //       "Accept":"application/json",
-      //       "Authentication" : `Bearer ${token}`
-      //     },
-      //     body: JSON.stringify({
-      //       name: this.state.addName,
-      //       style: this.state.addStyle,
-      //       abv: this.state.addABV,
-      //       rating: this.state.addRating,
-      //       tasing_note: this.state.addTastingNote,
-      //       comment: this.state.addComment
-      //     })
-      //   }
-      // )
+      let token = localStorage.getItem('token');
+      fetch(`http://localhost:4000/api/v1/add-beer`, {
+          method: "POST",
+          headers: {
+            "Content-Type":"application/json",
+            "Accept":"application/json",
+            "Authentication" : `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            brewery_id: this.state.currentBrewery.id,
+            name: this.state.addName,
+            style: this.state.addStyle,
+            abv: this.state.addABV,
+            tasting_note: this.state.addTastingNote,
+            rating: this.state.addRating,
+            comment: this.state.addComment
+          })
+        }
+      ).then(this.setState({
+        addingBeer: false
+      }))
     }
 
   render(){
@@ -575,12 +588,10 @@ class App extends React.Component{
           </Switch>
 
         : null }
-
+      <Footer />
       </>
     )
   }
 }
 
 export default withRouter(App)
-
-// <Footer /> line 510
