@@ -19,8 +19,32 @@ https://myrealdomain.com/images/animated-beer-5.gif
 
 
 
-fetch(`http://localhost:4000/api/v1/add-beer`, {
-    method: "POST",
+fetch(``, {
+  method: "PATCH",
+  headers: {
+    "Content-Type":"application/json",
+    "Accept":"application/json",
+    "Authentication" : `Bearer ${token}`
+  },
+  body: JSON.stringify({
+    brewery_id: this.state.currentBrewery.id,
+    name: this.state.name,
+    style: this.state.style,
+    abv: this.state.abv,
+    tasting_note: this.state.tastingNote,
+    rating: this.state.rating,
+    comment: this.state.comment
+  })
+}).then(reponse => response.json())
+  .then(updatedBeer => console.log(updatedBeer))
+
+
+
+
+
+
+fetch(`http://localhost:4000/api/v1/edit-beer`, {
+    method: "PATCH",
     headers: {
       "Content-Type":"application/json",
       "Accept":"application/json",
@@ -28,8 +52,8 @@ fetch(`http://localhost:4000/api/v1/add-beer`, {
     },
     body: JSON.stringify({
       brewery_id: 1772,
-      name: "On The Wings Of Armageddon",
-      style: "Imperial IPA",
+      name: "On the Wings Of Armageddon",
+      style: "imperial IPA",
       abv: "9.2%",
       tasting_note: "Citrus and grapefruit. Biscuity finish. Smooth.",
       rating: '4',

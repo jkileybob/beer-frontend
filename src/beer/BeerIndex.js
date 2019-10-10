@@ -5,7 +5,6 @@ import BeerProfile from '../beer/BeerProfile'
 // BACKEND: data returned needs to be adjusted so as not to return user information
 
 class BeerIndex extends React.Component{
-
   render(){
     const style={color: '#20B2AA'}
     return(

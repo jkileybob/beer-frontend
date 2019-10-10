@@ -483,6 +483,7 @@ class App extends React.Component{
         currentBrewery: null
       });
     }
+
     // post fetch submits new beer to local db
     handleSubmitBeer = () => {
       let token = localStorage.getItem('token');
@@ -503,13 +504,38 @@ class App extends React.Component{
             comment: this.state.comment
           })
         }
-      ).then(this.setState({
+      ).then(res => res.json())
+      .then(beer => console.log(beer))
+      .then(this.setState({
         addingBeer: false
       }))
     }
     //patch submits edit to existing beer in db
-    submitBeerEdit = () => {
+    submitBeerEdit = (e) => {
       console.log("attempting to submit")
+
+      e.preventDefault();
+      let token = localStorage.getItem('token');
+
+      fetch(`http://localhost:4000/api/v1/edit-beer`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type":"application/json",
+          "Accept":"application/json",
+          "Authentication" : `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          id: this.state.currentBeer.id,
+          brewery_id: this.state.currentBrewery.id,
+          name: this.state.name,
+          style: this.state.style,
+          abv: this.state.abv,
+          tasting_note: this.state.tastingNote,
+          rating: this.state.rating,
+          comment: this.state.comment
+        })
+      }).then(response => response.json())
+        .then(updatedBeer => console.log(updatedBeer))
     }
 
   render(){
