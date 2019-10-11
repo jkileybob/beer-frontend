@@ -39,10 +39,19 @@ fetch(``, {
   .then(updatedBeer => console.log(updatedBeer))
 
 
+otwa.update({
+  name: "On the wings of armageddon",
+  style: "imperial IPA",
+  abv: "9.2%",
+  tasting_note: "Citrus and grapefruit. Biscuity finish. Smooth.",
+  rating: '4',
+  comment: "Probably the best canned beer that DC Brau makes."
+})
 
 
 
 
+let token = localStorage.getItem('token');
 fetch(`http://localhost:4000/api/v1/edit-beer`, {
     method: "PATCH",
     headers: {
@@ -52,7 +61,7 @@ fetch(`http://localhost:4000/api/v1/edit-beer`, {
     },
     body: JSON.stringify({
       brewery_id: 1772,
-      name: "On the Wings Of Armageddon",
+      name: "on the wangs",
       style: "imperial IPA",
       abv: "9.2%",
       tasting_note: "Citrus and grapefruit. Biscuity finish. Smooth.",

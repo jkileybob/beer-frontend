@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Header, Segment, Form, Button, Divider, Rating, Input, TextArea, Image } from 'semantic-ui-react'
 const EditBeer = (props) => {
-  // console.log(props.beer)
+  // console.log(props.beers)
   const style = {color: '#20B2AA'}
   return(
   <React.Fragment>
@@ -33,6 +33,7 @@ const EditBeer = (props) => {
           <Divider horizontal> RATING </Divider>
             <Segment textAlign='center'>
               <Rating
+                clearable
                 id='rating'
                 onRate={props.handleRating}
                 defaultRating={props.rating}

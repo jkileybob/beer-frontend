@@ -2,7 +2,6 @@ import React from 'react'
 // import { Route, Link } from 'react-router-dom'
 import { Popup, List, Button, Rating } from 'semantic-ui-react'
 import BeerProfile from '../beer/BeerProfile'
-// BACKEND: data returned needs to be adjusted so as not to return user information
 
 class BeerIndex extends React.Component{
   render(){

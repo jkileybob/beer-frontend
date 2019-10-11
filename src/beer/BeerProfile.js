@@ -2,7 +2,6 @@ import React from "react"
 import { Card, Image, Popup, Icon, Button, Comment, Grid, Segment, Divider, Rating } from "semantic-ui-react";
 import EditBeer from '../beer/EditBeer'
 
-
 const BeerProfile = (props) => {
   // console.log(props.beer)
   const style={color: '#20B2AA'}

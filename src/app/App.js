@@ -40,7 +40,7 @@ class App extends React.Component{
 
     name: "",
     style: "",
-    abv: "" + "%",
+    abv: "",
     rating: "3",
     tastingNote: "",
     comment: ""
@@ -425,9 +425,9 @@ class App extends React.Component{
         renderEdit: true,
         name: beer.name,
         style: beer.style,
-        abv: beer.abv + "%",
+        abv: beer.abv,
         rating: beer.rating,
-        tastingNote: beer.tastingNote,
+        tastingNote: beer.tasting_note,
         comment: beer.comment
       })
     }
@@ -438,7 +438,7 @@ class App extends React.Component{
         renderEdit: false,
         name: "",
         style: "",
-        abv: "" + "%",
+        abv: "",
         rating: "3",
         tastingNote: "",
         comment: ""
@@ -484,7 +484,7 @@ class App extends React.Component{
       });
     }
 
-    // post fetch submits new beer to local db
+    // post fetch submits NEW beer to local db
     handleSubmitBeer = () => {
       let token = localStorage.getItem('token');
       fetch(`http://localhost:4000/api/v1/add-beer`, {
@@ -505,18 +505,20 @@ class App extends React.Component{
           })
         }
       ).then(res => res.json())
-      .then(beer => console.log(beer))
-      .then(this.setState({
-        addingBeer: false
-      }))
+      .then(beer => {
+        let copy = this.state.beers.slice()
+        copy.push(beer.beer)
+        // console.log(copy, beer.beer)
+        this.setState({
+          beers: copy,
+          addingBeer: false
+        })
+      })
     }
     //patch submits edit to existing beer in db
     submitBeerEdit = (e) => {
-      console.log("attempting to submit")
-
       e.preventDefault();
       let token = localStorage.getItem('token');
-
       fetch(`http://localhost:4000/api/v1/edit-beer`, {
         method: "PATCH",
         headers: {
@@ -535,7 +537,19 @@ class App extends React.Component{
           comment: this.state.comment
         })
       }).then(response => response.json())
-        .then(updatedBeer => console.log(updatedBeer))
+        .then(updatedBeer => {
+          console.log(updatedBeer.beer)
+          let copy = this.state.beers.slice();
+          let index = copy.findIndex((beer)=>{ return beer.id === updatedBeer.beer.id })
+
+          copy.splice(index, 1, updatedBeer.beer)
+
+          this.setState({
+            renderEdit: false,
+            beers: copy,
+            currentBeer: updatedBeer.beer
+          })
+        })
     }
 
   render(){
