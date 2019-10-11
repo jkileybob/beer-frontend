@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Grid, Header, Segment, Form, Button, Divider, Rating, Input, TextArea, Image, Dropdown } from 'semantic-ui-react'
 const AddBeer = (props) => {
   // console.log(props);
   const style = {color: '#20B2AA'}
-
+  const link = {color: 'white'}
   const abvDropDown = (number, suffix = '%') => {
     let abvOptions = []
     for (number = 2.5; number <= 20; number+=0.25) {
@@ -49,7 +50,6 @@ const AddBeer = (props) => {
                 <Button.Group color='teal'>
                   <Button size='large' >ABV</Button>
                   <Dropdown
-                    centered
                     size='large'
                     scrolling
                     selection
@@ -91,20 +91,14 @@ const AddBeer = (props) => {
 
         <Grid.Row centered columns={8}>
           <Grid.Column>
-            <Button
-              size='large'
-              color="teal"
-              onClick={props.handleSubmitBeer}
-            >
-              Submit
+            <Button size='large' color="teal" onClick={props.handleSubmitBeer} >
+              <Link style={link} to='/beers'>
+                Submit
+              </Link>
             </Button>
           </Grid.Column>
           <Grid.Column>
-            <Button
-              size='large'
-              color="teal"
-              onClick={props.cancelBeer}
-            >
+            <Button size='large' color="teal" onClick={props.cancelBeer} >
               Cancel
             </Button>
           </Grid.Column>

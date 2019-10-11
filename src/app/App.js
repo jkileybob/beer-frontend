@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
+import { Switch, Route, Redirect, withRouter, Link } from 'react-router-dom'
 import Nav from '../navbar/Nav'
 import Footer from '../footer/Footer'
 import UserProfile from '../user/UserProfile'
@@ -383,8 +383,6 @@ class App extends React.Component{
     }
 
 
-
-
   // BEER LOGIC:
     // fetchUserBeers called in componentDidMount on load of page
     fetchUserBeers(token){
@@ -517,6 +515,7 @@ class App extends React.Component{
         copy.push(beer.beer)
         this.setState({
           beers: copy,
+          currentBeer: beer.beer,
           addingBeer: false
         })
       })
@@ -684,3 +683,6 @@ class App extends React.Component{
 export default withRouter(App)
 
 // <Footer />
+
+// <Link class='link' to="/bright-spots">see more spots.</Link>
+//  <Link class='link' to={`/bright-spots/${this.props.currentPost.id}`}>go back.</Link>
