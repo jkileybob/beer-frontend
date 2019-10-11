@@ -1,8 +1,20 @@
 import React from 'react';
-import { Grid, Header, Segment, Form, Button, Divider, Rating, Input, TextArea, Image } from 'semantic-ui-react'
+import { Grid, Header, Segment, Form, Button, Divider, Rating, Input, TextArea, Image, Dropdown } from 'semantic-ui-react'
 const AddBeer = (props) => {
   // console.log(props);
   const style = {color: '#20B2AA'}
+
+  const abvDropDown = (number, suffix = '%') => {
+    let abvOptions = []
+    for (number = 2.5; number <= 20; number+=0.25) {
+      abvOptions.push({
+        text: `${number}${suffix}`,
+        value: `${number}${suffix}`
+      })
+    }
+    return abvOptions
+  }
+
   return(
     <React.Fragment>
       <Grid textAlign='center' centered columns={1}>
@@ -33,13 +45,22 @@ const AddBeer = (props) => {
                 placeholder='style of beer goes here'
               />
             <Divider horizontal> ALCOHOL BY VOLUME </Divider>
-              <Form.Input
-                id='abv'
-                type='text'
-                value={props.abv}
-                onChange={props.inputValue}
-                placeholder='percentage of ABV of beer goes here'
-              />
+              <Segment textAlign='center'>
+                <Button.Group color='teal'>
+                  <Button size='large' >ABV</Button>
+                  <Dropdown
+                    centered
+                    size='large'
+                    scrolling
+                    selection
+                    className='button icon'
+                    id='abv'
+                    placeholder='Select ABV'
+                    options={abvDropDown()}
+                    onChange={props.handleABV}
+                  />
+                </Button.Group>
+              </Segment>
             <Divider horizontal> RATING </Divider>
               <Segment textAlign='center'>
                 <Rating

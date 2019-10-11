@@ -103,6 +103,7 @@ const BeerProfile = (props) => {
           comment={props.comment}
 
           inputValue={props.inputValue}
+          handleABV={props.handleABV}
           handleRating={props.handleRating}
 
           submitBeerEdit={props.submitBeerEdit}

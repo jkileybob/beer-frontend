@@ -56,6 +56,7 @@ class BeerIndex extends React.Component{
           comment={this.props.comment}
 
           inputValue={this.props.inputValue}
+          handleABV={this.props.handleABV}
           handleRating={this.props.handleRating}
           />
       }

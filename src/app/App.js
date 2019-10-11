@@ -454,6 +454,13 @@ class App extends React.Component{
         [id]: value
       })
     }
+
+    handleABV = (e) => {
+      this.setState({
+        abv: e.target.innerText
+      })
+    }
+
     handleRating = (e, {rating, maxRating}) => {
       // console.log(input, typeof input)
       let input = rating.toString()
@@ -508,7 +515,6 @@ class App extends React.Component{
       .then(beer => {
         let copy = this.state.beers.slice()
         copy.push(beer.beer)
-        // console.log(copy, beer.beer)
         this.setState({
           beers: copy,
           addingBeer: false
@@ -517,7 +523,7 @@ class App extends React.Component{
     }
     //patch submits edit to existing beer in db
     submitBeerEdit = (e) => {
-      e.preventDefault();
+
       let token = localStorage.getItem('token');
       fetch(`http://localhost:4000/api/v1/edit-beer`, {
         method: "PATCH",
@@ -641,6 +647,7 @@ class App extends React.Component{
                       comment={this.state.comment}
 
                       inputValue={this.inputValue}
+                      handleABV={this.handleABV}
                       handleRating={this.handleRating}
                     />
                 }} />
@@ -661,6 +668,7 @@ class App extends React.Component{
                   comment={this.state.comment}
 
                   inputValue={this.inputValue}
+                  handleABV={this.handleABV}
                   handleRating={this.handleRating}
                 />
             }
