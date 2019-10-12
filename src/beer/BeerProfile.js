@@ -107,6 +107,7 @@ const BeerProfile = (props) => {
           handleRating={props.handleRating}
 
           submitBeerEdit={props.submitBeerEdit}
+          deleteBeer={props.deleteBeer}
          />
     }
     </React.Fragment>

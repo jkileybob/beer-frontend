@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect, withRouter, Link } from 'react-router-dom'
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import Nav from '../navbar/Nav'
 import Footer from '../footer/Footer'
 import UserProfile from '../user/UserProfile'
@@ -557,6 +557,31 @@ class App extends React.Component{
         })
     }
 
+    // delete a beer
+    deleteBeer = () => {
+      console.log(this.state.currentBeer)
+
+      // so far, everything is wired correctly, but id needs to be slugged
+      // so backend can identify beer by id in order to destroy correctly
+      
+
+      // remove beer from backend DB through fetch
+      // fetch(`http://localhost:4000/api/v1/delete-beer`, {
+      //   method: "DELETE"
+      // }).then(() => {
+      //   let copyOfState = this.state.beers.slice();
+      //   let indexOfDeletedBeer = copyOfState.findIndex((beer)=> { return beer === this.state.currentBeer })
+      //   copyOfState.splice(indexOfDeletedBeer, 1)
+      //
+      //   this.setState({
+      //     currentBeer: null,
+      //     beers: copyOfState
+      //   })
+      // })
+      // remove beer from local beers state
+      // update currentBeer state to null to render beer index list
+    }
+
   render(){
     return(
       <>
@@ -637,7 +662,7 @@ class App extends React.Component{
                       cancelBeer={this.cancelBeer}
                       editBeer={this.editBeerOnClick}
                       submitBeerEdit={this.submitBeerEdit}
-
+                      deleteBeer={this.deleteBeer}
                       name={this.state.name}
                       style={this.state.style}
                       abv={this.state.abv}

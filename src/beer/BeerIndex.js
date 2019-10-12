@@ -1,5 +1,5 @@
 import React from 'react'
-// import { Route, Link } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { Popup, List, Button, Rating } from 'semantic-ui-react'
 import BeerProfile from '../beer/BeerProfile'
 
@@ -47,6 +47,7 @@ class BeerIndex extends React.Component{
           editBeer={this.props.editBeer}
           cancelBeer={this.props.cancelBeer}
           submitBeerEdit={this.props.submitBeerEdit}
+          deleteBeer={this.props.deleteBeer}
 
           name={this.props.name}
           style={this.props.style}

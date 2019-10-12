@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Header, Segment, Form, Button, Divider, Rating, Input, TextArea, Image, Dropdown } from 'semantic-ui-react'
+import { Grid, Header, Segment, Form, Button, Divider, Rating, TextArea, Image, Dropdown } from 'semantic-ui-react'
 const AddBeer = (props) => {
-  // console.log(props);
+
   const style = {color: '#20B2AA'}
   const link = {color: 'white'}
+  
   const abvDropDown = (number, suffix = '%') => {
     let abvOptions = []
     for (number = 2.5; number <= 20; number+=0.25) {

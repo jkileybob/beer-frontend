@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Header, Segment, Form, Button, Divider, Dropdown, Rating, Input, TextArea, Image } from 'semantic-ui-react'
+import { Grid, Header, Segment, Form, Button, Divider, Dropdown, Rating, Image } from 'semantic-ui-react'
 const EditBeer = (props) => {
   const style = {color: '#20B2AA'}
 
@@ -40,7 +40,6 @@ const EditBeer = (props) => {
             <Button.Group color='teal'>
               <Button size='large' >ABV</Button>
               <Dropdown
-                centered
                 size='large'
                 scrolling
                 selection
@@ -88,6 +87,11 @@ const EditBeer = (props) => {
         <Grid.Column>
           <Button size='large' color="teal" onClick={props.cancelBeer}>
             Cancel
+          </Button>
+        </Grid.Column>
+        <Grid.Column>
+          <Button size='large' color="teal" onClick={props.deleteBeer}>
+            Delete
           </Button>
         </Grid.Column>
       </Grid.Row>
