@@ -559,27 +559,20 @@ class App extends React.Component{
 
     // delete a beer
     deleteBeer = () => {
-      console.log(this.state.currentBeer)
+      let id = this.state.currentBeer.id
 
-      // so far, everything is wired correctly, but id needs to be slugged
-      // so backend can identify beer by id in order to destroy correctly
-      
+      fetch(`http://localhost:4000/api/v1/delete-beer/${id}`, {
+        method: "DELETE"
+      }).then(() => {
+        let copyOfState = this.state.beers.slice();
+        let indexOfDeletedBeer = copyOfState.findIndex((beer)=> { return beer === this.state.currentBeer })
+        copyOfState.splice(indexOfDeletedBeer, 1)
 
-      // remove beer from backend DB through fetch
-      // fetch(`http://localhost:4000/api/v1/delete-beer`, {
-      //   method: "DELETE"
-      // }).then(() => {
-      //   let copyOfState = this.state.beers.slice();
-      //   let indexOfDeletedBeer = copyOfState.findIndex((beer)=> { return beer === this.state.currentBeer })
-      //   copyOfState.splice(indexOfDeletedBeer, 1)
-      //
-      //   this.setState({
-      //     currentBeer: null,
-      //     beers: copyOfState
-      //   })
-      // })
-      // remove beer from local beers state
-      // update currentBeer state to null to render beer index list
+        this.setState({
+          currentBeer: null,
+          beers: copyOfState
+        })
+      })
     }
 
   render(){
