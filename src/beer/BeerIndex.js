@@ -71,7 +71,7 @@ export default BeerIndex
 /////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////
-// STRETCH FEATURES:
+
 // 1:
 // eventually give each beer profile page a name slug in broswer url
     // `http://localhost:3000/beers/${beer.name}`
@@ -81,6 +81,41 @@ export default BeerIndex
       //   return  <BeerProfile props={props...etc} />
       //   }}/>
 
+      // or by id
+      // <Route exact path='beers/:id' render={(props)=>{
+      //   let beerIDinURL = props.match.params.id
+      //   let beer = this.state.beers.find(beer => beer.id === beerIDinURL)
+      //   console.log(beer);
+      //   debugger
+      //   return(
+      //     beer ?
+      //     <BeerProfile
+      //         beer={beer}
+      //         brewery={this.props.brewery}
+      //         showBrewery={this.props.showBrewery}
+      //         onClickReset={this.props.onClickReset}
+      //         renderEdit={this.props.renderEdit}
+      //         editBeer={this.props.editBeer}
+      //         cancelBeer={this.props.cancelBeer}
+      //         submitBeerEdit={this.props.submitBeerEdit}
+      //         deleteBeer={this.props.deleteBeer}
+      //
+      //         name={this.props.name}
+      //         style={this.props.style}
+      //         abv={this.props.abv}
+      //         rating={this.props.rating}
+      //         tastingNote={this.props.tastingNote}
+      //         comment={this.props.comment}
+      //
+      //         inputValue={this.props.inputValue}
+      //         handleABV={this.props.handleABV}
+      //         handleRating={this.props.handleRating}
+      //         />
+      //     : null
+      //   )
+      // }} />
+
+//////////////////////////////////////////////////////////////////////////////////////
 // 2:
 // Ability for user to upload a photo of beer that will persist in dB
   // will require additional column for photos on backend beer and beer-related tables

@@ -5,8 +5,9 @@ import Footer from '../footer/Footer'
 import UserProfile from '../user/UserProfile'
 import LoginForm from '../login/LoginForm'
 import SignUp from '../signup/SignUp'
-import BeerIndex from '../beer/BeerIndex'
 import BreweryIndex from '../brewery/BreweryIndex'
+import BeerIndex from '../beer/BeerIndex'
+import BeerProfile from '../beer/BeerProfile'
 import Favorites from '../favorites/Favorites'
 import AddBeer from '../beer/AddBeer'
 import './App.css';
@@ -668,6 +669,7 @@ class App extends React.Component{
                       handleRating={this.handleRating}
                     />
                 }} />
+
               </>
             :   <AddBeer
                   currentBrewery={this.state.currentBrewery}
@@ -701,6 +703,44 @@ class App extends React.Component{
 export default withRouter(App)
 
 // <Footer />
+
+/////////////////////// create route for slugged beers with id
+
+
+// <Route exact path='beers/:id' render={(props)=>{
+//   let beerIDinURL = props.match.params.id
+//   let beer = this.state.beers.find(beer => beer.id === beerIDinURL)
+//   console.log(beer);
+//   debugger
+//   return(
+//     beer ?
+//     <BeerProfile
+//         beer={beer}
+//         brewery={this.props.brewery}
+//         showBrewery={this.props.showBrewery}
+//         onClickReset={this.props.onClickReset}
+//         renderEdit={this.props.renderEdit}
+//         editBeer={this.props.editBeer}
+//         cancelBeer={this.props.cancelBeer}
+//         submitBeerEdit={this.props.submitBeerEdit}
+//         deleteBeer={this.props.deleteBeer}
+//
+//         name={this.props.name}
+//         style={this.props.style}
+//         abv={this.props.abv}
+//         rating={this.props.rating}
+//         tastingNote={this.props.tastingNote}
+//         comment={this.props.comment}
+//
+//         inputValue={this.props.inputValue}
+//         handleABV={this.props.handleABV}
+//         handleRating={this.props.handleRating}
+//         />
+//     : null
+//   )
+// }} />
+
+
 
 // <Link class='link' to="/bright-spots">see more spots.</Link>
 //  <Link class='link' to={`/bright-spots/${this.props.currentPost.id}`}>go back.</Link>
