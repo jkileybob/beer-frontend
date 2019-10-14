@@ -31,7 +31,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, myBrewe
             as={NavLink}
             to="/breweries"
             name="My Breweries"
-            active={pathname === "/favorites"}
+            active={pathname === "/breweries"}
             onClick={favs}
           />
 

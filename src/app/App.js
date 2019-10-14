@@ -212,6 +212,8 @@ class App extends React.Component{
       }
     }
 
+// clears states to render search from Navbar onCLick 'search breweries'
+// changes url path to search-breweries
   resetSearch = () => {
     this.setState({
       breweries: [],
@@ -223,7 +225,6 @@ class App extends React.Component{
   }
 
 //brewery profile modal logic:
-
 // PROBLEM:
 // setState is asynch so currentBrewery is a click behind
     onBreweryClick = (e) => {
@@ -249,7 +250,8 @@ class App extends React.Component{
 
 //FAVORITES COMPONENT LOGIC:
 
-// sets breweries state === favs, for iterating
+// sets breweries state === favs from navbar onclick 'My Breweries'
+// changes url pth and render to <Favs />
     myBreweriesClick = () => {
       let favs = this.state.favs;
       this.setState({
@@ -258,14 +260,13 @@ class App extends React.Component{
     }
 
 
-// opens the modal in favorites page
+// opens brewery Profile in favorites page
     onFavListBreweryClick = (e) => {
       let breweryId = parseInt(e.currentTarget.id);
       this.state.favs.filter(breweryObj =>
         breweryObj.id === breweryId ?
           this.setState({
-            currentBrewery: breweryObj,
-            modalOpen: true
+            currentBrewery: breweryObj
           })
         : null
       )

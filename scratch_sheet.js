@@ -1,6 +1,14 @@
-beer cheers gif:
+beer cheers gif footer:
 https://i.pinimg.com/originals/0a/54/23/0a5423767cc73d2bec52d93aa4317656.gif
 
+bright tank sketch:
+https://bellinghamsbestbeer.files.wordpress.com/2008/10/bright_tank.jpg
+
+colorful cartoon cans:
+teal-
+https://www.google.com/imgres?imgurl=https%3A%2F%2Fbrewhall.com%2Fwp-content%2Fuploads%2F2019%2F04%2Four-beer-hazy-borders-beer-xl.png&imgrefurl=https%3A%2F%2Fbrewhall.com%2Fbrewery%2F&docid=RVjNtHO5E_HppM&tbnid=U1iOt3Cy9D9YYM%3A&vet=10ahUKEwjzp-WGnJzlAhWjmuAKHeiDBrEQMwivASheMF4..i&w=800&h=608&bih=720&biw=1280&q=bright%20tank%20cartoon%20beer&ved=0ahUKEwjzp-WGnJzlAhWjmuAKHeiDBrEQMwivASheMF4&iact=mrc&uact=8
+grey-
+https://www.google.com/imgres?imgurl=https%3A%2F%2Fbrewhall.com%2Fwp-content%2Fuploads%2F2019%2F04%2Four-beer-pixie-xl.png&imgrefurl=https%3A%2F%2Fbrewhall.com%2Fbrewery%2F&docid=RVjNtHO5E_HppM&tbnid=_HO-YpiH6GAz9M%3A&vet=10ahUKEwjzp-WGnJzlAhWjmuAKHeiDBrEQMwibAShKMEo..i&w=800&h=608&bih=720&biw=1280&q=bright%20tank%20cartoon%20beer&ved=0ahUKEwjzp-WGnJzlAhWjmuAKHeiDBrEQMwibAShKMEo&iact=mrc&uact=8
 
 coloful beer gifs search query:
 https://www.google.com/search?q=cheers+beer+gif&tbm=isch&tbs=rimg:CU5FwB_1CXzHfImB9g2MhMXLLDC_1hGROZondCmZZLYRNYLbskWvEN2fldEf_1vq33zoVKlvHOEWQ7pm2Mhl4puGgfUu5DCRDhlntakVJ61BWnDivRNDA5Dh48wR14N6whiVcMFOW4_1U79zufUqEgl9g2MhMXLLDBHpKAXAzXjE8CoSCS_1hGROZondCESjKCV8A1mQGKhIJmZZLYRNYLbsRSFuFIJdoOuIqEgkkWvEN2fldEREu2Jse87IyvioSCf_1vq33zoVKlETqSdZPttNlPKhIJvHOEWQ7pm2MRjxzK41y8PwYqEgkhl4puGgfUuxG6FpBJbUG8RyoSCZDCRDhlntakEYTErhe4x7OkKhIJVJ61BWnDivQRSwC7X139N-YqEglNDA5Dh48wRxGiF-aDVqEofSoSCV4N6whiVcMFEQmiTP8t0M5VKhIJOW4_1U79zufURwmqGbxj4TYA&tbo=u&sa=X&ved=2ahUKEwi78rDPhfzkAhVyZN8KHdF9BgoQuIIBegQIARAv&biw=1280&bih=720&dpr=1

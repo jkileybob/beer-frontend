@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input, List, Button } from 'semantic-ui-react';
-import BreweryProfile from "./BreweryProfile"
+import BreweryModal from "./BreweryModal"
 
 class BreweryIndex extends React.Component{
 
@@ -63,7 +63,7 @@ class BreweryIndex extends React.Component{
 
         {this.props.currentBrewery ?
           <>
-             <BreweryProfile
+             <BreweryModal
                brewery={this.props.currentBrewery}
                handleFavs={this.props.handleFavs}
                handleBeerLog={this.props.handleBeerLog}
