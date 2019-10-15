@@ -28,14 +28,21 @@ class Favorites extends React.Component{
               </React.Fragment>
             })}
           </List>
-        </>  
+        </>
       : <>
           <BreweryProfile
             brewery={this.props.currentBrewery}
+            favs={this.props.favs}
+
             handleFavs={this.props.handleFavs}
             handleBeerLog={this.props.handleBeerLog}
-            favs={this.props.favs}
             onClickClose={this.props.onClickClose}
+
+            beers={this.props.beers}
+            currentBeer={this.props.currentBeer}
+
+            username={this.props.username}
+            avatar={this.props.avatar}
           />
         </>
       }

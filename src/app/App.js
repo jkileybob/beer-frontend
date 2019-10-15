@@ -632,10 +632,15 @@ class App extends React.Component{
                     breweries={this.state.breweries}
                     currentBrewery={this.state.currentBrewery}
                     favs={this.state.favs}
+
                     onFavListBreweryClick={this.onFavListBreweryClick}
-                    handleFavs={this.handleFavs}
-                    modalOpen={this.state.modalOpen}
                     onClickClose={this.onClickClose}
+
+                    username={this.state.currentUser.username}
+                    avatar={this.state.currentUser.avatar}
+
+                    beers={this.state.beers}
+                    currentBeer={this.state.currentBeer}
                     handleBeerLog={this.handleBeerLog}
                     />
                 }} />
