@@ -235,7 +235,7 @@ class App extends React.Component{
           this.setState({
             currentBrewery: brewery,
             modalOpen: true
-          })
+          }, this.findBreweryBeers(brewery))
         : null
       })
     }
@@ -264,7 +264,7 @@ class App extends React.Component{
       })
     }
 
-// onClick finds beers that belong to currentBrewery
+// given a brewery onClick finds beers that belong to currentBrewery
     findBreweryBeers = (brewery) => {
       let breweryBeers = this.state.beers.filter(beer =>
         beer.brewery_id === brewery.id
@@ -289,7 +289,7 @@ class App extends React.Component{
       )
     }
 
-// opens brewery Profile in favorites page
+// opens brewery Profile from favorites page
     onFavListBreweryClick = (e) => {
       let breweryId = parseInt(e.currentTarget.id);
 
@@ -500,13 +500,13 @@ class App extends React.Component{
         rating: input
       })
     }
-    // finds curent beer + brewery from name click in beer index
+
+    // finds curent beer + brewery from name click in beer index and brewery profile
     // can be adjusted in the future to filter other brewery lists
     // so user can add beers outside of their saved breweries...
     onBeerClick = (e, props) => {
       let beer = props.beer
       let breweryId = props.beer.brewery_id
-
       this.state.favs.filter(brewery =>
         brewery.id === breweryId ?
         this.setState({
@@ -519,6 +519,7 @@ class App extends React.Component{
 
     // post fetch submits NEW beer to local db
     handleSubmitBeer = () => {
+      let brewery = this.state.currentBrewery
       let token = localStorage.getItem('token');
       fetch(`http://localhost:4000/api/v1/add-beer`, {
           method: "POST",
@@ -539,11 +540,16 @@ class App extends React.Component{
         }
       ).then(res => res.json())
       .then(beer => {
-        let copy = this.state.beers.slice()
-        copy.push(beer.beer)
+        let copyBeer = this.state.beers.slice();
+        copyBeer.push(beer.beer);
+
+        let copyBrewBeer = this.state.currentBreweryBeers.slice();
+        copyBrewBeer.push(beer.beer);
+
         this.setState({
-          beers: copy,
+          beers: copyBeer,
           currentBeer: beer.beer,
+          currentBreweryBeers: copyBrewBeer,
           addingBeer: false,
           name: "",
           style: "",
@@ -551,7 +557,7 @@ class App extends React.Component{
           rating: "3",
           tastingNote: "",
           comment: ""
-        })
+        }, this.findBreweryBeers(brewery))
       })
     }
     //patch submits edit to existing beer in db
@@ -577,15 +583,19 @@ class App extends React.Component{
         })
       }).then(response => response.json())
         .then(updatedBeer => {
-          let copy = this.state.beers.slice();
-          let index = copy.findIndex((beer)=>{ return beer.id === updatedBeer.beer.id })
+          let copyBeers = this.state.beers.slice();
+          let copyBrewBeers = this.state.currentBreweryBeers.slice();
+          let indexBeer = copyBeers.findIndex((beer)=>{ return beer.id === updatedBeer.beer.id })
+          let indexBB = copyBrewBeers.findIndex((beer)=>{ return beer.id === updatedBeer.beer.id })
 
-          copy.splice(index, 1, updatedBeer.beer)
+          copyBeers.splice(indexBeer, 1, updatedBeer.beer)
+          copyBrewBeers.splice(indexBB, 1, updatedBeer.beer)
 
           this.setState({
             renderEdit: false,
-            beers: copy,
+            beers: copyBeers,
             currentBeer: updatedBeer.beer,
+            currentBreweryBeers: copyBrewBeers,
             name: "",
             style: "",
             abv: "",
@@ -609,7 +619,13 @@ class App extends React.Component{
 
         this.setState({
           currentBeer: null,
-          beers: copyOfState
+          beers: copyOfState,
+          name: "",
+          style: "",
+          abv: "",
+          rating: "3",
+          tastingNote: "",
+          comment: ""
         })
       })
     }
@@ -695,6 +711,7 @@ class App extends React.Component{
                       favs={this.state.favs}
                       brewery={this.state.currentBrewery}
                       findBreweryBeers={this.findBreweryBeers}
+                      onBreweryClick={this.onBreweryClick}
 
                       onBeerClick={this.onBeerClick}
                       onClickReset={this.onClickReset}

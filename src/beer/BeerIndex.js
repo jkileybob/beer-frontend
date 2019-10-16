@@ -42,6 +42,7 @@ class BeerIndex extends React.Component{
           beer={this.props.currentBeer}
           brewery={this.props.brewery}
           showBrewery={this.props.showBrewery}
+          onBreweryClick={this.props.onBreweryClick}
           onClickReset={this.props.onClickReset}
           renderEdit={this.props.renderEdit}
           editBeer={this.props.editBeer}

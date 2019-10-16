@@ -37,6 +37,7 @@ const BeerProfile = (props) => {
                   trigger={ <Link to='/breweries' ><Icon link circular inverted color='teal' name='beer' /></Link> }
                   size='large'
                   position='right center'
+                  onClick={props.onBreweryClick}
                   style={style} >
                     <Popup.Content>
                       click to checkout {props.brewery.name}
