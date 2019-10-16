@@ -21,6 +21,7 @@ class App extends React.Component{
     // BREWERY STATES:
     breweries: [],
     currentBrewery: null,
+    currentBreweryBeers: null,
     modalOpen: false,
 
     searchTermName: "",
@@ -243,7 +244,8 @@ class App extends React.Component{
     onClickClose = (e) => {
       this.setState({
         modalOpen: false,
-        currentBrewery: null
+        currentBrewery: null,
+        currentBreweryBeers: null
       })
     }
 
@@ -257,21 +259,48 @@ class App extends React.Component{
       this.setState({
         breweries: favs,
         currentBeer: null,
-        currentBrewery: null
+        currentBrewery: null,
+        currentBreweryBeers: null
       })
     }
 
+// onClick finds beers that belong to currentBrewery
+    findBreweryBeers = (brewery) => {
+      let breweryBeers = this.state.beers.filter(beer =>
+        beer.brewery_id === brewery.id
+      )
+      if (breweryBeers.length >= 1){
+      this.setState({
+        currentBreweryBeers: breweryBeers
+      })
+    } else { return null }
+    }
+
+// sets clicked brewery profile beer to currentBeer State
+// redirects to beer profile from brewery profile
+    showBreweryBeer = (e) => {
+      let clickedBeerID = parseInt(e.target.id);
+      this.state.currentBreweryBeers.filter(beerObj =>
+        beerObj.id === clickedBeerID ?
+          this.setState({
+            currentBeer: beerObj
+          })
+        : null
+      )
+    }
 
 // opens brewery Profile in favorites page
     onFavListBreweryClick = (e) => {
       let breweryId = parseInt(e.currentTarget.id);
+
       this.state.favs.filter(breweryObj =>
         breweryObj.id === breweryId ?
           this.setState({
             currentBrewery: breweryObj
-          })
+          }, this.findBreweryBeers(breweryObj))
         : null
       )
+
     }
 
 // called on componentDidMount, still needs a refresh to show changes
@@ -404,7 +433,8 @@ class App extends React.Component{
     onClickReset = (e) => {
       this.setState({
         currentBeer: null,
-        currentBrewery: null
+        currentBrewery: null,
+        currentBreweryBeers: null
       });
     }
 
@@ -482,11 +512,10 @@ class App extends React.Component{
         this.setState({
           currentBeer: beer,
           currentBrewery: brewery
-        })
+        }, this.findBreweryBeers(brewery))
         : null
       )
     }
-
 
     // post fetch submits NEW beer to local db
     handleSubmitBeer = () => {
@@ -585,6 +614,7 @@ class App extends React.Component{
       })
     }
 
+
   render(){
     return(
       <>
@@ -642,6 +672,7 @@ class App extends React.Component{
                     breweries={this.state.breweries}
                     currentBrewery={this.state.currentBrewery}
                     favs={this.state.favs}
+                    breweryBeers={this.state.currentBreweryBeers}
 
                     onFavListBreweryClick={this.onFavListBreweryClick}
                     onClickClose={this.onClickClose}
@@ -650,8 +681,10 @@ class App extends React.Component{
                     avatar={this.state.currentUser.avatar}
 
                     beers={this.state.beers}
+                    findBreweryBeers={this.findBreweryBeers}
                     currentBeer={this.state.currentBeer}
                     handleBeerLog={this.handleBeerLog}
+                    showBreweryBeer={this.showBreweryBeer}
                     />
                 }} />
 
@@ -661,6 +694,7 @@ class App extends React.Component{
                       currentBeer={this.state.currentBeer}
                       favs={this.state.favs}
                       brewery={this.state.currentBrewery}
+                      findBreweryBeers={this.findBreweryBeers}
 
                       onBeerClick={this.onBeerClick}
                       onClickReset={this.onClickReset}

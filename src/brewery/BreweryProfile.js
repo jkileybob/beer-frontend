@@ -1,12 +1,11 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import { Grid, Card, Header, Image, Divider, List, Button, Icon } from 'semantic-ui-react'
 import AddBeer from '../beer/AddBeer'
 import BreweryMap from '../brewery/BreweryMap'
 
 const BreweryProfile = (props) => {
   const style={color: '#20B2AA'}
-
-  console.log(props);
   return(
     <>
       <Grid centered columns='equal' >
@@ -56,14 +55,28 @@ const BreweryProfile = (props) => {
           <Grid.Row column={1}>
             <Grid.Column>
               <Divider horizontal>{props.username}&#8217;s Logged Beers</Divider>
-              <Card centered >
+
+            { props.breweryBeers ?
+                <Card centered >
                 <Card.Content>
-                  <List textAlign='center' >
-                    <List.Item>Witbier</List.Item>
-                    <List.Item>Dunkel</List.Item>
-                    <List.Item>American Pale Ale</List.Item>
+                  <List>
+                    {props.breweryBeers.map(beer=>{
+                      return  <List.Item
+                                key={`logged-beer-list-item-${beer.id}`}
+                                onClick={props.showBreweryBeer} >
+                                  <List.Header centered style={style}>
+                                    <Link to='/beers' style={style} >
+                                      <h3 id={`${beer.id}`} >
+                                        {beer.name}
+                                      </h3>
+                                    </Link>
+                                  </List.Header>
+                              </List.Item>
+
+                    })}
                   </List>
                 </Card.Content>
+
                 <Card.Content textAlign='center'>
                   <Button
                     id={props.brewery.id}
@@ -76,6 +89,26 @@ const BreweryProfile = (props) => {
                   </Button>
                 </Card.Content>
               </Card>
+            : <Card centered >
+                <Card.Content>
+                  <Card.Description>
+                    It appears no beers have been logged from {props.brewery.name}.
+                  </Card.Description>
+                </Card.Content>
+
+                <Card.Content textAlign='center'>
+                  <Button
+                    id={props.brewery.id}
+                    brewery={props.brewery}
+                    onClick={props.handleBeerLog}
+                    color='teal'
+                    size='large'
+                    >
+                    Wanna Add a New One?
+                  </Button>
+                </Card.Content>
+              </Card>
+            }
             </Grid.Column>
         </Grid.Row>
 
@@ -111,3 +144,5 @@ export default BreweryProfile
 
 // HTML CODE FOR A SINGLE APOSTROPHE:
 // &#8217;
+
+// {

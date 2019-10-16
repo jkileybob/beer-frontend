@@ -33,20 +33,22 @@ class Favorites extends React.Component{
           <BreweryProfile
             brewery={this.props.currentBrewery}
             favs={this.props.favs}
+            breweryBeers={this.props.breweryBeers}
 
             handleFavs={this.props.handleFavs}
             handleBeerLog={this.props.handleBeerLog}
             onClickClose={this.props.onClickClose}
 
             beers={this.props.beers}
+            findBreweryBeers={this.props.findBreweryBeers}
             currentBeer={this.props.currentBeer}
+            showBreweryBeer={this.props.showBreweryBeer}
 
             username={this.props.username}
             avatar={this.props.avatar}
           />
         </>
       }
-
       </>
   )}
 }

@@ -6,6 +6,8 @@ import EditBeer from '../beer/EditBeer'
 const BeerProfile = (props) => {
   // console.log(props.beer)
   const style={color: '#20B2AA'}
+  const brewery = props.brewery
+
   return (
     <React.Fragment>
       { !props.renderEdit ?
