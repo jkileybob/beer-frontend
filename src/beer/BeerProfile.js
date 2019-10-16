@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from 'react-router-dom';
 import { Card, Image, Popup, Icon, Button, Comment, Grid, Segment, Divider, Rating } from "semantic-ui-react";
 import EditBeer from '../beer/EditBeer'
 
@@ -24,19 +25,22 @@ const BeerProfile = (props) => {
                   trigger={<Card.Header>{props.brewery.name}</Card.Header>}
                   size='large'
                   position='right center'
-                  style={style}
-                >
-                  <Popup.Content>
-                    from {props.brewery.city}, {props.brewery.state}
-                  </Popup.Content>
+                  style={style} >
+                    <Popup.Content>
+                      from {props.brewery.city}, {props.brewery.state}
+                    </Popup.Content>
                 </Popup>
-                <Icon
-                  onClick={props.showBrewery}
-                  link
-                  circular
-                  inverted
-                  color='teal'
-                  name='beer' />
+
+                <Popup
+                  trigger={ <Link to='/breweries' ><Icon link circular inverted color='teal' name='beer' /></Link> }
+                  size='large'
+                  position='right center'
+                  style={style} >
+                    <Popup.Content>
+                      click to checkout {props.brewery.name}
+                    </Popup.Content>
+              </Popup>
+
               </Card.Content>
             </Card>
 

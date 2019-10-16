@@ -255,7 +255,9 @@ class App extends React.Component{
     myBreweriesClick = () => {
       let favs = this.state.favs;
       this.setState({
-        breweries: favs
+        breweries: favs,
+        currentBeer: null,
+        currentBrewery: null
       })
     }
 
@@ -399,10 +401,11 @@ class App extends React.Component{
       })
     }
 
-
-    // will eventually redirect a click from beer profile to brweery profile
-    showBrewery = () => {
-      console.log(this.state.currentBrewery)
+    onClickReset = (e) => {
+      this.setState({
+        currentBeer: null,
+        currentBrewery: null
+      });
     }
 
     // handles click from brewery's add beer button
@@ -483,12 +486,7 @@ class App extends React.Component{
         : null
       )
     }
-    onClickReset = (e) => {
-      this.setState({
-        currentBeer: null,
-        currentBrewery: null
-      });
-    }
+
 
     // post fetch submits NEW beer to local db
     handleSubmitBeer = () => {
@@ -517,7 +515,13 @@ class App extends React.Component{
         this.setState({
           beers: copy,
           currentBeer: beer.beer,
-          addingBeer: false
+          addingBeer: false,
+          name: "",
+          style: "",
+          abv: "",
+          rating: "3",
+          tastingNote: "",
+          comment: ""
         })
       })
     }
@@ -544,7 +548,6 @@ class App extends React.Component{
         })
       }).then(response => response.json())
         .then(updatedBeer => {
-          console.log(updatedBeer.beer)
           let copy = this.state.beers.slice();
           let index = copy.findIndex((beer)=>{ return beer.id === updatedBeer.beer.id })
 
@@ -553,7 +556,13 @@ class App extends React.Component{
           this.setState({
             renderEdit: false,
             beers: copy,
-            currentBeer: updatedBeer.beer
+            currentBeer: updatedBeer.beer,
+            name: "",
+            style: "",
+            abv: "",
+            rating: "3",
+            tastingNote: "",
+            comment: ""
           })
         })
     }
@@ -585,6 +594,7 @@ class App extends React.Component{
           onLogOut={this.handleLogOut}
           resetSearch={this.resetSearch}
           myBreweriesClick={this.myBreweriesClick}
+          onClickReset={this.onClickReset}
         />
 
         { !this.state.loadingUser ?
@@ -651,8 +661,6 @@ class App extends React.Component{
                       currentBeer={this.state.currentBeer}
                       favs={this.state.favs}
                       brewery={this.state.currentBrewery}
-
-                      showBrewery={this.showBrewery}
 
                       onBeerClick={this.onBeerClick}
                       onClickReset={this.onClickReset}
