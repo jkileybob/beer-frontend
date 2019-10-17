@@ -48,6 +48,7 @@ class Favorites extends React.Component{
             avatar={this.props.avatar}
 
             deleteBrewery={this.props.deleteBrewery}
+            favorites={this.props.favorites}
           />
         </>
       }

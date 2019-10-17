@@ -31,6 +31,7 @@ class App extends React.Component{
     favsById: [],
     favs: [],
     loadingFavs: true,
+    favorites: [],
 
     // beer STATES:
     beers: [],
@@ -56,11 +57,14 @@ class App extends React.Component{
       })
       .then(response => response.json())
       .then(user =>{
-        let favsById = user.breweries.map(brewery => { return brewery.id})
+        // console.log(user.favorites)
+        let favsById = user.favorites.map(fav => { return fav.brewery_id})
+        let favorites = user.favorites.map(fav => { return fav })
         this.setState({
           currentUser: user,
           loadingUser: false,
-          favsById: [...favsById]
+          favsById: [...favsById],
+          favorites: favorites
           }, ()=>{ this.fetchFavs() });
       });
       this.fetchUserBeers(token);
@@ -130,8 +134,8 @@ class App extends React.Component{
 
 
   // BREWERY COMPONENT LOGIC:
-    // search form logic:
 
+    // search form logic:
     handleNameSearch = (e) => {
       let inputName = e.target.value
       this.setState({
@@ -153,7 +157,7 @@ class App extends React.Component{
       })
     }
 
-    handleClickSubmit = () => {
+    handleSearchSubmit = () => {
      if (this.state.searchTermName && !this.state.searchTermState){
         let inputName = this.state.searchTermName
         fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}`)
@@ -212,8 +216,8 @@ class App extends React.Component{
       }
     }
 
-  // clears states to render search from Navbar onClick 'search breweries'
-  // changes url path to `/search-breweries`
+    // clears states to render search from Navbar onClick 'search breweries'
+    // changes url path to `/search-breweries`
     resetSearch = () => {
       this.setState({
         breweries: [],
@@ -224,7 +228,7 @@ class App extends React.Component{
       })
     }
 
-//brewery MODAL logic:
+    //brewery MODAL logic:
     onBreweryClick = (e) => {
       this.state.breweries.filter(brewery=>{
         let breweryId = e.currentTarget.id;
@@ -237,7 +241,7 @@ class App extends React.Component{
       })
     }
 
-// method for closing modal for breweryIndex and favorites list
+    // method for closing modal for breweryIndex and favorites list
     onClickClose = (e) => {
       this.setState({
         modalOpen: false,
@@ -246,19 +250,27 @@ class App extends React.Component{
       })
     }
 
+//FAVORITES COMPONENT LOGIC:
+  // PROBLEM:
+  // i don't necessarily need to delete a brewery instance, just a user fav...
+  // how do i keep a user from adding the same brewery to brewery table
+   // while also adding another instance of that fav brewery after deleting it before
+
+   // User ------ Favorite ------ Brewery
+        //         (join)
+
+
+    // method for deleting a favorite brewery, and its beers
     deleteBrewery = (e) => {
-      // console.log(e.currentTarget.id, typeof e.currentTarget.id)
-      // rn giving a string of brewery_id. parse int to a number
+      let token = localStorage.getItem('token');
       let breweryID = parseInt(e.currentTarget.id)
+      let fav = this.state.favorites.filter(fav => fav.brewery_id === breweryID)
+      let favID = fav.map(fav => fav.id)
+      fetch(`http://localhost:4000/api/v1/favorites/${favID}`, {
+        method: "DELETE",
+        headers: {"Authentication" : `Bearer ${token}`}
+      }).then(() => {
 
-
-      // delete fetch to localDB `/breweries/${breweryID}`
-
-      // fetch(`http://localhost:4000/api/v1/delete-brewery/${breweryID}`, {
-      //   method: "DELETE"
-      // }).then(() => {
-
-          // slice copies favs, finds index of delted brewery, splice removes it, set to state
     //copy+update FAVS state
         let updatedFavs = this.state.favs.slice();
         let indexOfDeletedBrewery = updatedFavs.findIndex((brewery) => { return brewery.id === breweryID })
@@ -267,7 +279,6 @@ class App extends React.Component{
         let updatedFavsByID = this.state.favsById.slice();
         let indexOfDeletedBreweryID = updatedFavsByID.findIndex((id) => { return id === breweryID })
         updatedFavsByID.splice(indexOfDeletedBreweryID, 1)
-
     //copy beers state, loop through each item and check if
         let updatedBeers = this.state.beers.slice();
         for (var i = 0; i < updatedBeers.length; i++){
@@ -283,19 +294,8 @@ class App extends React.Component{
           beers: updatedBeers,
           currentBreweryBeers: []
         })
-      // })
-
-      // on response,
-      // make copies of state for removal of deleted brewery/favs/beers
-      // filter states with matching breweryID to find brewery/favs/beers.
-        // remove that brewery by index from favs + favsById,
-        // and its beers from state of beers + currentBreweryBeers,
-        // also set currentBrewery to null
-        // <Link> on trash icon in brewery prfile should redirect to `/breweries`
-          //update of currentBrewery state should render brewery index list
+      })
     }
-
-//FAVORITES COMPONENT LOGIC:
 
 // sets breweries state === favs from navbar onclick 'My Breweries'
 // changes url pth and render to <Favs />
@@ -710,7 +710,7 @@ class App extends React.Component{
                     handleNameSearch={this.handleNameSearch}
                     handleStateSearch={this.handleStateSearch}
                     handleCitySearch={this.handleCitySearch}
-                    handleClickSubmit={this.handleClickSubmit}
+                    handleClickSubmit={this.handleSearchSubmit}
                     onBreweryClick={this.onBreweryClick}
                     handleFavs={this.handleFavs}
                     modalOpen={this.state.modalOpen}
@@ -739,6 +739,7 @@ class App extends React.Component{
                     showBreweryBeer={this.showBreweryBeer}
 
                     deleteBrewery={this.deleteBrewery}
+                    favorites={this.state.favorites}
                     />
                 }} />
 

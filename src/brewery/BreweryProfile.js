@@ -46,7 +46,7 @@ const BreweryProfile = (props) => {
 
                 <Card.Content textAlign='center'>
                   <Popup
-                    trigger={<Link to='/breweries' ><Icon id={props.brewery.id} onClick={props.deleteBrewery} link circular inverted color='teal' name='trash alternate outline'></Icon></Link>}
+                    trigger={<Link to='/breweries' ><Icon favorites={props.favorites} id={props.brewery.id} onClick={props.deleteBrewery} link circular inverted color='teal' name='trash alternate outline'></Icon></Link>}
                     size='large'
                     position='right center'
                     style={style} >
