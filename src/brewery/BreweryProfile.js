@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { Grid, Card, Header, Image, Divider, List, Button, Icon } from 'semantic-ui-react'
+import { Grid, Card, Header, Image, Divider, List, Button, Icon, Popup } from 'semantic-ui-react'
 import AddBeer from '../beer/AddBeer'
 import BreweryMap from '../brewery/BreweryMap'
 
@@ -43,6 +43,19 @@ const BreweryProfile = (props) => {
                       Back To My Breweries
                     </Button>
                 </Card.Content>
+
+                <Card.Content textAlign='center'>
+                  <Popup
+                    trigger={<Link to='/breweries' ><Icon id={props.brewery.id} onClick={props.deleteBrewery} link circular inverted color='teal' name='trash alternate outline'></Icon></Link>}
+                    size='large'
+                    position='right center'
+                    style={style} >
+                      <Popup.Content>
+                          Click to delete {props.brewery.name} and all its beer entries
+                      </Popup.Content>
+                  </Popup>
+                </Card.Content>
+
               </Card>
             </Grid.Column>
           </Grid.Row>

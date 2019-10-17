@@ -246,6 +246,54 @@ class App extends React.Component{
       })
     }
 
+    deleteBrewery = (e) => {
+      // console.log(e.currentTarget.id, typeof e.currentTarget.id)
+      // rn giving a string of brewery_id. parse int to a number
+      let breweryID = parseInt(e.currentTarget.id)
+
+
+      // delete fetch to localDB `/breweries/${breweryID}`
+
+      // fetch(`http://localhost:4000/api/v1/delete-brewery/${breweryID}`, {
+      //   method: "DELETE"
+      // }).then(() => {
+
+          // slice copies favs, finds index of delted brewery, splice removes it, set to state
+    //copy+update FAVS state
+        let updatedFavs = this.state.favs.slice();
+        let indexOfDeletedBrewery = updatedFavs.findIndex((brewery) => { return brewery.id === breweryID })
+        updatedFavs.splice(indexOfDeletedBrewery, 1)
+    //copy+update FavsByID state
+        let updatedFavsByID = this.state.favsById.slice();
+        let indexOfDeletedBreweryID = updatedFavsByID.findIndex((id) => { return id === breweryID })
+        updatedFavsByID.splice(indexOfDeletedBreweryID, 1)
+
+    //copy beers state, loop through each item and check if
+        let updatedBeers = this.state.beers.slice();
+        for (var i = 0; i < updatedBeers.length; i++){
+          if (parseInt(updatedBeers[i].brewery_id) === breweryID){
+            updatedBeers.splice(i, 1);
+          }
+        }
+
+        this.setState({
+          currentBrewery: null,
+          favs: updatedFavs,
+          favsById: updatedFavsByID,
+          beers: updatedBeers,
+          currentBreweryBeers: []
+        })
+      // })
+
+      // on response,
+      // make copies of state for removal of deleted brewery/favs/beers
+      // filter states with matching breweryID to find brewery/favs/beers.
+        // remove that brewery by index from favs + favsById,
+        // and its beers from state of beers + currentBreweryBeers,
+        // also set currentBrewery to null
+        // <Link> on trash icon in brewery prfile should redirect to `/breweries`
+          //update of currentBrewery state should render brewery index list
+    }
 
 //FAVORITES COMPONENT LOGIC:
 
@@ -689,6 +737,8 @@ class App extends React.Component{
                     currentBeer={this.state.currentBeer}
                     handleBeerLog={this.handleBeerLog}
                     showBreweryBeer={this.showBreweryBeer}
+
+                    deleteBrewery={this.deleteBrewery}
                     />
                 }} />
 
