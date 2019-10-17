@@ -6,6 +6,8 @@ import BreweryMap from '../brewery/BreweryMap'
 
 const BreweryProfile = (props) => {
   const style={color: '#20B2AA'}
+  const gotBeers = props.breweryBeers.length
+
   return(
     <>
       <Grid centered columns='equal' >
@@ -56,7 +58,7 @@ const BreweryProfile = (props) => {
             <Grid.Column>
               <Divider horizontal>{props.username}&#8217;s Logged Beers</Divider>
 
-            { props.breweryBeers ?
+            { gotBeers >= 1 ?
                 <Card centered >
                 <Card.Content>
                   <List>
@@ -89,6 +91,7 @@ const BreweryProfile = (props) => {
                   </Button>
                 </Card.Content>
               </Card>
+
             : <Card centered >
                 <Card.Content>
                   <Card.Description>

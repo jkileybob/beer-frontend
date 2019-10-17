@@ -212,21 +212,19 @@ class App extends React.Component{
       }
     }
 
-// clears states to render search from Navbar onCLick 'search breweries'
-// changes url path to search-breweries
-  resetSearch = () => {
-    this.setState({
-      breweries: [],
-      currentBrewery: null,
-      searchTermName: "",
-      searchTermCity: "",
-      searchTermState: ""
-    })
-  }
+  // clears states to render search from Navbar onClick 'search breweries'
+  // changes url path to `/search-breweries`
+    resetSearch = () => {
+      this.setState({
+        breweries: [],
+        currentBrewery: null,
+        searchTermName: "",
+        searchTermCity: "",
+        searchTermState: ""
+      })
+    }
 
-//brewery profile modal logic:
-// PROBLEM:
-// setState is asynch so currentBrewery is a click behind
+//brewery MODAL logic:
     onBreweryClick = (e) => {
       this.state.breweries.filter(brewery=>{
         let breweryId = e.currentTarget.id;
@@ -383,31 +381,23 @@ class App extends React.Component{
           loadingFavs: false
         })
       })
-      // find a way to route to `/breweries` path
-      // add link to submit button in brewery modal
+      // <Link></Link> onSubmit button in modal redirects to `/breweries` path onClick
+      // currentBrewery state set here renders new Brewery profile page
     }
 
     handleFavs = (e) => {
-      // make sure user is logged in
+      // check if user is logged in or not
       if (this.state.currentUser){
-        // check if brewery already exists in user's favs
         let breweryId = parseInt(e.currentTarget.id);
         let duplicate = this.state.favs.filter(breweryObj => breweryObj.id === breweryId)
+        // check if user already saved this brewery by finding duplicate id in favs
         if (duplicate.length > 0){
-          //   // if yes, alert user they can't add twice
+          // if yes, alert user they can't add twice
             alert("This brewery already exists in your favorites.")
         } else {
-          //   // make a post request of brewery id to make a new brewery, unless
-            // console.log("attempting to add new fav with id:", breweryId)
             this.logBrewery(breweryId);
         }
       } else { alert("You must be logged in to add to your favorites.") }
-        // you can manipulate the backend to create that brewery
-        // which doesn't already exist in the db somehow, then...
-        // make a post request of brewery id to create a new favs instance
-        // get a response of that new favs instance
-        // create a copy of favs state array and push new instance
-        // setState of favs array to match new
     }
 
 
