@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import { Button, Header, Container, Modal } from "semantic-ui-react";
 import BreweryMap from './BreweryMap'
 
@@ -41,15 +42,16 @@ class BreweryModal extends React.Component{
                   close
                 </Button>
 
-                <Button
-                  id={this.props.brewery.id}
-                  brewery={this.props.brewery}
-                  color='teal'
-                  size='small'
-                  onClick={this.props.handleFavs}
-                >
-                  Log this Brewery
-                </Button>
+                <Link to="/breweries" style={style} >
+                  <Button
+                    id={this.props.brewery.id}
+                    brewery={this.props.brewery}
+                    color='teal'
+                    size='small'
+                    onClick={this.props.handleFavs} >
+                    Log this Brewery
+                  </Button>
+                </Link>
 
                 <Button
                   id={this.props.brewery.id}

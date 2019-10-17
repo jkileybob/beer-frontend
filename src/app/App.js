@@ -12,7 +12,6 @@ import AddBeer from '../beer/AddBeer'
 import './App.css';
 
 class App extends React.Component{
-
   state = {
     // USER STATES:
     currentUser: null,
@@ -21,7 +20,7 @@ class App extends React.Component{
     // BREWERY STATES:
     breweries: [],
     currentBrewery: null,
-    currentBreweryBeers: null,
+    currentBreweryBeers: [],
     modalOpen: false,
 
     searchTermName: "",
@@ -245,7 +244,7 @@ class App extends React.Component{
       this.setState({
         modalOpen: false,
         currentBrewery: null,
-        currentBreweryBeers: null
+        currentBreweryBeers: []
       })
     }
 
@@ -260,7 +259,7 @@ class App extends React.Component{
         breweries: favs,
         currentBeer: null,
         currentBrewery: null,
-        currentBreweryBeers: null
+        currentBreweryBeers: []
       })
     }
 
@@ -352,43 +351,40 @@ class App extends React.Component{
 
 // POST request to save BREWERY/FAV to local backend database
     logBrewery = (brewery_id) => {
-      let favsById = Array.from(this.state.favsById)
+      let newFavsArr = Array.from(this.state.favsById);
       let token = localStorage.getItem('token');
-      // first post creates brewery
-        fetch(`http://localhost:4000/api/v1/breweries`, {
-          method: "POST",
-          headers: {
-            "Content-Type":"application/json",
-            "Accept":"application/json"
-          },
-          body: JSON.stringify({
-            id: brewery_id,
-          })
+
+      fetch(`http://localhost:4000/api/v1/add-favorites`, {
+        method: "POST",
+        headers: {
+          "Content-Type":"application/json",
+          "Accept":"application/json",
+          "Authentication" : `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          brewery_id: brewery_id
         })
-        // second post creates fav
-        .then(  fetch(`http://localhost:4000/api/v1/add-favorites`, {
-          method: "POST",
-          headers: {
-            "Content-Type":"application/json",
-            "Accept":"application/json",
-            "Authentication" : `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            brewery_id: brewery_id
-          })
-          }
-        )
-        .then(response => response.json())
-        .then(data => {
-          // console.log(data);
-          // keep getting strange errors here every so often!!!
-          // needs investigating ASAP!!
-          favsById.push(data.brewery.id);
-          // console.log(favsById)
-          this.setState({
-            favsById: favsById
-          }, this.fetchFavs());
-        }) )
+      }).then(response => response.json())
+        .then(breweryData => {
+          this.getNewFavBrewery(breweryData.brewery.id)
+        })
+    }
+
+    getNewFavBrewery = (brewery_id) => {
+      fetch(`https://api.openbrewerydb.org/breweries/${brewery_id}`)
+      .then(res => res.json())
+      .then(breweryObj => {
+        // console.log(breweryObj);
+        let updatedFavs = this.state.favs.slice();
+        updatedFavs.push(breweryObj);
+        this.setState({
+          currentBrewery: breweryObj,
+          favs: updatedFavs,
+          loadingFavs: false
+        })
+      })
+      // find a way to route to `/breweries` path
+      // add link to submit button in brewery modal
     }
 
     handleFavs = (e) => {
@@ -434,7 +430,7 @@ class App extends React.Component{
       this.setState({
         currentBeer: null,
         currentBrewery: null,
-        currentBreweryBeers: null
+        currentBreweryBeers: []
       });
     }
 
@@ -519,7 +515,6 @@ class App extends React.Component{
 
     // post fetch submits NEW beer to local db
     handleSubmitBeer = () => {
-      let brewery = this.state.currentBrewery
       let token = localStorage.getItem('token');
       fetch(`http://localhost:4000/api/v1/add-beer`, {
           method: "POST",
@@ -540,12 +535,15 @@ class App extends React.Component{
         }
       ).then(res => res.json())
       .then(beer => {
-        let copyBeer = this.state.beers.slice();
-        copyBeer.push(beer.beer);
 
+      // if (!this.state.beers === null) {
         let copyBrewBeer = this.state.currentBreweryBeers.slice();
         copyBrewBeer.push(beer.beer);
+      //   this.setState({ currentBreweryBeers: copyBrewBeer })
+      // } else { return null }
 
+      let copyBeer = this.state.beers.slice();
+      copyBeer.push(beer.beer);
         this.setState({
           beers: copyBeer,
           currentBeer: beer.beer,
@@ -557,7 +555,7 @@ class App extends React.Component{
           rating: "3",
           tastingNote: "",
           comment: ""
-        }, this.findBreweryBeers(brewery))
+        })
       })
     }
     //patch submits edit to existing beer in db
