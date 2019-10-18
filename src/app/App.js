@@ -397,7 +397,6 @@ class App extends React.Component{
 
 // POST request to save BREWERY/FAV to local backend database
     logBrewery = (brewery_id) => {
-      let newFavsArr = Array.from(this.state.favsById);
       let token = localStorage.getItem('token');
 
       fetch(`http://localhost:4000/api/v1/add-favorites`, {

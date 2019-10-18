@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { Grid, Card, Header, Image, Divider, List, Button, Icon, Popup } from 'semantic-ui-react'
-import AddBeer from '../beer/AddBeer'
+import { Grid, Card, Image, Divider, List, Button, Icon, Popup } from 'semantic-ui-react'
 import BreweryMap from '../brewery/BreweryMap'
 
 const BreweryProfile = (props) => {
