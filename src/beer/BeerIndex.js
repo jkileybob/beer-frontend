@@ -1,5 +1,4 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
 import { Popup, List, Button, Rating } from 'semantic-ui-react'
 import BeerProfile from '../beer/BeerProfile'
 

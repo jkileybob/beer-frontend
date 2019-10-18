@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, List, Button } from 'semantic-ui-react';
+import { Grid, Header, Input, List, Button } from 'semantic-ui-react';
 import BreweryModal from "./BreweryModal"
 
 class BreweryIndex extends React.Component{
@@ -8,42 +8,79 @@ class BreweryIndex extends React.Component{
     const style={color: '#20B2AA'}
     return(
       <>
-        <h1 style={style} >Search the American Brewery Database</h1>
-        <h2>...by name and/or state...</h2>
-          <Input
-            fluid
-            size='big'
-            icon='search'
-            onChange={this.props.handleNameSearch}
-            placeholder='...by name...'
-          />
-          <Input
-            fluid
-            size='big'
-            icon='search'
-            onChange={this.props.handleStateSearch}
-            placeholder='...by state...'
-          />
-        <h2>...or search by city...</h2>
-          <Input
-            fluid
-            size='big'
-            icon='search'
-            onChange={this.props.handleCitySearch}
-            placeholder='...by city...'
-          />
+        <Grid centered >
+          <Grid.Row>
+            <Header size='huge' style={style} >Search the American Brewery Database</Header>
+          </Grid.Row>
 
-          <Button className="ui button"
-            compact
-            color='teal'
-            size='large'
-            onClick={this.props.handleClickSubmit}>
-              Submit
-          </Button>
+          <Grid.Row>
+            <Header>...by name and/or state...</Header>
+          </Grid.Row>
+
+          <Grid.Row columns={2} >
+            <Grid.Column width={7} >
+              <Input
+                fluid
+                size='big'
+                icon='search'
+                onChange={this.props.handleNameSearch}
+                placeholder='...by name...'
+              />
+            </Grid.Column>
+            <Grid.Column width={7} >
+              <Input
+                fluid
+                size='big'
+                icon='search'
+                onChange={this.props.handleStateSearch}
+                placeholder='...by state...'
+              />
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row>
+            <Header>...or search by city...</Header>
+          </Grid.Row>
+
+          <Grid.Row columns={1} >
+            <Grid.Column width={7} >
+              <Input
+                fluid
+                size='big'
+                icon='search'
+                onChange={this.props.handleCitySearch}
+                placeholder='...by city...'
+              />
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row columns={2}>
+            <Grid.Column width={2} >
+              <Button
+                className="ui button"
+                color='teal'
+                size='large'
+                onClick={this.props.handleClickSubmit}>
+                  Submit
+              </Button>
+            </Grid.Column>
+
+            <Grid.Column width={2} >
+              <Button
+                className="ui button"
+                color='teal'
+                size='large'
+                onClick={this.props.resetSearch}>
+                Clear
+              </Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+
 
         {this.props.breweries ?
 
-          <List animated verticalAlign='middle'>
+          <List animated verticalAlign='middle' >
             {this.props.breweries.map((brew) =>{
               return <React.Fragment key={`brewery-list-item-${brew.id}`}>
                 <List.Item
@@ -51,9 +88,9 @@ class BreweryIndex extends React.Component{
                   key={`brewery-list-item-${brew.id}`}
                   onClick={this.props.onBreweryClick}
                   >
-                    <List.Header>
+                    <Header size='medium' >
                       {brew.name}
-                    </List.Header>
+                    </Header>
                   </List.Item>
               </React.Fragment>
             })}

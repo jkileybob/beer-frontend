@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
+import { Grid } from 'semantic-ui-react';
 import Nav from '../navbar/Nav'
 import Footer from '../footer/Footer'
 import UserProfile from '../user/UserProfile'
@@ -31,6 +32,7 @@ class App extends React.Component{
     favsById: [],
     favs: [],
     loadingFavs: true,
+    favorites: [],
 
     // beer STATES:
     beers: [],
@@ -56,11 +58,14 @@ class App extends React.Component{
       })
       .then(response => response.json())
       .then(user =>{
-        let favsById = user.breweries.map(brewery => { return brewery.id})
+        // console.log(user.favorites)
+        let favsById = user.favorites.map(fav => { return fav.brewery_id})
+        let favorites = user.favorites.map(fav => { return fav })
         this.setState({
           currentUser: user,
           loadingUser: false,
-          favsById: [...favsById]
+          favsById: [...favsById],
+          favorites: favorites
           }, ()=>{ this.fetchFavs() });
       });
       this.fetchUserBeers(token);
@@ -130,8 +135,8 @@ class App extends React.Component{
 
 
   // BREWERY COMPONENT LOGIC:
-    // search form logic:
 
+    // search form logic:
     handleNameSearch = (e) => {
       let inputName = e.target.value
       this.setState({
@@ -153,7 +158,7 @@ class App extends React.Component{
       })
     }
 
-    handleClickSubmit = () => {
+    handleSearchSubmit = () => {
      if (this.state.searchTermName && !this.state.searchTermState){
         let inputName = this.state.searchTermName
         fetch(`https://api.openbrewerydb.org/breweries?by_name=${inputName}`)
@@ -212,8 +217,8 @@ class App extends React.Component{
       }
     }
 
-  // clears states to render search from Navbar onClick 'search breweries'
-  // changes url path to `/search-breweries`
+    // clears states to render search from Navbar onClick 'search breweries'
+    // changes url path to `/search-breweries`
     resetSearch = () => {
       this.setState({
         breweries: [],
@@ -224,7 +229,7 @@ class App extends React.Component{
       })
     }
 
-//brewery MODAL logic:
+    //brewery MODAL logic:
     onBreweryClick = (e) => {
       this.state.breweries.filter(brewery=>{
         let breweryId = e.currentTarget.id;
@@ -237,7 +242,7 @@ class App extends React.Component{
       })
     }
 
-// method for closing modal for breweryIndex and favorites list
+    // method for closing modal for breweryIndex and favorites list
     onClickClose = (e) => {
       this.setState({
         modalOpen: false,
@@ -246,8 +251,50 @@ class App extends React.Component{
       })
     }
 
-
 //FAVORITES COMPONENT LOGIC:
+  // PROBLEM:
+  // i don't necessarily need to delete a brewery instance, just a user fav...
+  // how do i keep a user from adding the same brewery to brewery table
+   // while also adding another instance of that fav brewery after deleting it before
+
+   // User ------ Favorite ------ Brewery
+        //         (join)
+
+
+    // method for deleting a favorite brewery, and its beers
+    deleteBrewery = (e) => {
+      let token = localStorage.getItem('token');
+      let breweryID = parseInt(e.currentTarget.id)
+      let fav = this.state.favorites.filter(fav => fav.brewery_id === breweryID)
+      let favID = fav.map(fav => fav.id)
+      fetch(`http://localhost:4000/api/v1/favorites/${favID}`, {
+        method: "DELETE",
+        headers: {"Authentication" : `Bearer ${token}`}
+      }).then(() => {
+    //copy+update FAVS state
+        let updatedFavs = this.state.favs.slice();
+        let indexOfDeletedBrewery = updatedFavs.findIndex((brewery) => { return brewery.id === breweryID })
+        updatedFavs.splice(indexOfDeletedBrewery, 1)
+    //copy+update FavsByID state
+        let updatedFavsByID = this.state.favsById.slice();
+        let indexOfDeletedBreweryID = updatedFavsByID.findIndex((id) => { return id === breweryID })
+        updatedFavsByID.splice(indexOfDeletedBreweryID, 1)
+    //copy beers state, loop through each item and check if
+        let updatedBeers = this.state.beers.slice();
+        for (var i = 0; i < updatedBeers.length; i++){
+          if (parseInt(updatedBeers[i].brewery_id) === breweryID){
+            updatedBeers.splice(i, 1);
+          }
+        }
+        this.setState({
+          currentBrewery: null,
+          favs: updatedFavs,
+          favsById: updatedFavsByID,
+          beers: updatedBeers,
+          currentBreweryBeers: []
+        })
+      })
+    }
 
 // sets breweries state === favs from navbar onclick 'My Breweries'
 // changes url pth and render to <Favs />
@@ -349,7 +396,6 @@ class App extends React.Component{
 
 // POST request to save BREWERY/FAV to local backend database
     logBrewery = (brewery_id) => {
-      let newFavsArr = Array.from(this.state.favsById);
       let token = localStorage.getItem('token');
 
       fetch(`http://localhost:4000/api/v1/add-favorites`, {
@@ -622,83 +668,151 @@ class App extends React.Component{
   render(){
     return(
       <>
+        <header className="Header" >
+          <Nav
+            logged_in={this.state.currentUser}
+            onLogOut={this.handleLogOut}
+            resetSearch={this.resetSearch}
+            myBreweriesClick={this.myBreweriesClick}
+            onClickReset={this.onClickReset}
+          />
+        </header>
+        <main>
+          <Grid centered verticalAlign='middle'>
+            <Grid.Row>
+            { !this.state.loadingUser ?
+              <Switch>
+                {!this.state.addingBeer ?
+                  <>
+                    <Route exact path='/' render={()=> <Redirect to='/profile' />  }/>
 
-        <Nav
-          logged_in={this.state.currentUser}
-          onLogOut={this.handleLogOut}
-          resetSearch={this.resetSearch}
-          myBreweriesClick={this.myBreweriesClick}
-          onClickReset={this.onClickReset}
-        />
+                    <Route exact path='/profile' render={()=>{
+                      return this.state.currentUser ?
+                        <UserProfile
+                          user={this.state.currentUser}
+                          myBreweriesClick={this.myBreweriesClick}
+                          resetSearch={this.resetSearch}
+                          onClickReset={this.onClickReset}
+                        />
+                      : <Redirect to='/login' />
+                    }} />
 
-      { !this.state.loadingUser ?
+                    <Route exact path='/login' render={()=>{
+                      return this.state.currentUser ?
+                        <Redirect to='/profile' />
+                      : <LoginForm onLogIn={this.handleLoginSubmit} />
+                    }} />
 
-        <Switch>
+                    <Route exact path='/signup' render={()=>{
+                      return this.state.currentUser ?
+                      <Redirect to='/profile' />
+                      : <SignUp createNewUser={this.createNewUser} />
+                    } } />
 
-          <Route exact path='/' render={()=> <Redirect to='/profile' />  }/>
+                    <Route exact path='/search-breweries' render={()=>{
+                      return <BreweryIndex
+                        breweries={this.state.breweries}
+                        currentBrewery={this.state.currentBrewery}
+                        handleNameSearch={this.handleNameSearch}
+                        handleStateSearch={this.handleStateSearch}
+                        handleCitySearch={this.handleCitySearch}
+                        handleClickSubmit={this.handleSearchSubmit}
+                        resetSearch={this.resetSearch}
+                        onBreweryClick={this.onBreweryClick}
+                        handleFavs={this.handleFavs}
+                        modalOpen={this.state.modalOpen}
+                        onClickClose={this.onClickClose}
+                        handleBeerLog={this.handleBeerLog}
+                        />
+                    }} />
 
-          <Route exact path='/profile' render={()=>{
-            return this.state.currentUser ?
-              <UserProfile
-                user={this.state.currentUser}
-                myBreweriesClick={this.myBreweriesClick}
-                resetSearch={this.resetSearch}
-                onClickReset={this.onClickReset}
-              />
-            : <Redirect to='/login' />
-          }} />
+                    <Route exact path='/breweries' render={()=>{
+                      return <Favorites
+                        breweries={this.state.breweries}
+                        currentBrewery={this.state.currentBrewery}
+                        favs={this.state.favs}
+                        breweryBeers={this.state.currentBreweryBeers}
 
-          <Route exact path='/login' render={()=>{
-            return this.state.currentUser ?
-              <Redirect to='/profile' />
-            : <LoginForm onLogIn={this.handleLoginSubmit} />
-          }} />
+                        onFavListBreweryClick={this.onFavListBreweryClick}
+                        onClickClose={this.onClickClose}
 
-        <Route exact path='/signup' render={()=>{
-            return this.state.currentUser ?
-            <Redirect to='/profile' />
-            : <SignUp createNewUser={this.createNewUser} />
-          } } />
+                        username={this.state.currentUser.username}
+                        avatar={this.state.currentUser.avatar}
 
-        <Route exact path='/search-breweries' render={()=>{
-            return <BreweryIndex
-              breweries={this.state.breweries}
-              currentBrewery={this.state.currentBrewery}
-              handleNameSearch={this.handleNameSearch}
-              handleStateSearch={this.handleStateSearch}
-              handleCitySearch={this.handleCitySearch}
-              handleClickSubmit={this.handleClickSubmit}
-              onBreweryClick={this.onBreweryClick}
-              handleFavs={this.handleFavs}
-              modalOpen={this.state.modalOpen}
-              onClickClose={this.onClickClose}
-              />
-          }} />
+                        beers={this.state.beers}
+                        findBreweryBeers={this.findBreweryBeers}
+                        currentBeer={this.state.currentBeer}
+                        handleBeerLog={this.handleBeerLog}
+                        showBreweryBeer={this.showBreweryBeer}
 
-        <Route exact path='/breweries' render={()=>{
-            return <Favorites
-              breweries={this.state.breweries}
-              currentBrewery={this.state.currentBrewery}
-              favs={this.state.favs}
-              onFavListBreweryClick={this.onFavListBreweryClick}
-              handleFavs={this.handleFavs}
-              modalOpen={this.state.modalOpen}
-              onClickClose={this.onClickClose}
-              />
-          }} />
+                        deleteBrewery={this.deleteBrewery}
+                        favorites={this.state.favorites}
+                        />
+                    }} />
 
-        <Route exact path='/beers' render={()=>{
-            return <BeerIndex
-                favs={this.state.favs}
-                brewery={this.state.currentBrewery}
-                setBrewery={this.setBrewery}
-                showBrewery={this.showBrewery}
-              />
-          }} />
+                    <Route exact path='/beers' render={()=>{
+                      return <BeerIndex
+                          beers={this.state.beers}
+                          currentBeer={this.state.currentBeer}
+                          favs={this.state.favs}
+                          brewery={this.state.currentBrewery}
+                          findBreweryBeers={this.findBreweryBeers}
+                          onBreweryClick={this.onBreweryClick}
 
-        </Switch>
+                          onBeerClick={this.onBeerClick}
+                          onClickReset={this.onClickReset}
 
-      : null }
+                          renderEdit={this.state.renderEdit}
+                          cancelBeer={this.cancelBeer}
+                          editBeer={this.editBeerOnClick}
+                          submitBeerEdit={this.submitBeerEdit}
+                          deleteBeer={this.deleteBeer}
+                          name={this.state.name}
+                          style={this.state.style}
+                          abv={this.state.abv}
+                          rating={this.state.rating}
+                          tastingNote={this.state.tastingNote}
+                          comment={this.state.comment}
+
+                          inputValue={this.inputValue}
+                          handleABV={this.handleABV}
+                          handleRating={this.handleRating}
+                        />
+                    }} />
+                  </>
+                :   <AddBeer
+                      currentBrewery={this.state.currentBrewery}
+                      beers={this.state.beers}
+                      favs={this.state.favs}
+                      addingBeer={this.state.addingBeer}
+                      cancelBeer={this.cancelBeer}
+
+                      handleSubmitBeer={this.handleSubmitBeer}
+                      name={this.state.name}
+                      style={this.state.style}
+                      abv={this.state.abv}
+                      rating={this.state.rating}
+                      tastingNote={this.state.tastingNote}
+                      comment={this.state.comment}
+
+                      inputValue={this.inputValue}
+                      handleABV={this.handleABV}
+                      handleRating={this.handleRating}
+                    />
+                }
+              </Switch>
+            : null }
+            </Grid.Row>
+          </Grid>
+        </main>
+
+        <footer className='Footer'>
+          <Grid centered>
+            <Grid.Row>
+              <Footer />
+            </Grid.Row>
+          </Grid>
+        </footer>
       </>
     )
   }

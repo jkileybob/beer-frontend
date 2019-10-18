@@ -11,13 +11,12 @@ class BreweryModal extends React.Component{
       <React.Fragment>
         { this.props.open ?
           <Modal
+            centered
             open={this.props.open}
             size='fullscreen'
           >
             <Container style={{width:'10%', height:'10%'}}>
-              <BreweryMap
-                brewery={this.props.brewery}
-              />
+              <BreweryMap brewery={this.props.brewery} />
             </Container>
             <Modal.Content>
               <Header style={style} size='huge'>{this.props.brewery.name}</Header>
@@ -35,13 +34,6 @@ class BreweryModal extends React.Component{
                 </Modal.Description>
               </Modal.Content>
               <Modal.Content>
-                <Button
-                  onClick={this.props.onClickClose}
-                  color='teal'
-                  size='small' >
-                  close
-                </Button>
-
                 <Link to="/breweries" style={style} >
                   <Button
                     id={this.props.brewery.id}
@@ -63,6 +55,13 @@ class BreweryModal extends React.Component{
                   Log a Beer
                 </Button>
 
+                <Button
+                  onClick={this.props.onClickClose}
+                  color='teal'
+                  size='small' >
+                  Close
+                </Button>
+
             </Modal.Content>
           </Modal>
        : null }
@@ -73,12 +72,3 @@ class BreweryModal extends React.Component{
 }
 
 export default BreweryModal
-
-
-// if brewery is included in favs list
-// create a button element to remove from favs
-
-// { this.props.favs.includes(fav =>{fav === this.props.currentBrewery) ?
-//   <Button>Delete from Favs</Button>
-//  : null
-// }

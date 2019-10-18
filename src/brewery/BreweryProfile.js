@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { Grid, Card, Header, Image, Divider, List, Button, Icon } from 'semantic-ui-react'
+import { Container, Grid, Card, Header, Image, Divider, List, Button, Icon } from 'semantic-ui-react'
 import AddBeer from '../beer/AddBeer'
 import BreweryMap from '../brewery/BreweryMap'
 
@@ -133,7 +133,9 @@ const BreweryProfile = (props) => {
             <Divider horizontal>Location</Divider>
             <Card centered >
               <Card.Content>
-                <Card.Description>MAP HERE</Card.Description>
+                <Container style={{width:'100%', height:'100%'}}>
+                  <BreweryMap brewery={props.brewery} />
+                </Container>
               </Card.Content>
             </Card>
           </Grid.Column>

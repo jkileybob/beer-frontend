@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from 'react-router-dom';
 import { Grid, Card, Image, Menu, Icon, Message, Divider } from "semantic-ui-react";

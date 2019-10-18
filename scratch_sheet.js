@@ -23,107 +23,6 @@ https://media3.giphy.com/media/xT1R9XnFJkL1S2BFqo/giphy.gif
 https://myrealdomain.com/images/animated-beer-5.gif
 
 
-
-
-
-import React from "react";
-import { Link } from 'react-router-dom';
-import { Grid, Card, Image, Menu, Icon, Message, Divider } from "semantic-ui-react";
-
-const border = { border: '5px solid #20B2AA'}
-const style = {color: 'white'}
-
-const UserProfile = ({ user, resetSearch, myBreweriesClick, onClickReset }) => (
-  <Grid centered columns={2} >
-    <Grid.Row>
-      <Grid.Column width={3} >
-        <Image style={border} circular centered size='medium' src={'https://i.pinimg.com/originals/17/be/5c/17be5c644f35f2b4be5a8bf3dbd30424.gif'} alt="dripping beer" />
-
-        <Message size='large' info color='teal' >
-          <Message.Header>Welcome, {user.username}!</Message.Header>
-          <p>Have you tried any new beers lately?</p>
-        </Message>
-
-        <Divider horizontal>explore!</Divider>
-
-        <Menu fluid inverted pointing vertical color='teal' size='large' >
-
-          <Link to='/search-breweries'>
-            <Menu.Item onClick={resetSearch} >
-              <Icon link name='search' />Search
-            </Menu.Item>
-          </Link>
-
-          <Link to='/breweries'>
-            <Menu.Item onClick={myBreweriesClick} >
-              <Icon link name='beer' />Breweries
-            </Menu.Item>
-          </Link>
-
-          <Link to='/beers'>
-            <Menu.Item onClick={onClickReset} >
-              <Icon link name='beer' />Beers
-            </Menu.Item>
-          </Link>
-        </Menu>
-      </Grid.Column>
-
-      <Grid.Column width={4} >
-        <Card centered size='huge' >
-          <Image src={user.avatar} />
-          <Card.Content textAlign='center' >
-            <Card.Header>{user.username}</Card.Header>
-            <Card.Description>{user.location}</Card.Description>
-          </Card.Content>
-          <Card.Content textAlign='center' >
-            <Card.Description>{user.bio}</Card.Description>
-          </Card.Content>
-        </Card>
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
-);
-
-export default UserProfile;
-
-
-
-
-
-<Route exact path='/profile' render={()=>{
-  return this.state.currentUser ?
-    <UserProfile
-      user={this.state.currentUser}
-      myBreweriesClick={this.myBreweriesClick}
-      resetSearch={this.resetSearch}
-      onClickReset={this.onClickReset}
-    />
-  : <Redirect to='/login' />
-}} />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <<<<<<< HEAD
 import quote from '../images/quote.png'
 <Image src={quote} alt="Ben Franklin Quote" />
@@ -134,7 +33,6 @@ import quote from '../images/quote.png'
 =======
 // window.location.replace('/add-beer') reloads window via JS
 >>>>>>> 1b4ce4f013025245f827ab480f59d837cfba6f00
-
 
 
 // conditional rendering for beer profile and beer edit pag in beer index

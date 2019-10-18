@@ -1,5 +1,5 @@
 import React from 'react';
-import { List } from 'semantic-ui-react';
+import { Grid, Header, List } from 'semantic-ui-react';
 import BreweryProfile from "../brewery/BreweryProfile"
 
 class Favorites extends React.Component{
@@ -10,24 +10,27 @@ class Favorites extends React.Component{
       <>
       {!this.props.currentBrewery ?
         <>
-          <div><h1 style={style} >My Breweries:</h1></div>
-          <List animated verticalAlign='middle'>
-            {this.props.favs.map(brewery =>{
-              return <React.Fragment key={`fav-brewery-list-item-${brewery.id}`}>
-                <List.Item
-                  id={`${brewery.id}`}
-                  key={`fav-brewery-list-item-${brewery.id}`}
-                  onClick={this.props.onFavListBreweryClick}
-                  >
-                    <List.Header>
-                      <h3>
-                        {brewery.name}
-                      </h3>
-                    </List.Header>
-                  </List.Item>
-              </React.Fragment>
-            })}
-          </List>
+          <Grid centered >
+            <Grid.Row>
+              <Header style={style} size='large' >My Breweries:</Header>
+            </Grid.Row>
+
+            <Grid.Row>
+              <List animated verticalAlign='middle'>
+                {this.props.favs.map(brewery =>{
+                  return <React.Fragment key={`fav-brewery-list-item-${brewery.id}`}>
+                    <List.Item
+                      id={`${brewery.id}`}
+                      key={`fav-brewery-list-item-${brewery.id}`}
+                      onClick={this.props.onFavListBreweryClick}
+                    >
+                      <Header size='medium' >{brewery.name}</Header>
+                    </List.Item>
+                  </React.Fragment>
+                })}
+              </List>
+        </Grid.Row>
+      </Grid>
         </>
       : <>
           <BreweryProfile
@@ -46,6 +49,9 @@ class Favorites extends React.Component{
 
             username={this.props.username}
             avatar={this.props.avatar}
+
+            deleteBrewery={this.props.deleteBrewery}
+            favorites={this.props.favorites}
           />
         </>
       }

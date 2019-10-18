@@ -1,5 +1,26 @@
+
+.Header {
+  font-weight: bold;
+  padding-bottom: 50px;
+}
+
 .App {
   text-align: center;
+}
+
+.Footer {
   position: relative;
-  min-height: 100vh;
+  left:0;
+  bottom:0;
+  right:0;
+}
+
+.Footer-Text {
+  font-weight: bold;
+   /* text-shadow:
+    .5px .5px 0 #FFA500,
+    -1px -1px 0 #FFA500,
+    1px -1px 0 #FFA500,
+    -1px 1px 0 #FFA500,
+    1px 1px 0 #FFA500; */
 }
