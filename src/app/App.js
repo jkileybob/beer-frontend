@@ -381,7 +381,11 @@ onFavListBreweryClick = (e) => {
 
           <Route exact path='/profile' render={()=>{
             return this.state.currentUser ?
-              <UserProfile user={this.state.currentUser} />
+              <UserProfile
+                user={this.state.currentUser}
+                myBreweriesClick={this.myBreweriesClick}
+                resetSearch={this.resetSearch}
+              />
             : <Redirect to='/login' />
           }} />
 

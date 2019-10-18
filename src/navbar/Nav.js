@@ -3,9 +3,9 @@ import { NavLink, withRouter } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 
 const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, myBreweriesClick }) => {
-  let logout = () => {onLogOut()}
-  let clearStates = () => {resetSearch()}
-  let favs = () => {myBreweriesClick()}
+  let logout = () => { onLogOut() }
+  let clearStates = () => { resetSearch() }
+  let favs = () => { myBreweriesClick() }
   return (
     <Menu pointing secondary>
       {logged_in ? (
@@ -22,7 +22,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, myBrewe
             as={NavLink}
             to="/search-breweries"
             name="Search Breweries"
-            active={pathname === "/breweries"}
+            active={pathname === "/search-breweries"}
             onClick={clearStates}
           />
 

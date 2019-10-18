@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Header, Segment, Form, Button, Divider, Rating, Input, TextArea, Image } from 'semantic-ui-react'
+import { Grid, Header, Segment, Form, Button, Divider, Rating, Image } from 'semantic-ui-react'
 const EditBeer = (props) => {
   // console.log(props)
   return(

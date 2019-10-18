@@ -14,6 +14,16 @@ https://media.tenor.com/images/c32e4ba8012b4360f16937fff582c7b6/tenor.gif
 https://media3.giphy.com/media/xT1R9XnFJkL1S2BFqo/giphy.gif
 https://myrealdomain.com/images/animated-beer-5.gif
 
+
+import quote from '../images/quote.png'
+<Image src={quote} alt="Ben Franklin Quote" />
+<Message info>
+  <Message.Header>Was this what you wanted?</Message.Header>
+  <p>Did you know it's been a while?</p>
+</Message>
+
+
+
 // conditional rendering for beer profile and beer edit pag in beer index
 {if (this.state.currentBeer === null && this.state.renderEdit === false){
   <List animated verticalAlign='middle'>
