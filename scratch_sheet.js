@@ -1,6 +1,14 @@
-beer cheers gif:
+beer cheers gif footer:
 https://i.pinimg.com/originals/0a/54/23/0a5423767cc73d2bec52d93aa4317656.gif
 
+bright tank sketch:
+https://bellinghamsbestbeer.files.wordpress.com/2008/10/bright_tank.jpg
+
+colorful cartoon cans:
+teal-
+https://www.google.com/imgres?imgurl=https%3A%2F%2Fbrewhall.com%2Fwp-content%2Fuploads%2F2019%2F04%2Four-beer-hazy-borders-beer-xl.png&imgrefurl=https%3A%2F%2Fbrewhall.com%2Fbrewery%2F&docid=RVjNtHO5E_HppM&tbnid=U1iOt3Cy9D9YYM%3A&vet=10ahUKEwjzp-WGnJzlAhWjmuAKHeiDBrEQMwivASheMF4..i&w=800&h=608&bih=720&biw=1280&q=bright%20tank%20cartoon%20beer&ved=0ahUKEwjzp-WGnJzlAhWjmuAKHeiDBrEQMwivASheMF4&iact=mrc&uact=8
+grey-
+https://www.google.com/imgres?imgurl=https%3A%2F%2Fbrewhall.com%2Fwp-content%2Fuploads%2F2019%2F04%2Four-beer-pixie-xl.png&imgrefurl=https%3A%2F%2Fbrewhall.com%2Fbrewery%2F&docid=RVjNtHO5E_HppM&tbnid=_HO-YpiH6GAz9M%3A&vet=10ahUKEwjzp-WGnJzlAhWjmuAKHeiDBrEQMwibAShKMEo..i&w=800&h=608&bih=720&biw=1280&q=bright%20tank%20cartoon%20beer&ved=0ahUKEwjzp-WGnJzlAhWjmuAKHeiDBrEQMwibAShKMEo&iact=mrc&uact=8
 
 coloful beer gifs search query:
 https://www.google.com/search?q=cheers+beer+gif&tbm=isch&tbs=rimg:CU5FwB_1CXzHfImB9g2MhMXLLDC_1hGROZondCmZZLYRNYLbskWvEN2fldEf_1vq33zoVKlvHOEWQ7pm2Mhl4puGgfUu5DCRDhlntakVJ61BWnDivRNDA5Dh48wR14N6whiVcMFOW4_1U79zufUqEgl9g2MhMXLLDBHpKAXAzXjE8CoSCS_1hGROZondCESjKCV8A1mQGKhIJmZZLYRNYLbsRSFuFIJdoOuIqEgkkWvEN2fldEREu2Jse87IyvioSCf_1vq33zoVKlETqSdZPttNlPKhIJvHOEWQ7pm2MRjxzK41y8PwYqEgkhl4puGgfUuxG6FpBJbUG8RyoSCZDCRDhlntakEYTErhe4x7OkKhIJVJ61BWnDivQRSwC7X139N-YqEglNDA5Dh48wRxGiF-aDVqEofSoSCV4N6whiVcMFEQmiTP8t0M5VKhIJOW4_1U79zufURwmqGbxj4TYA&tbo=u&sa=X&ved=2ahUKEwi78rDPhfzkAhVyZN8KHdF9BgoQuIIBegQIARAv&biw=1280&bih=720&dpr=1
@@ -15,12 +23,117 @@ https://media3.giphy.com/media/xT1R9XnFJkL1S2BFqo/giphy.gif
 https://myrealdomain.com/images/animated-beer-5.gif
 
 
+
+
+
+import React from "react";
+import { Link } from 'react-router-dom';
+import { Grid, Card, Image, Menu, Icon, Message, Divider } from "semantic-ui-react";
+
+const border = { border: '5px solid #20B2AA'}
+const style = {color: 'white'}
+
+const UserProfile = ({ user, resetSearch, myBreweriesClick, onClickReset }) => (
+  <Grid centered columns={2} >
+    <Grid.Row>
+      <Grid.Column width={3} >
+        <Image style={border} circular centered size='medium' src={'https://i.pinimg.com/originals/17/be/5c/17be5c644f35f2b4be5a8bf3dbd30424.gif'} alt="dripping beer" />
+
+        <Message size='large' info color='teal' >
+          <Message.Header>Welcome, {user.username}!</Message.Header>
+          <p>Have you tried any new beers lately?</p>
+        </Message>
+
+        <Divider horizontal>explore!</Divider>
+
+        <Menu fluid inverted pointing vertical color='teal' size='large' >
+
+          <Link to='/search-breweries'>
+            <Menu.Item onClick={resetSearch} >
+              <Icon link name='search' />Search
+            </Menu.Item>
+          </Link>
+
+          <Link to='/breweries'>
+            <Menu.Item onClick={myBreweriesClick} >
+              <Icon link name='beer' />Breweries
+            </Menu.Item>
+          </Link>
+
+          <Link to='/beers'>
+            <Menu.Item onClick={onClickReset} >
+              <Icon link name='beer' />Beers
+            </Menu.Item>
+          </Link>
+        </Menu>
+      </Grid.Column>
+
+      <Grid.Column width={4} >
+        <Card centered size='huge' >
+          <Image src={user.avatar} />
+          <Card.Content textAlign='center' >
+            <Card.Header>{user.username}</Card.Header>
+            <Card.Description>{user.location}</Card.Description>
+          </Card.Content>
+          <Card.Content textAlign='center' >
+            <Card.Description>{user.bio}</Card.Description>
+          </Card.Content>
+        </Card>
+      </Grid.Column>
+    </Grid.Row>
+  </Grid>
+);
+
+export default UserProfile;
+
+
+
+
+
+<Route exact path='/profile' render={()=>{
+  return this.state.currentUser ?
+    <UserProfile
+      user={this.state.currentUser}
+      myBreweriesClick={this.myBreweriesClick}
+      resetSearch={this.resetSearch}
+      onClickReset={this.onClickReset}
+    />
+  : <Redirect to='/login' />
+}} />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<<<<<<< HEAD
 import quote from '../images/quote.png'
 <Image src={quote} alt="Ben Franklin Quote" />
 <Message info>
   <Message.Header>Was this what you wanted?</Message.Header>
   <p>Did you know it's been a while?</p>
 </Message>
+=======
+// window.location.replace('/add-beer') reloads window via JS
+>>>>>>> 1b4ce4f013025245f827ab480f59d837cfba6f00
 
 
 
@@ -77,292 +190,3 @@ import quote from '../images/quote.png'
                 />
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-//FAVORITES COMPONENT LOGIC:
-
-    // need to adjust #index in favs_controller to authenticate user
-    // then user data can get specific favs list @user.favorites
-    // and response to json that specific list
-    // to be manioulated by front end
-
-    // right now this is mapping through ALL favs
-    // will need to adjust endpoint for specific user_id of currentUser
-  getFavs = () => {
-    let token = localStorage.getItem('token');
-    if (token){
-      fetch(`http://localhost:4000/api/v1/favorites`, {
-        method: "GET",
-        headers: {
-          "Content-Type" : "application/json",
-          "Accept" : "application/json",
-          "Authentication" : `Bearer ${token}`
-          }
-        }
-      )
-      .then(res => res.json())
-      .then(favData => {
-        console.log(favData);
-      })
-      // this.setState({
-        //   favs: favData
-        // })
-    }
-  }
-    // from the backend, favData has id, user_id, and brewery_id
-    // could do something conditional to test equality
-    // between user_id of favData and user_id of currentUser in state
-
-
-    //map through favData for each brewery_id,
-    // then create a list of each brewery_id to update favs state
-    // which should automatically update my breweries page list
-
-    onFavListBreweryClick = (e) => {
-      this.state.favs.filter(brew=>{
-        let brewId = e.currentTarget.id;
-        return brew.id.toString() === brewId ?
-        this.setState({
-          currentBrewery: brew,
-          modalOpen: true
-        })
-        : null
-      })
-    }
-
-
-    saveFavs = () => {
-      // fetch(`http://localhost:4000/api/v1/favorites`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type":"application/json",
-      //     "Accept":"application/json"
-      //   },
-      //   body: JSON.stringify({
-      //     user_id:user_id,
-      //     brewery_id:brewery_id
-      //   })
-      //   }
-      // )
-    }
-
-    logBrewery =()=>{
-      if (!this.state.currentUser === null){
-      let brewery = this.state.currentBrewery;
-        fetch(`http://localhost:4000/api/v1/breweries`,{
-          method: "POST",
-          headers: {
-            "Content-Type":"application/json",
-            "Accept":"application/json"
-          },
-          body: JSON.stringify({
-            id: brewery.id,
-            name: brewery.name,
-            brewery_type: brewery.brewery_type,
-            street: brewery.street,
-            city: brewery.city,
-            state: brewery.state,
-            postal_code: brewery.postal_code,
-            country: brewery.country,
-            longitude: brewery.longitude,
-            latitude: brewery.latitude,
-            phone: brewery.phone,
-            website_url: brewery.website_url
-          })
-        })
-        .then(response => console.log(response))
-      // .then(response =>{ console.log(response) })
-
-        // response returns an error with a 204 status of no Content
-        // unable to parse response to json()
-        // content is being saved in local API, however
-      }
-
-    }
-
-    logFavorites = () =>{
-      let token = localStorage.getItem('token');
-
-      if(token){
-        let brewery_id = this.state.currentBrewery.id.toString();
-        fetch(`http://localhost:4000/api/v1/add-favorites`, {
-          method: "POST",
-          headers: {
-            "Content-Type":"application/json",
-            "Accept":"application/json",
-            "Authentication" : `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            brewery_id: brewery_id
-          })
-          }
-        )
-        .then(response => response.json())
-        .then(data =>{ console.log(data) })
-
-        } else {
-          alert("You must be logged-in to add to your favorites.")
-        }
-    }
-
-    handleFavs = (e) => {
-      // console.log(this.state.currentBrewery.id.toString())
-
-      // else get fetch to `/profile` with `Bearer ${token}` in Headers
-      // (or just create a new fav route that mimics `/profile` method)
-      // which calls the user_controller profile method in backend
-      // which decodes token, returns user data in payload
-
-  // 1. create + save breweryObj to local api for use in favs list
-        // set route and create method in brewery controller
-        // call these methods from either backend favs_controller or frontend post
-      // add brewery to local api
-
-      let token = localStorage.getItem('token');
-
-      if (token){
-        if (!this.state.favs.includes(this.state.currentBrewery)){
-          this.logBrewery();
-          this.setState({
-                favs: [...this.state.favs, this.state.currentBrewery]
-              });
-          this.logFavorites();
-        } else {
-          alert("This brewery already exists in your favorites.")
-        }
-      } else { alert("You must be logged in to add to your favorites.") }
-
-
-  // 2. use brewery ids to fetch list of favs
-    // add favorite, using the recently added brewery
-
-
-
-
-        // fetch(`http://localhost:4000/api/v1/breweries`,{
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type":"application/json",
-        //     "Accept":"application/json"
-        //   },
-        //   body: JSON.stringify({
-        //     id: 1780,
-        //     name: "Right Proper Brewing Company",
-        //     brewery_type: "micro",
-        //     street: "920 Girard St NE",
-        //     city: "Washington",
-        //     state: "District of Columbia",
-        //     postal_code: "20017-3424",
-        //     country: "United States",
-        //     longitude: "-76.9930707764239",
-        //     latitude: "38.9267988",
-        //     phone: "2026072337",
-        //     website_url: "http://www.rightproperbrewing.com"
-        //   })
-        // })
-
-
-
-
-
-      // console.log(e.currentTarget)
-      // if currentBrewery is not already in favs,
-      // make a fetch POST to add to db
-
-        // if (!this.state.favs.includes(this.state.currentBrewery)){
-        // let userId =
-        // console.log(this.state.currentUser)
-        // let breweryId =
-        // console.log(this.state.currentBrewery.id)
-
-        // fetch(`http://localhost:4000/api/v1/favorites`, {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type":"application/json",
-        //     "Accept":"application/json"
-        //   },
-        //   body: JSON.stringify({
-        //     user_id: 4,
-        //     brewery_id: 1781
-        //   })
-        //   }
-      //   )
-      //   .then(res => res.json())
-      //   .then(data => console.log(data);
-      //   // then add to favs state
-      //     this.setState({
-      //       favs: [...this.state.favs, this.state.currentBrewery]
-      //     })
-      //   )
-      // } else {
-      //   alert(`${this.state.currentBrewery.name} is already saved to your favorites.`)
-      // }
-
-      // console.log(this.state.breweries.find(brewery =>{
-      //     let brewObj = brewery.id === parseInt(e.currentTarget.id)
-      //     return brewObj
-      // }))
-
-      // this.state.breweries.find(brewery =>{
-      //     let brewObj = brewery.id === parseInt(e.currentTarget.id)
-      //     return this.setState({
-      //       favs: [...this.state.favs, brewObj]
-      //     })
-      // })
-    }
-
-    require 'byebug'
-
-    class Api::V1::FavoritesController < ApplicationController
-
-      before_action :find_user_and_brewery, only: [:create]
-      before_action :find_user_favs, only: [:index]
-
-      def create
-        @favorite = Favorite.create({
-          user_id: @user.id,
-          brewery_id: @brewery.id
-        })
-        render json: {
-          brewery: @brewery,
-          favs: @user.favorites.map { |fav| fav.brewery_id }
-
-          #favs returns each favObj brewery_id number
-          # keeps user data hidden, bc they are already securely logged in on front end
-        }
-        # byebug
-      end
-
-
-      def index
-        render json: @user.favorites
-      end
-
-      private
-
-      def find_user_and_brewery
-        token = request.headers["Authentication"].split(' ')[1]
-        payload = decode(token)
-        @user = User.find(payload[0]["id"])
-        @brewery = Brewery.find_by(id: params["brewery_id"])
-        # byebug
-        # so far this is only for a brewery that is saved in the local db
-      end
-
-      def find_user_favs
-        token = request.headers["Authentication"].split(' ')[1]
-        payload = decode(token)
-        @user = User.find(payload[0]["id"])
-      end
-
-    end

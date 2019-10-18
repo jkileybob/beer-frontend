@@ -1,71 +1,17 @@
 import React from 'react'
-// import { Route, Link } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { Popup, List, Button, Rating } from 'semantic-ui-react'
 import BeerProfile from '../beer/BeerProfile'
-// BACKEND: data returned needs to be adjusted so as not to return user information
 
 class BeerIndex extends React.Component{
-  state = {
-    beers: [],
-    currentBeer: null,
-    renderEdit: false
-  }
-
-  componentDidMount(){
-    fetch(`http://localhost:4000/api/v1/beers`)
-    .then(res=> res.json())
-    .then(beers =>{
-      this.setState({
-        beers: beers
-      })
-    })
-  }
-
-  onBeerClick = (e, props) => {
-    this.getBreweries(props);
-    this.setState({
-      currentBeer: props.beer
-    })
-  }
-
-  getBreweries = (props) => {
-    let breweryId = props.beer.brewery_id
-    this.props.favs.filter(brewery =>
-      brewery.id === breweryId ?
-        this.props.setBrewery(brewery)
-      : null
-    )
-  }
-
-  onClickReset = (e) => {
-    this.setState({
-      currentBeer: null
-    });
-    this.props.setBrewery(null)
-  }
-
-  editBeer = () => {
-    this.setState({
-      renderEdit: true
-    })
-  }
-
-  cancelEdit = () => {
-    this.setState({
-      renderEdit: false
-    })
-  }
-
   render(){
-
     const style={color: '#20B2AA'}
-
     return(
       <React.Fragment>
-      {!this.state.currentBeer ?
+        {!this.props.currentBeer ?
         <List animated verticalAlign='middle'>
           <List.Header as='h1' style={style} >My Beers:</List.Header>
-            {this.state.beers.map((beer) => {
+            {this.props.beers.map((beer) => {
               return  <List.Item key={`beer-list-item-${beer.name}`}>
                   <Popup
                     on="click"
@@ -83,7 +29,7 @@ class BeerIndex extends React.Component{
                         color='teal'
                         size='large'
                         beer={beer}
-                        onClick={this.onBeerClick}>
+                        onClick={this.props.onBeerClick}>
                         Show me more
                       </Button>
                     </Popup.Content>
@@ -93,14 +39,30 @@ class BeerIndex extends React.Component{
             )}
         </List>
       : <BeerProfile
-          beer={this.state.currentBeer}
+          beer={this.props.currentBeer}
           brewery={this.props.brewery}
           showBrewery={this.props.showBrewery}
-          onClickReset={this.onClickReset}
-          renderEdit={this.state.renderEdit}
-          editBeer={this.editBeer}
-          cancelEdit={this.cancelEdit} />
+          onBreweryClick={this.props.onBreweryClick}
+          onClickReset={this.props.onClickReset}
+          renderEdit={this.props.renderEdit}
+          editBeer={this.props.editBeer}
+          cancelBeer={this.props.cancelBeer}
+          submitBeerEdit={this.props.submitBeerEdit}
+          deleteBeer={this.props.deleteBeer}
+
+          name={this.props.name}
+          style={this.props.style}
+          abv={this.props.abv}
+          rating={this.props.rating}
+          tastingNote={this.props.tastingNote}
+          comment={this.props.comment}
+
+          inputValue={this.props.inputValue}
+          handleABV={this.props.handleABV}
+          handleRating={this.props.handleRating}
+          />
       }
+
       </React.Fragment>
   )}
 }
@@ -108,9 +70,6 @@ class BeerIndex extends React.Component{
 export default BeerIndex
 
 /////////////////////////////////////////////////////////////////////////////////
-// Line 80:
-// need to connect brewery data to show name
-// <p>Producer: <h3>{beer.breweries.name}</h3></p>
 
 /////////////////////////////////////////////////////////////////////////////////
 // STRETCH FEATURES:
@@ -126,6 +85,4 @@ export default BeerIndex
 // 2:
 // Ability for user to upload a photo of beer that will persist in dB
   // will require additional column for photos on backend beer and beer-related tables
-
-// 3: Change beer modal from onCLick to onHover!
 ////////////////////////////////////////////////////////////////////////////////

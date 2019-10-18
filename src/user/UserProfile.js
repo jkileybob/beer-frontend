@@ -6,7 +6,7 @@ import { Grid, Card, Image, Menu, Icon, Message, Divider } from "semantic-ui-rea
 const border = { border: '5px solid #20B2AA'}
 const style = {color: 'white'}
 
-const UserProfile = ({ user, resetSearch, myBreweriesClick }) => (
+const UserProfile = ({ user, resetSearch, myBreweriesClick, onClickReset }) => (
   <Grid centered columns={2} >
     <Grid.Row>
       <Grid.Column width={3} >
@@ -34,7 +34,7 @@ const UserProfile = ({ user, resetSearch, myBreweriesClick }) => (
           </Link>
 
           <Link to='/beers'>
-            <Menu.Item >
+            <Menu.Item onClick={onClickReset} >
               <Icon link name='beer' />Beers
             </Menu.Item>
           </Link>

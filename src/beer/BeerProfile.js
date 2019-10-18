@@ -1,10 +1,13 @@
 import React from "react"
+import { Link } from 'react-router-dom';
 import { Card, Image, Popup, Icon, Button, Comment, Grid, Segment, Divider, Rating } from "semantic-ui-react";
 import EditBeer from '../beer/EditBeer'
 
-
 const BeerProfile = (props) => {
+  // console.log(props.beer)
   const style={color: '#20B2AA'}
+  const brewery = props.brewery
+
   return (
     <React.Fragment>
       { !props.renderEdit ?
@@ -24,19 +27,23 @@ const BeerProfile = (props) => {
                   trigger={<Card.Header>{props.brewery.name}</Card.Header>}
                   size='large'
                   position='right center'
-                  style={style}
-                >
-                  <Popup.Content>
-                    from {props.brewery.city}, {props.brewery.state}
-                  </Popup.Content>
+                  style={style} >
+                    <Popup.Content>
+                      from {props.brewery.city}, {props.brewery.state}
+                    </Popup.Content>
                 </Popup>
-                <Icon
-                  onClick={props.showBrewery}
-                  link
-                  circular
-                  inverted
-                  color='teal'
-                  name='beer' />
+
+                <Popup
+                  trigger={ <Link to='/breweries' ><Icon link circular inverted color='teal' name='beer' /></Link> }
+                  size='large'
+                  position='right center'
+                  onClick={props.onBreweryClick}
+                  style={style} >
+                    <Popup.Content>
+                      click to checkout {props.brewery.name}
+                    </Popup.Content>
+              </Popup>
+
               </Card.Content>
             </Card>
 
@@ -86,14 +93,29 @@ const BeerProfile = (props) => {
           Back to My Beers
         </Button>
 
-        <Button color='teal' size='large' onClick={props.editBeer}>
+        <Button beer={props.beer} color='teal' size='large' onClick={props.editBeer}>
           Edit this Beer
         </Button>
       </Grid>
       : <EditBeer
           beer={props.beer}
           renderEdit={props.renderEdit}
-          cancelEdit={props.cancelEdit} />
+          cancelBeer={props.cancelBeer}
+
+          name={props.name}
+          style={props.style}
+          abv={props.abv}
+          rating={props.rating}
+          tastingNote={props.tastingNote}
+          comment={props.comment}
+
+          inputValue={props.inputValue}
+          handleABV={props.handleABV}
+          handleRating={props.handleRating}
+
+          submitBeerEdit={props.submitBeerEdit}
+          deleteBeer={props.deleteBeer}
+         />
     }
     </React.Fragment>
   )

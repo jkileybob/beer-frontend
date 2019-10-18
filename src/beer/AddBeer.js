@@ -105,7 +105,6 @@ const AddBeer = (props) => {
             </Button>
           </Grid.Column>
         </Grid.Row>
-        
       </Grid>
     </React.Fragment>
   )

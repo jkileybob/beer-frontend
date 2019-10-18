@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input, List, Button } from 'semantic-ui-react';
-import BreweryProfile from "./BreweryProfile"
+import BreweryModal from "./BreweryModal"
 
 class BreweryIndex extends React.Component{
 
@@ -8,7 +8,7 @@ class BreweryIndex extends React.Component{
     const style={color: '#20B2AA'}
     return(
       <>
-        <h1 style={style} >Search the Brewery Database</h1>
+        <h1 style={style} >Search the American Brewery Database</h1>
         <h2>...by name and/or state...</h2>
           <Input
             fluid
@@ -63,9 +63,10 @@ class BreweryIndex extends React.Component{
 
         {this.props.currentBrewery ?
           <>
-             <BreweryProfile
+             <BreweryModal
                brewery={this.props.currentBrewery}
                handleFavs={this.props.handleFavs}
+               handleBeerLog={this.props.handleBeerLog}
                open={this.props.modalOpen}
                onClickClose={this.props.onClickClose}
              />
