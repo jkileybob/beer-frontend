@@ -26,7 +26,6 @@ https://myrealdomain.com/images/animated-beer-5.gif
 // window.location.replace('/add-beer') reloads window via JS
 
 
-
 // conditional rendering for beer profile and beer edit pag in beer index
 {if (this.state.currentBeer === null && this.state.renderEdit === false){
   <List animated verticalAlign='middle'>
