@@ -25,7 +25,6 @@ class BreweryMap extends React.Component{
 
 
   render(){
-
     return(
       <React.Fragment>
         <Map
