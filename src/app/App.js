@@ -29,7 +29,6 @@ class App extends React.Component{
     searchTermState: "",
 
     // favs/myBeer STATES:
-    favsById: [],
     favs: [],
     loadingFavs: true,
     favorites: [],
@@ -59,12 +58,10 @@ class App extends React.Component{
       .then(response => response.json())
       .then(user =>{
         // console.log(user.favorites)
-        let favsById = user.favorites.map(fav => { return fav.brewery_id})
         let favorites = user.favorites.map(fav => { return fav })
         this.setState({
           currentUser: user,
           loadingUser: false,
-          favsById: [...favsById],
           favorites: favorites
           }, ()=>{ this.fetchFavs() });
       });
@@ -275,10 +272,10 @@ class App extends React.Component{
         let updatedFavs = this.state.favs.slice();
         let indexOfDeletedBrewery = updatedFavs.findIndex((brewery) => { return brewery.id === breweryID })
         updatedFavs.splice(indexOfDeletedBrewery, 1)
-    //copy+update FavsByID state
-        let updatedFavsByID = this.state.favsById.slice();
-        let indexOfDeletedBreweryID = updatedFavsByID.findIndex((id) => { return id === breweryID })
-        updatedFavsByID.splice(indexOfDeletedBreweryID, 1)
+    //copy+update Favorites state
+        let updatedFavorites = this.state.favorites.slice();
+        let indexOfDeletedBreweryID = updatedFavorites.findIndex((id) => { return id === breweryID })
+        updatedFavorites.splice(indexOfDeletedBreweryID, 1)
     //copy beers state, loop through each item and check if
         let updatedBeers = this.state.beers.slice();
         for (var i = 0; i < updatedBeers.length; i++){
@@ -289,7 +286,7 @@ class App extends React.Component{
         this.setState({
           currentBrewery: null,
           favs: updatedFavs,
-          favsById: updatedFavsByID,
+          favorites: updatedFavorites,
           beers: updatedBeers,
           currentBreweryBeers: []
         })
@@ -349,11 +346,11 @@ class App extends React.Component{
 
 // called on componentDidMount, still needs a refresh to show changes
     fetchFavs = () => {
-      // favsById is an array of brewery ids (ex: [1781, 6780])
+      // favorites: [{brewery_id: 1781, id: 3}, {brewery_id: 6949, id: 8}]
       // that was fetched from the localhost DB on load of page and saved to state
 
-      // creates new array of favsById without duplicates
-      let userFavsById = Array.from(new Set(this.state.favsById));
+      // creates new array of favorites without duplicates
+      let userFavsById = Array.from(new Set(this.state.favorites.map(fav=> fav.brewery_id)));
 
       // empty array below will hold response data from fetch to openBreweryDB (also below)
       // that will eventually be set to favs state
