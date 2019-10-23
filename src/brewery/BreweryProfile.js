@@ -131,9 +131,9 @@ const BreweryProfile = (props) => {
         <Grid.Row column={1}>
           <Grid.Column>
             <Divider horizontal>Location</Divider>
-            <Card centered >
+            <Card centered id="map-card" >
               <Card.Content>
-                <Container style={{width:'100%', height:'100%'}}>
+                <Container className='Map-Container'>
                   <BreweryMap brewery={props.brewery} />
                 </Container>
               </Card.Content>

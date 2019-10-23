@@ -677,7 +677,7 @@ class App extends React.Component{
             onClickReset={this.onClickReset}
           />
         </header>
-        <main>
+        <main className="main-container">
           <Grid centered verticalAlign='middle'>
             <Grid.Row>
             { !this.state.loadingUser ?

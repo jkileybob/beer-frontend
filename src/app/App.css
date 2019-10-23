@@ -1,18 +1,51 @@
 
+.App {
+  text-align: center;
+}
+
 .Header {
   font-weight: bold;
   padding-bottom: 50px;
 }
 
-.App {
-  text-align: center;
+.main-container {
+ min-height: 70vh; /* coverage of viewport */
+ overflow: hidden;
+ display: block;
+ position: relative;
+ padding-bottom: 50px; /* height of your footer */
+}
+
+#map-card{
+  position: relative;
+  width: 600px;
+  min-height: 400px;
+}
+
+#modal-content-column{
+  width:auto;
+  padding-top: 50px;
+}
+#modal-content{
+  width:auto;
+  padding: 25px;
+}
+
+.Map-Conatainer{
+  overflow: visible;
+}
+
+.Map {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .Footer {
   position: relative;
-  left:0;
-  bottom:0;
-  right:0;
+  bottom: 0;
+  width: 100%;
 }
 
 .Footer-Text {

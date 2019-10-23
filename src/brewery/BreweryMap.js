@@ -27,6 +27,7 @@ class BreweryMap extends React.Component{
     return(
       <React.Fragment>
         <Map
+          className="Map"
           google={this.props.google}
           zoom={18}
           center={this.state.center}
