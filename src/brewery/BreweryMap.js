@@ -23,7 +23,7 @@ class BreweryMap extends React.Component{
   }
 
   render(){
-    // console.log(this.props);
+    console.log(this.props);
     return(
       <React.Fragment>
         <Map
@@ -31,11 +31,6 @@ class BreweryMap extends React.Component{
           google={this.props.google}
           zoom={18}
           center={this.state.center}
-        />
-        <Marker
-          position={this.state.center}
-          name={this.props.brewery.name}
-
         />
       </React.Fragment>
     )
@@ -48,4 +43,9 @@ export default GoogleApiWrapper(
 }))(BreweryMap)
 
 
-// for Marker: icon='http://maps.google.com/mapfiles/kml/paddle/grn-blank.png'
+// for Marker:
+// <Marker
+//   position={this.state.center}
+//   name={this.props.brewery.name}
+//   icon='http://maps.google.com/mapfiles/kml/paddle/grn-blank.png'
+// />
