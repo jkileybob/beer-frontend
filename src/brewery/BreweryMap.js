@@ -1,5 +1,6 @@
 import React from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import mapColors from './mapColors.js'
 
 class BreweryMap extends React.Component{
 
@@ -22,11 +23,13 @@ class BreweryMap extends React.Component{
     })
   }
 
+
   render(){
-    console.log(this.props);
+
     return(
       <React.Fragment>
         <Map
+          styles={mapColors}
           className="Map"
           google={this.props.google}
           zoom={18}
