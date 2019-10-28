@@ -20,20 +20,24 @@ class BreweryIndex extends React.Component{
           <Grid.Row columns={2} >
             <Grid.Column width={7} >
               <Input
+                id="searchTermName"
                 fluid
                 size='big'
                 icon='search'
-                onChange={this.props.handleNameSearch}
+                onChange={this.props.handleSearch}
                 placeholder='...by name...'
+                value={this.props.searchTermName}
               />
             </Grid.Column>
             <Grid.Column width={7} >
               <Input
+                id="searchTermState"
                 fluid
                 size='big'
                 icon='search'
-                onChange={this.props.handleStateSearch}
+                onChange={this.props.handleSearch}
                 placeholder='...by state...'
+                value={this.props.searchTermState}
               />
             </Grid.Column>
           </Grid.Row>
@@ -45,11 +49,13 @@ class BreweryIndex extends React.Component{
           <Grid.Row columns={1} >
             <Grid.Column width={7} >
               <Input
+                id="searchTermCity"
                 fluid
                 size='big'
                 icon='search'
-                onChange={this.props.handleCitySearch}
+                onChange={this.props.handleSearch}
                 placeholder='...by city...'
+                value={this.props.searchTermCity}
               />
             </Grid.Column>
           </Grid.Row>
@@ -70,7 +76,7 @@ class BreweryIndex extends React.Component{
                 className="ui button"
                 color='teal'
                 size='large'
-                onClick={this.props.resetSearch}>
+                onClick={this.props.resetSearchInput}>
                 Clear
               </Button>
             </Grid.Column>

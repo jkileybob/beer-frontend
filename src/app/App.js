@@ -132,26 +132,12 @@ class App extends React.Component{
 
 
   // BREWERY COMPONENT LOGIC:
-
     // search form logic:
-    handleNameSearch = (e) => {
-      let inputName = e.target.value
-      this.setState({
-        searchTermName: inputName
-      })
-    }
 
-    handleCitySearch = (e) => {
-      let inputCity = e.target.value
+    handleSearch = (e) => {
+      const{ target: { id, value } } = e
       this.setState({
-        searchTermCity: inputCity
-      })
-    }
-
-    handleStateSearch = (e) => {
-      let inputState = e.target.value
-      this.setState({
-        searchTermState: inputState
+        [id]: value
       })
     }
 
@@ -214,9 +200,9 @@ class App extends React.Component{
       }
     }
 
-    // clears states to render search from Navbar onClick 'search breweries'
-    // changes url path to `/search-breweries`
     resetSearch = () => {
+      // clears states to render search from Navbar onClick 'search breweries'
+      // changes url path to `/search-breweries`
       this.setState({
         breweries: [],
         currentBrewery: null,
@@ -225,6 +211,27 @@ class App extends React.Component{
         searchTermState: ""
       })
     }
+
+    resetSearchInput = () => {
+      this.setState({
+        breweries: [],
+        currentBrewery: null,
+        searchTermName: "",
+        searchTermCity: "",
+        searchTermState: ""
+      })
+
+    //clears the actual input value, which also clears value's state
+      let name = document.getElementById("searchTermName")
+      name.value = ""
+
+      let state = document.getElementById("searchTermState")
+      state.value = ""
+
+      let city = document.getElementById("searchTermCity")
+      city.value = ""
+    }
+
 
     //brewery MODAL logic:
     onBreweryClick = (e) => {
@@ -249,14 +256,6 @@ class App extends React.Component{
     }
 
 //FAVORITES COMPONENT LOGIC:
-  // PROBLEM:
-  // i don't necessarily need to delete a brewery instance, just a user fav...
-  // how do i keep a user from adding the same brewery to brewery table
-   // while also adding another instance of that fav brewery after deleting it before
-
-   // User ------ Favorite ------ Brewery
-        //         (join)
-
 
     // method for deleting a favorite brewery, and its beers
     deleteBrewery = (e) => {
@@ -710,11 +709,13 @@ class App extends React.Component{
                       return <BreweryIndex
                         breweries={this.state.breweries}
                         currentBrewery={this.state.currentBrewery}
-                        handleNameSearch={this.handleNameSearch}
-                        handleStateSearch={this.handleStateSearch}
-                        handleCitySearch={this.handleCitySearch}
+                        handleSearch={this.handleSearch}
                         handleClickSubmit={this.handleSearchSubmit}
-                        resetSearch={this.resetSearch}
+                        searchTermName={this.state.searchTermName}
+                        searchTermState={this.state.searchTermState}
+                        searchTermCity={this.state.searchTermCity}
+
+                        resetSearchInput={this.resetSearchInput}
                         onBreweryClick={this.onBreweryClick}
                         handleFavs={this.handleFavs}
                         modalOpen={this.state.modalOpen}
