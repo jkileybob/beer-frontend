@@ -9,7 +9,7 @@
 }
 
 .main-container {
- min-height: 70vh; /* coverage of viewport */
+ min-height: 50vh; /* coverage of viewport */
  overflow: hidden;
  display: block;
  position: relative;

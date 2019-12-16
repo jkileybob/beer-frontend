@@ -88,8 +88,8 @@ const BeerProfile = (props) => {
 
         </Grid.Column>
 
-        <Button color="teal" onClick={props.onClickReset}>
-          Back to My Beers
+        <Button color="teal" size='large' onClick={props.onClickReset}>
+          Back to Beers
         </Button>
 
         <Button beer={props.beer} color='teal' size='large' onClick={props.editBeer}>

@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
+import "./Nav.css"
 
 
 const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, onClickReset, myBreweriesClick }) => {
@@ -11,7 +12,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, onClick
   let clear = () => { onClickReset() }
 
   return (
-    <Menu pointing secondary>
+    <Menu pointing secondary >
       {logged_in ? (
         <Fragment>
 

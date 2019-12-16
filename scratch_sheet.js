@@ -22,6 +22,69 @@ https://media.tenor.com/images/c32e4ba8012b4360f16937fff582c7b6/tenor.gif
 https://media3.giphy.com/media/xT1R9XnFJkL1S2BFqo/giphy.gif
 https://myrealdomain.com/images/animated-beer-5.gif
 
+blind code condtional redirects for beers/breweries:
+
+<Route exact path='/breweries' render={()=>{
+  return this.state.currentUser ?
+    <Favorites
+      breweries={this.state.breweries}
+      currentBrewery={this.state.currentBrewery}
+      favs={this.state.favs}
+      breweryBeers={this.state.currentBreweryBeers}
+
+      onFavListBreweryClick={this.onFavListBreweryClick}
+      onClickClose={this.onClickClose}
+
+      username={this.state.currentUser.username}
+      avatar={this.state.currentUser.avatar}
+
+      beers={this.state.beers}
+      findBreweryBeers={this.findBreweryBeers}
+      currentBeer={this.state.currentBeer}
+      handleBeerLog={this.handleBeerLog}
+      showBreweryBeer={this.showBreweryBeer}
+
+      deleteBrewery={this.deleteBrewery}
+      favorites={this.state.favorites}
+      />
+  : <Redirect to='/login' />
+}} />
+
+<Route exact path='/beers' render={()=>{
+  return this.state.currentUser ?
+     <BeerIndex
+        beers={this.state.beers}
+        currentBeer={this.state.currentBeer}
+        favs={this.state.favs}
+        brewery={this.state.currentBrewery}
+        findBreweryBeers={this.findBreweryBeers}
+        onBreweryClick={this.onBreweryClick}
+
+        onBeerClick={this.onBeerClick}
+        onClickReset={this.onClickReset}
+
+        renderEdit={this.state.renderEdit}
+        cancelBeer={this.cancelBeer}
+        editBeer={this.editBeerOnClick}
+        submitBeerEdit={this.submitBeerEdit}
+        deleteBeer={this.deleteBeer}
+        name={this.state.name}
+        style={this.state.style}
+        abv={this.state.abv}
+        rating={this.state.rating}
+        tastingNote={this.state.tastingNote}
+        comment={this.state.comment}
+
+        inputValue={this.inputValue}
+        handleABV={this.handleABV}
+        handleRating={this.handleRating}
+      />
+    : <Redirect to='/login' />
+  }} />
+
+
+
+
 
 <<<<<<< HEAD
 import quote from '../images/quote.png'
