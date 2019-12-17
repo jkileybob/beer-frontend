@@ -1,4 +1,21 @@
 .ui.menu {
-  height: 50px;
+  margin-top: 50px;
+  height: 100px;
   margin-bottom: 30px;
+}
+#nav-logo {
+  width: 75px;
+  height: 75px;
+  cursor: pointer;
+}
+.link {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.ui.secondary.pointing.menu .item {
+  color: #F9A93C;
+}
+.ui.secondary.pointing.menu:hover .item:hover {
+  color: #20B2AA;
 }

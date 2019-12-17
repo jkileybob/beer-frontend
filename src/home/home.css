@@ -59,9 +59,19 @@ div.beer-type-img-cont > img {
   width: 1550px;
   height: 150px;
   background-color: #20B2AA;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 #divider-2 {
   width: 1550px;
   height: 150px;
   background-color: #F9A93C;
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }

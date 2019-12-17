@@ -9,9 +9,10 @@ class BreweryIndex extends React.Component{
 
     return(
       <>
+
         <Grid centered id="search-form" >
           <Grid.Row>
-            <Header size='huge' id="search-form-header" >Search the American Brewery Database</Header>
+              <Header color="teal" size='huge' id="search-form-header" >Search American Breweries</Header>
           </Grid.Row>
 
           <Grid.Row>

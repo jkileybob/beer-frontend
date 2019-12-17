@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
-import { NavLink, withRouter } from "react-router-dom";
-import { Menu } from "semantic-ui-react";
+import { NavLink, withRouter, Link } from "react-router-dom";
+import { Menu, Image } from "semantic-ui-react";
 import "./Nav.css"
 
 
@@ -12,11 +12,17 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, onClick
   let clear = () => { onClickReset() }
 
   return (
+    <>
     <Menu pointing secondary >
       {logged_in ? (
         <Fragment>
-
+          <Link to='/'>
+            <Menu.Item>
+              <img id="nav-logo" src={require("../images/BeerDiary.png")} />
+            </Menu.Item>
+          </Link>
           <Menu.Item
+            className="link"
             as={NavLink}
             to="/profile"
             name="My Profile"
@@ -24,6 +30,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, onClick
           />
 
           <Menu.Item
+            className="link"
             as={NavLink}
             to="/search-breweries"
             name="Search Breweries"
@@ -32,6 +39,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, onClick
           />
 
           <Menu.Item
+            className="link"
             as={NavLink}
             to="/breweries"
             name="My Breweries"
@@ -40,6 +48,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, onClick
           />
 
           <Menu.Item
+            className="link"
             as={NavLink}
             to="/beers"
             name="My Beers"
@@ -49,6 +58,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, onClick
 
           <Menu.Menu position="right">
             <Menu.Item
+              className="link"
               to="/logout"
               name="Logout"
               onClick={logout}
@@ -58,19 +68,28 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, onClick
         </Fragment>
       ) : (
         <Fragment>
+          <Link to='/'>
+            <Menu.Item>
+              <img id="nav-logo" src={require("../images/BeerDiary.png")} />
+            </Menu.Item>
+          </Link>
+            
           <Menu.Item
+            className="link"
             as={NavLink}
             to="/login"
             name="Login"
             active={pathname === "/login"}
           />
           <Menu.Item
+            className="link"
             as={NavLink}
             to="/signup"
             name="Sign Up"
             active={pathname === "/signup"}
           />
-          <Menu.Item
+        <Menu.Item
+            className="link"
             as={NavLink}
             to="/search-breweries"
             name="Search Breweries"
@@ -80,6 +99,7 @@ const Nav = ({ location: { pathname }, logged_in, onLogOut, resetSearch, onClick
         </Fragment>
       )}
     </Menu>
+    </>
   );
 };
 

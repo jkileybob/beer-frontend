@@ -680,7 +680,7 @@ class App extends React.Component{
               <Switch>
                 {!this.state.addingBeer ?
                   <>
-                    <Route path='/' render={ () =>
+                    <Route exact path='/' render={ () =>
                       <Home />
                     }/>
 

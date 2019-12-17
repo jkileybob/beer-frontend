@@ -20,8 +20,12 @@ const Home = () => {
           <img src={require("../images/beer-types.png")} />
           <img src={require("../images/beer-types.png")} />
         </div>
-        <div id="divider-1"></div>
-        <div id="divider-2"></div>
+        <div id="divider-1">
+          <p id="about-p"> Many thanks to the Open Brewery Database for free access to brewery data.</p>
+        </div>
+        <div id="divider-2">
+          <p id="about-p">This project would not be posible without your willingness to share.</p>
+        </div>
       </div>
     </>
   )
