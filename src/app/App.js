@@ -10,6 +10,7 @@ import BeerIndex from '../beer/BeerIndex'
 import BreweryIndex from '../brewery/BreweryIndex'
 import Favorites from '../favorites/Favorites'
 import AddBeer from '../beer/AddBeer'
+import Home from '../home/Home'
 import './App.css';
 
 class App extends React.Component{
@@ -664,15 +665,14 @@ class App extends React.Component{
   render(){
     return(
       <>
-        <header className="Header" >
-          <Nav
-            logged_in={this.state.currentUser}
-            onLogOut={this.handleLogOut}
-            resetSearch={this.resetSearch}
-            myBreweriesClick={this.myBreweriesClick}
-            onClickReset={this.onClickReset}
-          />
-        </header>
+
+        <Nav
+          logged_in={this.state.currentUser}
+          onLogOut={this.handleLogOut}
+          resetSearch={this.resetSearch}
+          myBreweriesClick={this.myBreweriesClick}
+          onClickReset={this.onClickReset}
+        />
         <main className="main-container">
           <Grid centered verticalAlign='middle'>
             <Grid.Row>
@@ -680,7 +680,9 @@ class App extends React.Component{
               <Switch>
                 {!this.state.addingBeer ?
                   <>
-                    <Route exact path='/' render={()=> <Redirect to='/profile' />  }/>
+                    <Route path='/' render={ () =>
+                      <Home />
+                    }/>
 
                     <Route exact path='/profile' render={()=>{
                       return this.state.currentUser ?
@@ -725,27 +727,29 @@ class App extends React.Component{
                     }} />
 
                     <Route exact path='/breweries' render={()=>{
-                      return <Favorites
-                        breweries={this.state.breweries}
-                        currentBrewery={this.state.currentBrewery}
-                        favs={this.state.favs}
-                        breweryBeers={this.state.currentBreweryBeers}
+                      return !this.state.currentUser ?
+                        <Redirect to='/login' />
+                        : <Favorites
+                            breweries={this.state.breweries}
+                            currentBrewery={this.state.currentBrewery}
+                            favs={this.state.favs}
+                            breweryBeers={this.state.currentBreweryBeers}
 
-                        onFavListBreweryClick={this.onFavListBreweryClick}
-                        onClickClose={this.onClickClose}
+                            onFavListBreweryClick={this.onFavListBreweryClick}
+                            onClickClose={this.onClickClose}
 
-                        username={this.state.currentUser.username}
-                        avatar={this.state.currentUser.avatar}
+                            username={this.state.currentUser.username}
+                            avatar={this.state.currentUser.avatar}
 
-                        beers={this.state.beers}
-                        findBreweryBeers={this.findBreweryBeers}
-                        currentBeer={this.state.currentBeer}
-                        handleBeerLog={this.handleBeerLog}
-                        showBreweryBeer={this.showBreweryBeer}
+                            beers={this.state.beers}
+                            findBreweryBeers={this.findBreweryBeers}
+                            currentBeer={this.state.currentBeer}
+                            handleBeerLog={this.handleBeerLog}
+                            showBreweryBeer={this.showBreweryBeer}
 
-                        deleteBrewery={this.deleteBrewery}
-                        favorites={this.state.favorites}
-                        />
+                            deleteBrewery={this.deleteBrewery}
+                            favorites={this.state.favorites}
+                            />
                     }} />
 
                     <Route exact path='/beers' render={()=>{

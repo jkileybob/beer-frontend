@@ -3,13 +3,12 @@
   text-align: center;
 }
 
-.Header {
-  font-weight: bold;
-  padding-bottom: 50px;
-}
+/* div.ui.center.aligned.middle.grid {
+    height: 100px;
+} */
 
 .main-container {
- min-height: 50vh; /* coverage of viewport */
+ min-height: 70vh; /* coverage of viewport */
  overflow: hidden;
  display: block;
  position: relative;

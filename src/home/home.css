@@ -1,0 +1,67 @@
+#home-container {
+  width: 1550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero {
+  width: 1550px;
+  height: 500px;
+  background-image: url(https://www.patternpictures.com/wp-content/uploads/2014/11/PP54301706-Close-up-of-draft-beer-foam.jpg);
+  background-size: contain;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 50px;
+}
+#hero-logo {
+  height: 400px;
+  width: 400px;
+  border: 3px solid #F9A93C;
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 1550px;
+  height: 500px;
+  background-color: #20B2AA;
+}
+#about-header {
+  color: #F9A93C;
+  font-size: 45px;
+}
+#about-p {
+  color: #FFFFFF;
+  font-size: 25px;
+  width: 500px;
+}
+
+.beer-type-img-cont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+div.beer-type-img-cont > img {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+#divider-1 {
+  width: 1550px;
+  height: 150px;
+  background-color: #20B2AA;
+}
+#divider-2 {
+  width: 1550px;
+  height: 150px;
+  background-color: #F9A93C;
+}

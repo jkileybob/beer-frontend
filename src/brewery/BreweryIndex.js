@@ -1,16 +1,17 @@
 import React from 'react';
 import { Grid, Header, Input, List, Button } from 'semantic-ui-react';
 import BreweryModal from "./BreweryModal"
+import "./search.css"
 
 class BreweryIndex extends React.Component{
 
   render(){
-    const style={color: '#20B2AA'}
+
     return(
       <>
-        <Grid centered >
+        <Grid centered id="search-form" >
           <Grid.Row>
-            <Header size='huge' style={style} >Search the American Brewery Database</Header>
+            <Header size='huge' id="search-form-header" >Search the American Brewery Database</Header>
           </Grid.Row>
 
           <Grid.Row>
@@ -81,28 +82,30 @@ class BreweryIndex extends React.Component{
               </Button>
             </Grid.Column>
           </Grid.Row>
+
+
+
+          {this.props.breweries ?
+
+            <List animated verticalAlign='middle' >
+              {this.props.breweries.map((brew) =>{
+                return <React.Fragment key={`brewery-list-item-${brew.id}`}>
+                  <List.Item
+                    id={`${brew.id}`}
+                    key={`brewery-list-item-${brew.id}`}
+                    onClick={this.props.onBreweryClick}
+                    >
+                      <Header size='medium' >
+                        {brew.name}
+                      </Header>
+                    </List.Item>
+                </React.Fragment>
+              })}
+
+            </List> : null
+          }
+
         </Grid>
-
-
-        {this.props.breweries ?
-
-          <List animated verticalAlign='middle' >
-            {this.props.breweries.map((brew) =>{
-              return <React.Fragment key={`brewery-list-item-${brew.id}`}>
-                <List.Item
-                  id={`${brew.id}`}
-                  key={`brewery-list-item-${brew.id}`}
-                  onClick={this.props.onBreweryClick}
-                  >
-                    <Header size='medium' >
-                      {brew.name}
-                    </Header>
-                  </List.Item>
-              </React.Fragment>
-            })}
-
-          </List> : null
-        }
 
         {this.props.currentBrewery ?
           <>

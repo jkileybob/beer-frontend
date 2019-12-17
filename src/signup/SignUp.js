@@ -1,5 +1,7 @@
 import React from 'react'
 import { Button, Form, Grid, Header, Image, Segment } from 'semantic-ui-react'
+import "./signup.css"
+
 
 class SignUp extends React.Component{
 
@@ -18,7 +20,7 @@ class SignUp extends React.Component{
 
   render(){
     return(
-  <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+  <Grid textAlign='center' id="signup-form" verticalAlign='middle'>
     <Grid.Column style={{ maxWidth: 450 }}>
       <Header as='h2' color='teal' textAlign='center'>
         <Image src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBrQMPMFvLBeZHaTp8BbzFQ9TPHPOkNV5G-lzQcOeedYoQsqNs' />
@@ -60,8 +62,8 @@ class SignUp extends React.Component{
           />
           <Form.Input
             fluid
-            name="Location"
-            placeholder="location"
+            name="location"
+            placeholder="Location"
             onChange={this.handleChange}
           />
 
