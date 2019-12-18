@@ -12,7 +12,7 @@ class BreweryIndex extends React.Component{
 
         <Grid centered id="search-form" >
           <Grid.Row>
-              <Header color="teal" size='huge' id="search-form-header" >Search American Breweries</Header>
+              <Header color="teal" size='huge' id="search-form-header">Search American Breweries</Header>
           </Grid.Row>
 
           <Grid.Row>

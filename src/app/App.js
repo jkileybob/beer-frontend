@@ -104,7 +104,7 @@ class App extends React.Component{
       addingBeer: false
     })
     localStorage.clear();
-    this.props.history.push("/login");
+    this.props.history.push("/");
   }
 
   createNewUser = (newUser) => {
